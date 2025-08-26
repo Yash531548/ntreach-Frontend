@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+/* Sofia Pro Black */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Black Az.otf') format('opentype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+/* Sofia Pro Black Italic */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Black Italic Az.otf') format('opentype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+/* Sofia Pro Bold */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Bold Az.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Sofia Pro Bold Italic */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Bold Italic Az.otf') format('opentype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+/* Sofia Pro ExtraLight */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro ExtraLight Az.otf') format('opentype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+/* Sofia Pro ExtraLight Italic */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro ExtraLight Italic Az.otf') format('opentype');
+    font-weight: 200;
+    font-style: italic;
+}
+
+/* Sofia Pro Light */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Light Az.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+/* Sofia Pro Light Italic */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Light Italic Az.otf') format('opentype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+/* Sofia Pro Medium */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Medium Az.otf') format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+/* Sofia Pro Medium Italic */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Medium Italic Az.otf') format('opentype');
+    font-weight: 500;
+    font-style: italic;
+}
+
+/* Sofia Pro Regular */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Regular Az.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Sofia Pro Regular Italic */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Regular Italic Az.otf') format('opentype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* Sofia Pro SemiBold */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Semi Bold Az.otf') format('opentype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+/* Sofia Pro SemiBold Italic */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro Semi Bold Italic Az.otf') format('opentype');
+    font-weight: 600;
+    font-style: italic;
+}
+
+/* Sofia Pro UltraLight */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro UltraLight Az.otf') format('opentype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+/* Sofia Pro UltraLight Italic */
+@font-face {
+    font-family: 'Sofia Pro';
+    src: url('./assets/SofiaPro/Sofia Pro UltraLight Italic Az.otf') format('opentype');
+    font-weight: 100;
+    font-style: italic;
+}
+
+
+
+/* Add any global styles here */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Sofia Pro';
+    background-color: #f9f9f9;
+}
+

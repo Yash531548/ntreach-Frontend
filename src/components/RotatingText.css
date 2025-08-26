@@ -1,0 +1,34 @@
+.rotating-words {
+    overflow: hidden;
+}
+
+.rotating-words>span {
+    animation: word-cycle 5s infinite ease-in-out;
+}
+
+@keyframes word-cycle {
+
+    0%,
+    15% {
+        transform: translateY(0%);
+    }
+
+    25%,
+    40% {
+        transform: translateY(-100%);
+    }
+
+    50%,
+    65% {
+        transform: translateY(-200%);
+    }
+
+    75%,
+    90% {
+        transform: translateY(-300%);
+    }
+
+    100% {
+        transform: translateY(0%);
+    }
+}
