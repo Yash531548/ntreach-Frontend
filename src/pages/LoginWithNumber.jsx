@@ -96,10 +96,10 @@ const LoginWithNumber = () => {
         //         </div>
         //     </main>
         // </div>
-        <div className="  w-full mt-2 md:min-h-[calc(100vh-64px-60px)]  2xl:min-h-[calc(100vh-64px-60px)] flex items-center justify-center  max-w-[1300px] mx-auto px-8 sm:px-6 lg:px-12 ">
+        <div className="  w-full mt-2 md:min-h-[calc(100vh-64px-60px)]  2xl:min-h-[calc(100vh-64px-60px)] flex items-center justify-center  max-w-[1300px] mx-auto px-2 sm:px-6 lg:px-12 ">
                     <main className="w-full 
         
-                    min-h-[calc(100vh-64px-120px)] 
+                    md:min-h-[calc(100vh-64px-120px)] 
                            flex flex-col md:flex-row 
                            md:shadow-sm md:rounded-4xl md:border md:border-gray-200  ">
         
