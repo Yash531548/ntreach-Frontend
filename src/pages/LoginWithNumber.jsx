@@ -121,7 +121,7 @@ const LoginWithNumber = () => {
                                         />
                                         <button
                                             onClick={handlePhoneSubmit}
-                                            className="w-[60%] md:w-[60%] lg:w-[40%] xl:w-[35%] py-2   bg-gradient-to-b from-[#323FF7] via-[#323FF7] to-[#33AEE5] 
+                                            className="w-[60%] md:w-[60%] lg:w-[40%] xl:w-[22%] py-2   bg-gradient-to-b from-[#323FF7] via-[#323FF7] to-[#33AEE5] 
                                  text-white rounded-4xl text-sm md:text-[16px]  cursor-pointer hover:shadow-lg/30"
                                         >
                                             Verify
@@ -154,7 +154,7 @@ const LoginWithNumber = () => {
                                         <div className="w-full lg:w-[80%] flex justify-between ">
                                             <button
                                             onClick={handleOtpSubmit}
-                                            className="w-[50%] lg:w-[25%] ml-[5px] py-1.5 bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-3xl text-md  cursor-pointer hover:shadow-lg/30"
+                                            className="w-[50%] lg:w-[27%] ml-[5px] py-1.5 bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-3xl text-md  cursor-pointer hover:shadow-lg/30"
                                         >
                                             Verify
                                         </button>

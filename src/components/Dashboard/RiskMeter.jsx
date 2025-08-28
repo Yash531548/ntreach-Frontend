@@ -9,7 +9,8 @@ const RiskMeter = () => {
     const angle = (riskPercent / 100) * 180 - 90;
 
     return (
-        <div className="rounded-2xl w-[40%] h-[27vh] border border-gray-300 border-l-0 shadow-sm pt-3 p-4 flex flex-col">
+        <div className="rounded-2xl w-[40%]  border border-gray-300 border-l-0 shadow-sm pt-3 p-4 pb-0 flex flex-col">
+        {/* <div className="rounded-2xl w-[40%] h-[27vh] border border-gray-300 border-l-0 shadow-sm pt-3 p-4 flex flex-col"> */}
             <p
                 className="text-lg mb-5"
                 style={{ fontFamily: "Sofia Pro", fontWeight: 600 }}
@@ -61,7 +62,8 @@ const RiskMeter = () => {
                         fill="none"
                         stroke="#3FD14A"
                         strokeWidth="40"
-                        strokeDasharray="50 200"
+                        // strokeDasharray="50 200"
+                        strokeDasharray="51 200"
                         strokeDashoffset="-200"
                     />
 
@@ -73,7 +75,7 @@ const RiskMeter = () => {
                             
                     </g>
                 </svg>
-                <p className="text-[#E82D48]" style={{fontFamily:"Sofia Pro", fontWeight:700}}>High/ <span className="text-[#3FD14A]">Low</span></p>
+                <p className="text-[#E82D48]" style={{fontFamily:"Sofia Pro", fontWeight:700 , paddingBottom:"5px"}}>High/ <span className="text-[#3FD14A]">Low</span></p>
             </div>
         </div>
     );

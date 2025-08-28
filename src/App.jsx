@@ -11,9 +11,11 @@ import BookAppointment from './components/Dashboard/BookAppointment'
 import ScheduleAppointment from './components/Dashboard/ScheduleAppointment'
 import AppointmentConfirmed from './components/Dashboard/AppointmentConfirmed'
 import LoginWithNumber from './pages/LoginWithNumber'
+import ScrollToTop from './Utility/ScrollToTop'
 function App() {
   return (
     <>
+      <ScrollToTop />
       <div className='bg-white h-screen '>
         <Routes >
           {/* Parent route uses Layout */}

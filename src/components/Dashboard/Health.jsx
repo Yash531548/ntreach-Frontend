@@ -142,7 +142,7 @@ const Health = ({ setSubView }) => {
                     <p className='text-lg' style={{ fontFamily: "Sofia Pro", fontWeight: 600 }}>My Risk Meter</p>
                 </div> */}
                 < RiskMeter />
-                <div className='rounded-2xl w-[60%] max-h-[27vh] overflow-x-auto overflow-y-auto border border-gray-300 border-l-0 shadow-sm pt-3 p-4'>
+                <div className='rounded-2xl w-[60%] max-h-[30vh] overflow-x-auto overflow-y-auto border border-gray-300 border-l-0 shadow-sm pt-3 p-4'>
                     <p className='text-lg ' style={{ fontFamily: "Sofia Pro", fontWeight: 600 }}>Announcements</p>
                     {mockNotifications.map((notification, index) => (
                         <div
