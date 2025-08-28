@@ -507,8 +507,8 @@ export default function Questionnaire() {
                                 </div>
 
                                 {/* Right Side */}
-                                <div className="flex gap-3 justify-between w-full md:w-[33%] ">
-                                    {currentStep > 0 && (
+                                <div className="flex gap-3 justify-between md:justify-end w-full md:w-[33%] ">
+                                    {currentStep > 0 ?  (
                                         <div
                                             onClick={() => setCurrentStep((s) => s - 1)}
                                             className="flex flex-row justify-between items-center text-sm shadow-xl hover:shadow-lg/30 pr-3 pt-1 pb-1 
@@ -522,6 +522,8 @@ export default function Questionnaire() {
                                             </span>
                                             <button className="cursor-pointer">Previous</button>
                                         </div>
+                                    ):(
+                                        <div className="w-[160px]" />
                                     )}
 
                                     {currentStep < steps.length && (
