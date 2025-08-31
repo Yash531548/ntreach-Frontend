@@ -2,11 +2,13 @@ import React from "react";
 import NotificationsIcon from "../../assets/Dashboard/Notifications.svg";
 import HealthWealthIcon from "../../assets/Dashboard/Health & Wellness.svg";
 import TestingCentersIcon from "../../assets/Dashboard/Testing Centers.svg";
+import TestingCentersVector from "../../assets/Dashboard/VectorTestCenter.svg";
 import ConnectTeamIcon from "../../assets/Dashboard/Connect with our Team.svg";
 import BookAppointmentIcon from "../../assets/Dashboard/Book an Appointment.svg";
 import chatbot from "../../assets/chatbot.png";
 import { Mic, SearchIcon } from "lucide-react";
 import { Link } from "react-router";
+
 
 // const RightNavButton = ({ label, icon, isActive, onClick }) => {
 //     return (
@@ -27,23 +29,68 @@ import { Link } from "react-router";
 //         </button>
 //     );
 // };
-const RightNavButton = ({ label, icon, isActive, onClick, to }) => {
+// const RightNavButton = ({ label, icon, isActive, onClick, to, Activeicon }) => {
+//     const baseClasses = `flex items-center gap-2 bg-white border border-gray-200 pl-2 py-2.5 text-sm rounded-4xl font-medium transition-all duration-200 cursor-pointer w-[10rem]
+//         ${isActive
+//             ? "bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white shadow-md/20"
+//             : "hover:border hover:border-[#323FF7]  text-black"
+//         }`;
+
+//     const content = (
+//         <>
+//             <div className={` ${isActive ? "w-8 h-8 bg-white rounded-full p-1 flex items-center " : "w-8 h-8"} `}>
+//                 <img src={`${isActive ? Activeicon : icon}`} alt="Icon" className="w-8 h-8" />
+//             </div>
+//             <div className="text-start max-w-[90px] break-words whitespace-normal">
+//                 {label}
+//             </div>
+//         </>
+//     );
+
+//     // 👉 Conditional rendering logic
+//     return to ? (
+//         <Link
+//             to={to}
+//             style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
+//             className={baseClasses}
+//         >
+//             {content}
+//         </Link>
+//     ) : (
+//         <button
+//             style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
+//             onClick={onClick}
+//             className={baseClasses}
+
+//         >
+//             {content}
+//         </button>
+//     );
+// };
+const RightNavButton = ({ label, icon, isActive, onClick, to, Activeicon, hasNotification }) => {
     const baseClasses = `flex items-center gap-2 bg-white border border-gray-200 pl-2 py-2.5 text-sm rounded-4xl font-medium transition-all duration-200 cursor-pointer w-[10rem]
         ${isActive
             ? "bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white shadow-md/20"
-            : "hover:bg-blue-100 text-black"
+            : "hover:border hover:border-[#323FF7]  text-black"
         }`;
 
     const content = (
         <>
-            <img src={icon} alt="Icon" className="w-8 h-8" />
+            <div className={`relative ${isActive ? "w-8 h-8 bg-white rounded-full p-1 flex items-center " : "w-8 h-8"}`}>
+                {/* Icon */}
+                <img src={`${isActive ? Activeicon : icon}`} alt="Icon"  className="w-8 h-8" />
+                {/* Notification Dot */}
+                {hasNotification && (
+                    <span className="absolute -top-1 right-0 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-white"></span>
+                )}
+            </div>
             <div className="text-start max-w-[90px] break-words whitespace-normal">
                 {label}
             </div>
         </>
     );
 
-    // 👉 Conditional rendering logic
+    
     return to ? (
         <Link
             to={to}
@@ -56,7 +103,7 @@ const RightNavButton = ({ label, icon, isActive, onClick, to }) => {
         <button
             style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
             onClick={onClick}
-            className={baseClasses}
+            className={baseClasses }
         >
             {content}
         </button>
@@ -64,20 +111,14 @@ const RightNavButton = ({ label, icon, isActive, onClick, to }) => {
 };
 
 const RightTab = ({ active, setActive }) => {
-    // const rightNavItems = [
-    //     { label: "Notifications", icon: NotificationsIcon },
-    //     { label: "Book an Appointment", icon: BookAppointmentIcon },
-    //     { label: "PrEP Consultation", icon: ConnectTeamIcon },
-    //     { label: "Health & Wealth", icon: HealthWealthIcon },
-    //     { label: "Testing Centers", icon: TestingCentersIcon },
-    // ];
     const rightNavItems = [
-        { label: "Notifications", icon: NotificationsIcon }, // uses state
-        { label: "Book an Appointment", icon: BookAppointmentIcon, to: "/bookAppointment" }, // navigates
-        { label: "PrEP Consultation", icon: ConnectTeamIcon, to: "/prepConsultation" }, // navigates
-        { label: "Health & Wealth", icon: HealthWealthIcon, to: "/healthWealth" }, // navigates
-        { label: "Testing Centers", icon: TestingCentersIcon }, // uses state
-    ];
+    { label: "Notifications", ActiveIcon:NotificationsIcon, icon: NotificationsIcon, hasNotification: true }, // show dot
+    { label: "Book an Appointment", icon: BookAppointmentIcon, to: "/bookAppointment" },
+    { label: "PrEP Consultation", icon: ConnectTeamIcon, to: "/prepConsultation" },
+    { label: "Health & Wealth", icon: HealthWealthIcon, to: "/healthWealth" },
+    { label: "Testing Centers", ActiveIcon: TestingCentersVector, icon: TestingCentersIcon },
+];
+
     return (
         <div
             className="flex flex-col justify-between  gap-3 bg-white min-h-full p-6"
@@ -90,11 +131,14 @@ const RightTab = ({ active, setActive }) => {
                         key={item.label}
                         label={item.label}
                         icon={item.icon}
+                        Activeicon={item.ActiveIcon}
                         isActive={active === item.label}
                         onClick={() => setActive(item.label)}
                         to={item.to}
+                        hasNotification={item.hasNotification}
                     />
                 ))}
+
             </div>
             <div className=" relative gap-4 rounded-full  cursor-pointer bg-[#F3F3F3] shadow-lg mx-auto ml-9 ">
 

@@ -35,7 +35,7 @@ const TestingCenters = () => {
                  text-white rounded-full cursor-pointer gap-2"
                     >
                         Search
-                        <span className="flex items-center justify-center w-6 h-6 ml-3 rounded-full bg-white text-black text-lg border ">
+                        <span className="flex items-center justify-center w-6 h-6 ml-3 rounded-full bg-white text-black text-lg  ">
                             <ArrowRight width={17} />
                         </span>
                     </button>

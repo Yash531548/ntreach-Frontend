@@ -1,32 +1,81 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router';
 import ChatBot from '../ChatBot';
-
+import Receipt from './Receipt';
 
 const AppointmentConfirmed = () => {
+    const [showModal, setShowModal] = useState(false);
     const location = useLocation();
-    const appointmentData = location.state; // Passed from ScheduleAppointment
+    const appointmentData = location.state;
+
+    const handleClick = () => setShowModal(true);
 
     return (
-        <div className=' "container w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center  ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
-            <div className=" container w-[40%] h-[65vh] flex flex-col items-center   gap-8">
-                <h1 className="text-5xl text-[#1475A1]  mb-4">Thank You</h1>
-                <div>
-
-                    <p className='text-xl'>Your appointment is CONFIRMED</p>
-                    <p style={{ fontFamily: "Sofia Pro", fontWeight: 700 }} className='text-center'>You Will Receive an SMS Shortly</p>
+        <>
+            <div
+                className="
+          w-full
+          min-h-[calc(100vh-64px-60px)]
+          flex items-center justify-center
+          px-1 sm:px-6 md:px-12
+        "
+                style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
+            >
+                <div
+                    className="
+            w-full
+            sm:w-[85%]
+            md:w-[60%]
+            lg:w-[40%]
+            h-auto
+            flex flex-col items-center
+            gap-6
+            py-6
+            sm:py-10
+          "
+                >
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl text-[#1475A1] mb-2 md:mb-4">Thank You</h1>
+                    <div>
+                        <p className="text-lg md:text-xl">Your appointment is <span className="font-bold">CONFIRMED</span></p>
+                        <p style={{ fontFamily: "Sofia Pro", fontWeight: 700 }} className="text-center mt-1">You Will Receive an SMS Shortly</p>
+                    </div>
+                    <div className='flex items-center justify-center flex-col bg-[#DAF3FF] min-h-[20vh] rounded-4xl text-center gap-2 py-3 sm:py-5 w-full sm:w-[90%] md:w-[80%] lg:w-full xl:w-[80%]'>
+                        <p className="mt-2 text-base md:text-xl ">
+                            Your NETREACH Unique ID is:
+                        </p>
+                        <p className='text-xl md:text-2xl lg:text-2xl xl:text-3xl text-[#1475A1] break-all'>{appointmentData?.uniqueId}</p>
+                    </div>
+                    <button
+                        onClick={() => handleClick()}
+                        className="
+              mt-4
+              w-full
+              sm:w-[70%]
+              md:w-[55%]
+              bg-gradient-to-b from-[#323FF7] to-[#33AEE5]
+              text-white px-4 py-2 rounded-4xl cursor-pointer drop-shadow-xl
+              text-base md:text-lg
+              hover:shadow-2xl/20 hover:drop-shadow-2xl
+            "
+                    >
+                        Download Receipt
+                    </button>
+                    {/* Only show on desktop/laptop */}
+                    <div className="hidden lg:block w-full">
+                        <ChatBot />
+                    </div>
                 </div>
-                <div className='container flex items-center justify-center flex-col bg-[#DAF3FF] min-h-[20vh] rounded-4xl text-center gap-3'>
-                    <p className="mt-2 text-xl">
-                        Your NETREACH Unique ID is:</p>
-                    <p className='text-3xl text-[#1475A1]'> {appointmentData?.uniqueId}</p>
-                </div>
-                <button className="mt-4 w-[55%] bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white px-4 py-2 rounded-4xl cursor-pointer drop-shadow-xl hover:shadow-2xl/20 hover:drop-shadow-2xl">
-                    Download Receipt
-                </button>
-                <ChatBot/>
             </div>
-        </div>
+            {showModal && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50 px-2 sm:px-4"
+                    onClick={() => setShowModal(false)}
+                >
+                    <div onClick={(e) => e.stopPropagation()} className="bg-white shadow-lg w-full max-w-lg min-h-[95%]">
+                        <Receipt />
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 
