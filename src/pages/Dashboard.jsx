@@ -53,11 +53,17 @@ const Dashboard = () => {
     };
 
     return (
-        <div className="container w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center ">
-            <main className="container max-w-[1200px]  min-h-[calc(100vh-64px-100px)]  flex ">
+        <div className="container w-full min-h-[calc(100vh-64px-60px)] mx-auto flex items-center justify-center px-2 sm:px-4
+        lg:px-10 
+        xl:px-0 mt-9
+        2xl:ml-0 
+        ">
+            <main className="container max-w-[1200px]  min-h-[calc(100vh-64px-100px)]  flex  lg:max-w-[950px] 
+          xl:max-w-[1200px]  justify-between
+          ">
 
                 {/* Center Section with Left and Middle */}
-                <div className=' w-[80%] rounded-4xl flex'>
+                <div className=' w-[80%] xl:w-[85%] rounded-4xl flex'>
 
                     {/* Left Panel */}
                     <div className='bg-[#DAE9F0] rounded-l-4xl w-[30%]  flex flex-col gap-4 '>
@@ -72,7 +78,8 @@ const Dashboard = () => {
                 </div>
 
                 {/* Right Panel */}
-                <div className=' w-[20%] '>
+                {/* <div className=' w-[20%] '> */}
+                <div className=' w-[20%] xl:w-[15%] '>
                     <RightTab active={selectedView} setActive={setSelectedView}/>
                 </div>
             </main>

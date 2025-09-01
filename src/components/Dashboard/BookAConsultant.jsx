@@ -3,13 +3,13 @@ import React from 'react'
 
 const BookAConsultant = ({ setSubView ,setSelectedView}) => {
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-8 px-10'>
+        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-4 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between gap-4'>
 
-                <p className='text-[#0063B9] text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Book a Teleconsultation</p>
+                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Book a Teleconsultation</p>
                 <p 
                 onClick={()=>{setSubView('Past Consultation')}} 
-                className='text-sm text-[#323FF7] underline cursor-pointer'>View past Consultation</p>
+                className='text-[13px] xl:text-sm text-[#323FF7] underline cursor-pointer'>View past Consultation</p>
             </div>
             <div className='w-full rounded-4xl shadow-sm h-[53%] mt-[2rem] mb-[1rem] pt-3 p-8 ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
                 <div className="grid grid-cols-2 gap-6 w-full max-w-3xl text-sm mt-6">

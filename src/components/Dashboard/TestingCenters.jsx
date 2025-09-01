@@ -3,14 +3,14 @@ import React from 'react'
 
 const TestingCenters = () => {
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-8 px-10'>
+        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-4 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between gap-4'>
-                <p className='text-[#0063B9] text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Testing Centres</p>
+                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Testing Centres</p>
             </div>
 
             <div className='w-full rounded-3xl shadow-sm h-[15%] mt-[2rem] pt-3 pb-3 text-sm flex items-center justify-center'>
                 <div className='flex items-center gap-6'>
-                    <select className="w-52 border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-1 outline-none text-gray-500">
+                    <select className="w-36 xl:w-52 border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-1 outline-none text-gray-500">
                         <option disabled selected>Select State</option>
                         <option>Maharashtra</option>
                         <option>Karnataka</option>
@@ -19,7 +19,7 @@ const TestingCenters = () => {
                         <option>Delhi</option>
                     </select>
 
-                    <select className="w-52 border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-1 outline-none text-gray-500">
+                    <select className="w-36 xl:w-52 border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-1 outline-none text-gray-500">
                         <option disabled selected>Select District</option>
                         <option>Pune</option>
                         <option>Bangalore Urban</option>
