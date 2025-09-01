@@ -96,15 +96,15 @@ const LoginWithNumber = () => {
         //         </div>
         //     </main>
         // </div>
-        <div className="  w-full mt-2 md:min-h-[calc(100vh-64px-60px)]  2xl:min-h-[calc(100vh-64px-60px)] flex items-center justify-center  max-w-[1300px] mx-auto px-2 sm:px-6 lg:px-12 ">
+        <div className="  w-full mt-2 lg:min-h-[calc(100vh-64px-60px)]  2xl:min-h-[calc(100vh-64px-60px)] flex items-center justify-center  max-w-[1300px] mx-auto px-2 sm:px-6 lg:px-12 ">
                     <main className="w-full 
         
-                    md:min-h-[calc(100vh-64px-120px)] 
+                    lg:min-h-[calc(100vh-64px-120px)] 
                            flex flex-col md:flex-row 
                            md:shadow-sm md:rounded-4xl md:border md:border-gray-200  ">
         
                         {/* LEFT SIDE - FORMS */}
-                        <div className="w-full md:w-1/2 md:p-12 md:pl-16 py-6">
+                        <div className="w-full md:w-1/2  md:px-7 md:py-12 lg:p-12 lg:pl-16 py-6">
                             {step === 1 && (
                                 <>
                                     <div className="text-[#1475A1] text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] 2xl:text-5xl" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
@@ -121,7 +121,7 @@ const LoginWithNumber = () => {
                                         />
                                         <button
                                             onClick={handlePhoneSubmit}
-                                            className="w-[60%] md:w-[60%] lg:w-[40%] xl:w-[22%] py-2   bg-gradient-to-b from-[#323FF7] via-[#323FF7] to-[#33AEE5] 
+                                            className="w-[35%] md:w-[35%] lg:w-[40%] xl:w-[22%] py-2   bg-gradient-to-b from-[#323FF7] via-[#323FF7] to-[#33AEE5] 
                                  text-white rounded-4xl text-sm md:text-[16px]  cursor-pointer hover:shadow-lg/30"
                                         >
                                             Verify
@@ -154,7 +154,7 @@ const LoginWithNumber = () => {
                                         <div className="w-full lg:w-[80%] flex justify-between ">
                                             <button
                                             onClick={handleOtpSubmit}
-                                            className="w-[50%] lg:w-[27%] ml-[5px] py-1.5 bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-3xl text-md  cursor-pointer hover:shadow-lg/30"
+                                            className="w-[35%] lg:w-[27%] ml-[5px] py-1.5 bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-3xl text-md  cursor-pointer hover:shadow-lg/30"
                                         >
                                             Verify
                                         </button>
