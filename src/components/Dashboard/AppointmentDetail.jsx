@@ -11,7 +11,7 @@ const AppointmentDetail = ({ setSubView, setSelectedView }) => {
         joiningInfo: "Team Link",
     };
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-8 px-10'>
+        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center gap-4'>
                 {/* 👇 Add click handler */}
                 <CircleArrowLeft className='text-gray-700 cursor-pointer '
@@ -19,9 +19,9 @@ const AppointmentDetail = ({ setSubView, setSelectedView }) => {
                 />
                 <p className='text-[#1475A1] text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Appointment Details</p>
             </div>
-            <div className='w-full rounded-4xl shadow-sm h-[32vh] mt-[2rem] mb-[1rem] pt-6 p-8' style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+            <div className='w-full rounded-4xl shadow-sm  xl:h-[32vh] mt-[2rem] mb-[1rem] pt-6 p-8' style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                 {/* Grid Layout */}
-                <div className="grid grid-cols-3 gap-y-6 gap-x-10 text-sm">
+                <div className="grid grid-cols-3 gap-y-6 gap-x-5 xl:gap-x-10 text-sm">
                     {/* Row 1 */}
                     <div>
                         <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Appointment Type</p>

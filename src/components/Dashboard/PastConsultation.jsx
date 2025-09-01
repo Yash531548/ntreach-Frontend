@@ -76,7 +76,7 @@ const PastConsultation = ({ setSubView }) => {
     ];
 
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-8 px-10'>
+        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center gap-4'>
                 {/* 👇 Add click handler */}
                 <CircleArrowLeft className='text-gray-700 cursor-pointer'
@@ -90,8 +90,8 @@ const PastConsultation = ({ setSubView }) => {
                     <thead>
                         <tr className="text-[#626262] text-xs" >
                             <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Date</th>
-                            <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Start Time</th>
-                            <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Type of Service</th>
+                            <th className="py-3  xl:px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Start Time</th>
+                            <th className="py-3  px-4 whitespace-nowrap " style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Type of Service</th>
                             <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Duration</th>
                             <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Recommendations</th>
                         </tr>
@@ -107,12 +107,12 @@ const PastConsultation = ({ setSubView }) => {
                             >
                                 <td className="py-3 px-4 rounded-l-full">{item.date}</td>
                                 <td className="py-3 px-4">{item.startTime}</td>
-                                <td className="py-3 px-4">{item.serviceType}</td>
+                                <td className="py-3 px-4 text-center xl:text-left">{item.serviceType}</td>
                                 <td className="py-3 px-4">{item.duration}</td>
                                 <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
                                     <button
                                         onClick={() => { setSubView('Reschedule') }}
-                                        className="text-[#323FF7] underline cursor-pointer">
+                                        className="text-[#323FF7] underline cursor-pointer whitespace-nowrap">
                                         View Recommendations
                                     </button>
                                 </td>
