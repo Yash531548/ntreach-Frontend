@@ -76,8 +76,8 @@ const BookAppointment = () => {
                         </div>
                     </div>
                 </div>
-                <div className='container max-w-[500px]  min-h-[calc(100vh-64px-100px)]  md:flex justify-center items-center hidden  '>
-                    <img src={GetTested} alt="getTested Image" className='w-[90%]' />
+                <div className='container max-w-[500px]  min-h-[calc(100vh-64px-100px)]  md:flex justify-center lg:ml-[30px] lg:mr-[-30px] xl:m-0   items-center hidden  '>
+                    <img src={GetTested} alt="getTested Image" className='w-[90%] lg:w-full  lg:h-[78%] ' />
                 </div>
                 <div className='hidden md:block'>
                     <ChatBot />
