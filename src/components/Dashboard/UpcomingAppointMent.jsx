@@ -16,10 +16,10 @@ const UpcomingAppointMent = ({setSubView}) => {
         { id: 10, date: "15/02/25", testType: "Ultrasound", type: "Upcoming", centre: "City Hospital" },
     ];
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-8 px-10'>
+        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-4 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between gap-4'>
 
-                <p className='text-[#0063B9] text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Upcoming Appointments</p>
+                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Upcoming Appointments</p>
 
             </div>
             <div className="w-full max-h-[53vh] overflow-y-auto overflow-x-auto rounded-4xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
@@ -28,7 +28,7 @@ const UpcomingAppointMent = ({setSubView}) => {
                     <thead>
                         <tr className="text-[#626262] text-xs" >
                             <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Test Date</th>
-                            <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Type of Test</th>
+                            <th className="py-3 px-2 xl:px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Type of Test</th>
                             <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Type</th>
                             <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Centre</th>
                             <th className="py-3 px-4"></th>

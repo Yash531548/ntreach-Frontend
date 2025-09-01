@@ -96,9 +96,9 @@ const Health = ({ setSubView }) => {
         },
     ];
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-8 px-10'>
+        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm py-5 px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between gap-4'>
-                <p className='text-[#0063B9] text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Health Dashboard</p>
+                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Health Dashboard</p>
             </div>
             <div className="w-full h-[30vh] overflow-y-auto overflow-x-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                 <p className='text-lg' style={{ fontFamily: "Sofia Pro", fontWeight: 600 }}>Reminders</p>

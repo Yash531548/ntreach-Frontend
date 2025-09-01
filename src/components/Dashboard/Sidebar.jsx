@@ -12,7 +12,7 @@ const NavButton = ({ label, icon, isActive, onClick }) => {
         <button
             style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
             onClick={onClick}
-            className={`flex items-center gap-3 px-1 py-1.5 text-sm rounded-4xl font-medium transition-all duration-200 cursor-pointer
+            className={`flex items-center gap-2 xl:gap-3 px-1 py-1.5 text-xs xl:text-sm rounded-4xl font-medium transition-all duration-200 cursor-pointer
         ${isActive
                     ? "bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white shadow-md/20"
                     : " hover:bg-blue-100 text-gray-700"
@@ -39,7 +39,7 @@ const Sidebar = ({ active, setActive }) => {
             style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
         >
             {/* User Info */}
-            <div className="flex flex-col gap-4 p-6">
+            <div className="flex flex-col gap-4 lg:p-3 xl:p-6">
                 <div className="flex items-center gap-4">
                     <img
                         src={ManAvatar}
@@ -87,7 +87,7 @@ const Sidebar = ({ active, setActive }) => {
             </div>
 
             {/* Navigation */}
-            <div className="flex flex-col gap-2 pl-6 pr-6 ">
+            <div className="flex flex-col gap-2 lg:px-3 xl:pl-6 xl:pr-6 ">
                 {navItems.map((item) => (
                     <NavButton
                         key={item.label}
@@ -102,7 +102,7 @@ const Sidebar = ({ active, setActive }) => {
             {/* Logout */}
             <div className="mt-29">
                 <div className="h-[1px] bg-gray-300  w-[100%] mx-auto rounded"></div>
-                <div className="p-6">
+                <div className="lg:p-3 xl:p-6">
                     <button className="mt-auto  flex items-center gap-3 px-1 py-1.5 rounded-4xl  hover:bg-blue-100 transition  text-sm text-gray-700">
                         <img src={LogoutIcon} alt="Logout icon" className="w-7 h-7" /> Logout
                     </button>

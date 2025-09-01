@@ -4,13 +4,13 @@ import ManAvatar from "../../assets/Dashboard/ManAvatar.jpg";
 
 const UserProfile = ({setSelectedView}) => {
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-8 px-10'>
+        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center gap-4'>
                 {/* 👇 Add click handler */}
                 <CircleArrowLeft className='text-gray-700 cursor-pointer'  
                     onClick={()=> setSelectedView('Home')}
                 />
-                <p className='text-[#0063B9] text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Profile</p>
+                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Profile</p>
             </div>
             <div className='w-full rounded-4xl shadow-sm h-[55%] mt-[2rem] mb-[1rem] pt-6 p-8'>
                 <div className=' w-18 h-18 rounded-full'>
@@ -45,16 +45,16 @@ const UserProfile = ({setSelectedView}) => {
                             </select>
                         </div>
                         {/* <!-- Fourth Row --> */}
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 justify-between">
                             {/* Left side: State + District */}
-                            <div className="flex flex-1 gap-2">
-                                <select defaultValue={'State'} className="flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9]">
+                            <div className="flex w-[48%]  gap-5 xl:gap-5 ">
+                                <select defaultValue={'State'} className="w-[50%] xl:flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-1 xl:px-4 py-0.5 outline-none text-[#A9A9A9]">
                                     <option disabled >State</option>
                                     <option>Delhi</option>
                                     <option>Maharashtra</option>
                                     <option>Karnataka</option>
                                 </select>
-                                <select defaultValue={'District'} className="flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9]">
+                                <select defaultValue={'District'} className=" w-1/2 xl:flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-1 py-0.5 outline-none text-[#A9A9A9]">
                                     <option disabled  >District</option>
                                     <option>District 1</option>
                                     <option>District 2</option>

@@ -10,7 +10,7 @@ const BookAppointment = () => {
         <div className='  container w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center
         px-2 sm:px-4
         lg:px-10
-        xl:px-0 xl:ml-[20px]
+        xl:px-0 
         2xl:ml-0
            ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
             {/* <main className='container max-w-[1050px]  min-h-[calc(100vh-64px-100px)]  flex justify-between '> */}

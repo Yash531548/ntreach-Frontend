@@ -121,7 +121,8 @@ const RightTab = ({ active, setActive }) => {
 
     return (
         <div
-            className="flex flex-col justify-between  gap-3 bg-white min-h-full p-6"
+            // className="flex flex-col justify-between  gap-3 bg-white min-h-full p-6 "
+            className="flex flex-col justify-between items-end  gap-3 bg-white min-h-full p-6 pr-0 "
             style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
         >
             {/* Navigation */}
