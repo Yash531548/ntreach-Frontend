@@ -1,6 +1,7 @@
 import React from 'react'
-
-const Notification = () => {
+import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
+import { CircleArrowLeft } from 'lucide-react';
+const Notification = ({setSelectedView}) => {
     // const mockNotifications = [
 
     //     {
@@ -117,13 +118,21 @@ const Notification = () => {
     ];
 
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-5 xl:pt-8 xl:px-10'>
+        <div className='rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between gap-4'>
-
-                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Notifications</p>
-
+                <div className='flex items-center gap-3'>
+                    <CircleArrowLeft className='text-gray-700 cursor-pointer '
+                        onClick={() => setSelectedView("Home")}
+                    />
+                    <p className='text-[#0063B9] text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Notifications</p>
+                </div>
+                <div className='relative' onClick={() => setActive("Notifications")}>
+                    <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
+                    <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                </div>
             </div>
-            <div className="w-full h-[50vh] overflow-y-auto overflow-x-auto rounded-4xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+            {/* if need to set fixed height add around h-[65vh] */}
+            <div className="w-full max-h-[85vh] md:h-[50vh] overflow-y-auto overflow-x-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                 {mockNotifications.map((notification, index) => (
                     <div
                         key={notification.id}

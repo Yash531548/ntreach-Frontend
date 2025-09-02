@@ -1,7 +1,7 @@
 import { ArrowRight } from 'lucide-react'
 import React, { useState } from 'react'
 import UploadReportModal from './UploadReportModal';
-
+import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 const ResultData = ({ setSubView, setSelectedView }) => {
     const [openModal, setOpenModal] = useState(false);
     const mockReports = [
@@ -71,13 +71,15 @@ const ResultData = ({ setSubView, setSelectedView }) => {
     ];
 
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-4 xl:pt-8 xl:px-10'>
+        <div className='rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-4 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between gap-4'>
-
-                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Results/Past Data</p>
-
+                <p className='text-[#0063B9]  text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Results/Past Data</p>
+                <div className='relative' onClick={() => setSelectedView("Notifications")}>
+                    <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
+                    <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                </div>
             </div>
-            <div className="w-full max-h-[45vh] overflow-y-auto overflow-x-auto rounded-4xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+            <div className="w-full max-h-[45vh] overflow-y-auto overflow-x-auto rounded-2xl md:rounded-3xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                 <table className="min-w-full border-collapse  ">
                     <thead>
                         <tr className="text-left text-[#626262] text-xs" >
@@ -171,7 +173,7 @@ const ResultData = ({ setSubView, setSelectedView }) => {
             
 
             </div> */}
-            <div className='  mt-[1rem] w-full rounded-3xl shadow-sm h-[19%] pt-3 p-7'>
+            <div className='  mt-[1rem] w-full rounded-2xl shadow-sm h-[19%] pt-3 p-7'>
                 <p className='text-[#0063B9] text-lg mb-4' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Recommendations</p>
                 <button
                     onClick={() => {
