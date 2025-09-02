@@ -23,7 +23,7 @@ import React from "react";
 import "./RotatingText.css";
 
 export default function RotatingText() {
-    const words = ["Consultation", "PrEP Consultation", "STI Test", "HIV Test"];
+    const words = ["HIV Test","STI Test","PrEP Consultation", "Consultation"  ];
 
     return (
         <h1

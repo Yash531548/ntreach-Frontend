@@ -22,7 +22,7 @@ const Dashboard = () => {
                 if(subView === "Appointment Detail"){
                     return < AppointmentDetail setSubView={setSubView} setSelectedView={setSelectedView}/>
                 }
-                return < Health setSubView={setSubView}/>;
+                return < Health setSubView={setSubView} setActive={setSelectedView}/>;
             case 'Upcoming Appointments':
                 if(subView ==='Reschedule'){
                     return < RescheduleAppointment setSubView={setSubView} setSelectedView={setSelectedView}/>
@@ -63,23 +63,23 @@ const Dashboard = () => {
           ">
 
                 {/* Center Section with Left and Middle */}
-                <div className=' w-[80%] xl:w-[85%] rounded-4xl flex'>
+                <div className='w-full md:w-[80%] xl:w-[85%] rounded-4xl flex'>
 
                     {/* Left Panel */}
-                    <div className='bg-[#DAE9F0] rounded-l-4xl w-[30%]  flex flex-col gap-4 '>
+                    <div className='hidden bg-[#DAE9F0] rounded-l-4xl w-[30%]  lg:flex flex-col gap-4 '>
                         
                         <Sidebar active={selectedView} setActive={setSelectedView} />
                     </div>
 
                     {/* Middle Panel */}
-                    <div className=' rounded-r-4xl w-[70%] flex  shadow-sm border-r-gray-200  '>
+                    <div className=' rounded-r-4xl w-full md:w-[70%] flex  md:shadow-sm md:border-r-gray-200  '>
                         {renderContent()}
                     </div>
                 </div>
 
                 {/* Right Panel */}
                 {/* <div className=' w-[20%] '> */}
-                <div className=' w-[20%] xl:w-[15%] '>
+                <div className=' hidden md:block w-[20%] xl:w-[15%] '>
                     <RightTab active={selectedView} setActive={setSelectedView}/>
                 </div>
             </main>

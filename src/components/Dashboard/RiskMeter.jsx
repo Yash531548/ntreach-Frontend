@@ -9,7 +9,7 @@ const RiskMeter = () => {
     const angle = (riskPercent / 100) * 180 - 90;
 
     return (
-        <div className="rounded-2xl w-[40%]  border border-gray-300 border-l-0 shadow-sm pt-3 p-4 pb-0 flex flex-col">
+        <div className="rounded-2xl w-full md:w-[40%]  border border-gray-300 border-l-0 shadow-sm pt-3 p-4 pb-0 flex flex-col">
         {/* <div className="rounded-2xl w-[40%] h-[27vh] border border-gray-300 border-l-0 shadow-sm pt-3 p-4 flex flex-col"> */}
             <p
                 className="text-lg mb-5"
