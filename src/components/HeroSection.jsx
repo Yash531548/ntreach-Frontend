@@ -88,6 +88,7 @@ import ServiceButtons from '../components/ServiceButtons';
 import indian_common_man2 from '../assets/indian_common_man2.png';
 import RotatingWords from './RotatingWords';
 import { Mic, SearchIcon } from 'lucide-react';
+import RotatingWord from './RotatingWord';
 
 const HeroSection = () => {
     return (
@@ -108,7 +109,8 @@ const HeroSection = () => {
                 {/* <h2 className="text-2xl mb-3 sm:ml-4">
                     Book a free session <br /> with our counsellor
                 </h2> */}
-                <RotatingWords />
+                {/* <RotatingWords /> */}
+                <RotatingWord />
                 <img
                     src={indian_common_man2}
                     alt="Profile"
@@ -122,7 +124,8 @@ const HeroSection = () => {
 
                 {/* Desktop rotating words */}
                 <div className="hidden md:block md:w-[490px]">
-                    <RotatingWords />
+                    {/* <RotatingWords /> */}
+                    <RotatingWord />
                 </div>
 
                 {/* Service buttons */}
