@@ -1,7 +1,7 @@
 import React from 'react'
 import RiskMeter from './RiskMeter';
-
-const Health = ({ setSubView }) => {
+import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
+const Health = ({ setSubView ,setActive }) => {
     const upcoming = [
         { id: 1, date: "24/01/25", type: "Test Centre Visit", time: "10:00 AM", location: "City Hospital" },
         { id: 2, date: "24/01/25", type: "Teleconsultation", time: "02:00 PM", location: "Online" },
@@ -96,9 +96,13 @@ const Health = ({ setSubView }) => {
         },
     ];
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm py-5 px-5 xl:pt-8 xl:px-10'>
+        <div className='rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm py-5 md:px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between gap-4'>
-                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Health Dashboard</p>
+                <p className='text-[#0063B9] text-2xl md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Health Dashboard</p>
+                <div className='relative' onClick={()=>setActive("Notifications")}>
+                    <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
+                    <span className="absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                </div>
             </div>
             <div className="w-full h-[30vh] overflow-y-auto overflow-x-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                 <p className='text-lg' style={{ fontFamily: "Sofia Pro", fontWeight: 600 }}>Reminders</p>
@@ -137,12 +141,12 @@ const Health = ({ setSubView }) => {
                     </tbody>
                 </table>
             </div>
-            <div className='flex flex-row gap-3'>
+            <div className='flex flex-col md:flex-row gap-3'>
                 {/* <div className='rounded-2xl w-[40%] h-[27vh] border border-gray-300 border-l-0 shadow-sm pt-3 p-4'>
                     <p className='text-lg' style={{ fontFamily: "Sofia Pro", fontWeight: 600 }}>My Risk Meter</p>
                 </div> */}
                 < RiskMeter />
-                <div className='rounded-2xl w-[60%] max-h-[30vh] overflow-x-auto overflow-y-auto border border-gray-300 border-l-0 shadow-sm pt-3 p-4'>
+                <div className='rounded-2xl w-full md:w-[60%] max-h-[30vh] overflow-x-auto overflow-y-auto border border-gray-300 border-l-0 shadow-sm pt-3 p-4'>
                     <p className='text-lg ' style={{ fontFamily: "Sofia Pro", fontWeight: 600 }}>Announcements</p>
                     {mockNotifications.map((notification, index) => (
                         <div
