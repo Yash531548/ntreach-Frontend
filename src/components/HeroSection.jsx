@@ -88,7 +88,7 @@ import ServiceButtons from '../components/ServiceButtons';
 import indian_common_man2 from '../assets/indian_common_man2.png';
 import RotatingWords from './RotatingWords';
 import { Mic, SearchIcon } from 'lucide-react';
-import RotatingWord from './RotatingWord';
+import RotatingWord from './RotatingWord.jsx';
 
 const HeroSection = () => {
     return (
