@@ -55,6 +55,7 @@
 
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 
 // Static test center data based on your image
 const TEST_CENTERS = [
@@ -75,35 +76,41 @@ const TEST_CENTERS = [
     "Sdh Udgir, Sdh Udgir, Main Road Udgir Tq.udigir Dist. Latur 413517"
 ];
 
-const TestingCenters = () => {
+const TestingCenters = ({setActive}) => {
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-4 xl:pt-8 xl:px-10'>
+        <div className='rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-4 xl:pt-8 xl:px-10'>
             <div className='flex items-center justify-between gap-4'>
-                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Testing Centres</p>
+                <p className='text-[#0063B9]  text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Testing Centres</p>
+                <div className='relative' onClick={() => setActive("Notifications")}>
+                    <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
+                    <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                </div>
             </div>
 
             {/* Search Section - unchanged */}
-            <div className='w-full rounded-3xl shadow-sm h-[15%] mt-[2rem] pt-3 pb-3 text-sm flex items-center justify-center'>
-                <div className='flex items-center gap-6'>
-                    <select className="w-36 xl:w-52 border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-1 outline-none text-gray-500">
-                        <option disabled selected>Select State</option>
-                        <option>Maharashtra</option>
-                        <option>Karnataka</option>
-                        <option>Uttar Pradesh</option>
-                        <option>Rajasthan</option>
-                        <option>Delhi</option>
-                    </select>
-                    <select className="w-36 xl:w-52 border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-1 outline-none text-gray-500">
-                        <option disabled selected>Select District</option>
-                        <option>Pune</option>
-                        <option>Bangalore Urban</option>
-                        <option>Lucknow</option>
-                        <option>Jaipur</option>
-                        <option>South Delhi</option>
-                    </select>
+            <div className='w-full rounded-3xl shadow-sm md:h-[15%] mt-[2rem] pt-3 pb-3 px-6 text-sm md:flex  items-center justify-center'>
+                <div className='flex items-center gap-6 flex-col md:flex-row py-4 md:py-0'>
+                    <div className='md:flex md:gap-5 md:flex-row space-y-2 md:space-y-0 '>
+                        <select className="w-full md:w-36 xl:w-52 border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-1 outline-none text-gray-500">
+                            <option disabled selected>Select State</option>
+                            <option>Maharashtra</option>
+                            <option>Karnataka</option>
+                            <option>Uttar Pradesh</option>
+                            <option>Rajasthan</option>
+                            <option>Delhi</option>
+                        </select>
+                        <select className="w-full md:w-36 xl:w-52 border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-1 outline-none text-gray-500">
+                            <option disabled selected>Select District</option>
+                            <option>Pune</option>
+                            <option>Bangalore Urban</option>
+                            <option>Lucknow</option>
+                            <option>Jaipur</option>
+                            <option>South Delhi</option>
+                        </select>
+                    </div>
                     <button
                         style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
-                        className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pl-3 py-0.5 border border-[#566AFF] 
+                        className="w-full relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pl-3 py-0.5 border border-[#566AFF] 
                  bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
                  text-white rounded-full cursor-pointer gap-2"
                     >

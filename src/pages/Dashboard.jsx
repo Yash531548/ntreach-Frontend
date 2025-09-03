@@ -38,11 +38,11 @@ const Dashboard = () => {
             case "userProfile":
                 return < UserProfile setSelectedView={setSelectedView} />
             case "Notifications":
-                return < Notification />;
+                return < Notification setSelectedView={setSelectedView}/>;
             case "Health & Wealth":
                 return <div className="p-6 text-xl font-semibold">👤 Health & Wealth</div>;
             case "Testing Centers":
-                return < TestingCenters />;
+                return < TestingCenters  setActive={setSelectedView}/>;
             case "PrEP Consultation":
                 return <div className="p-6 text-xl font-semibold">👤 PrEP Consultation</div>;
             case "Book an Appointment":
