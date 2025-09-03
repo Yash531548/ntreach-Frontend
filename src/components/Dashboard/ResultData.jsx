@@ -82,9 +82,9 @@ const ResultData = ({ setSubView, setSelectedView }) => {
             <div className="w-full max-h-[45vh] overflow-y-auto overflow-x-auto rounded-2xl md:rounded-3xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                 <table className="min-w-full border-collapse  ">
                     <thead>
-                        <tr className="text-left text-[#626262] text-xs" >
+                        <tr className="whitespace-nowrap text-left text-[#626262] text-xs" >
                             <th className="px-4 py-3 " style={{ fontFamily: "Sofia Pro", fontWeight: 400 }} >Test Date</th>
-                            <th className="px-4 py-3" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Type of Test</th>
+                            <th className=" md:px-4 py-3" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Type of Test</th>
                             <th className="px-4 py-3 text-center" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Status</th>
                             <th className="px-4 py-3" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Report/Result</th>
                         </tr>
@@ -94,7 +94,7 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                             <tr
                                 key={index}
                                 // className={`text-xs text-center  ${index === 0 ? "bg-blue-50 " : ""}`}
-                                className={`text-xs text-left hover:bg-[#E9F8FF] hover:border-0 border-b border-b-[#DEDEDE]  `}
+                                className={`text-xs text-left hover:bg-[#E9F8FF] hover:border-0 border-b border-b-[#DEDEDE] whitespace-nowrap `}
                             >
                                 <td className="px-4 py-3 rounded-l-4xl">{report.date}</td>
                                 <td className="px-4 py-3">{report.type}</td>
@@ -108,7 +108,7 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                                         </span>
                                     )}
                                     {report.reportType === "reupload" && (
-                                        <span className="text-red-500 cursor-pointer hover:underline flex items-center gap-1 ml-[0px] ">
+                                        <span className="text-red-500 cursor-pointer hover:underline flex items-center  gap-1 -ml-3 ">
                                             <span className="h-2 w-2 rounded-full bg-red-500  "></span>
                                             {report.report}
                                         </span>
