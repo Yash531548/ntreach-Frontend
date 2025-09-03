@@ -276,7 +276,7 @@ const Login = () => {
                         <>
                             <div className="text-[#1475A1] text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] 2xl:text-5xl        lg:whitespace-normal " style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
                                 <h1 className='whitespace-nowrap'>Complete Your  <span className='lg:hidden'>Profile</span> </h1>
-                                <h1 className=' md:hidden lg:block md:mt-2 md:mr-0'>Profile</h1>
+                                <h1 className='hidden lg:block md:mt-2 md:mr-0'>Profile</h1>
                             </div>
 
                             <div className="flex flex-col items-start mt-6 gap-3" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
