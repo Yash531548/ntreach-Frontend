@@ -1,8 +1,8 @@
 import React from 'react'
-
-const UpcomingAppointMent = ({setSubView}) => {
+import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
+const UpcomingAppointMent = ({ setSubView }) => {
     // Mock data (replace later with API response)
-    
+
     const appointments = [
         { id: 1, date: "24/01/25", testType: "HIV Test", type: "Upcoming", centre: "Location" },
         { id: 2, date: "24/01/25", testType: "HIV Test", type: "Follow-up", centre: "Location" },
@@ -16,14 +16,16 @@ const UpcomingAppointMent = ({setSubView}) => {
         { id: 10, date: "15/02/25", testType: "Ultrasound", type: "Upcoming", centre: "City Hospital" },
     ];
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-4 xl:pt-8 xl:px-10'>
-            <div className='flex  items-center justify-between gap-4'>
-
-                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Upcoming Appointments</p>
-
+        <div className='rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 dm:shadow-sm pt-5 md:px-4 xl:pt-8 xl:px-10'>
+            <div className='flex  items-center justify-between '>
+                <p className='text-[#0063B9] text-[24px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Upcoming Appointments</p>
+                <div className='relative' onClick={() => setSelectedView("Notifications")}>
+                    <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
+                    <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                </div>
             </div>
-            <div className="w-full max-h-[53vh] overflow-y-auto overflow-x-auto rounded-4xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
-                <table className="w-full text-left border-collapse">
+            <div className="w-full max-h-[53vh] overflow-y-auto overflow-x-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+                <table className="w-full text-left border-collapse whitespace-nowrap">
                     {/* Table Header */}
                     <thead>
                         <tr className="text-[#626262] text-xs" >
@@ -47,9 +49,9 @@ const UpcomingAppointMent = ({setSubView}) => {
                                 <td className="py-3 px-4">{item.type}</td>
                                 <td className="py-3 px-4">{item.centre}</td>
                                 <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
-                                    <button 
-                                    onClick={()=>{setSubView('Reschedule')}}
-                                    className="text-[#323FF7] hover:underline cursor-pointer">
+                                    <button
+                                        onClick={() => { setSubView('Reschedule') }}
+                                        className="text-[#323FF7] hover:underline cursor-pointer">
                                         Reschedule
                                     </button>
                                 </td>

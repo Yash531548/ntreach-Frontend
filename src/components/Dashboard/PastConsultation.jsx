@@ -1,6 +1,6 @@
 import { CircleArrowLeft } from 'lucide-react';
 import React from 'react'
-
+import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 const PastConsultation = ({ setSubView }) => {
     const services = [
         {
@@ -76,15 +76,19 @@ const PastConsultation = ({ setSubView }) => {
     ];
 
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-5 xl:pt-8 xl:px-10'>
-            <div className='flex  items-center gap-4'>
+        <div className='rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
+            <div className='flex  items-center gap-2 md:gap-4'>
                 {/* 👇 Add click handler */}
                 <CircleArrowLeft className='text-gray-700 cursor-pointer'
                     onClick={() => setSubView(null)}
                 />
-                <p className='text-[#1475A1] text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Past Consultation</p>
+                <p className='text-[#1475A1] text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Past Consultation</p>
+                <div className='relative' onClick={() => setSelectedView("Notifications")}>
+                    <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
+                    <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                </div>
             </div>
-            <div className="w-full max-h-[53vh] overflow-y-auto overflow-x-auto rounded-4xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+            <div className="w-full max-h-[60vh] md:max-h-[53vh] overflow-y-auto overflow-x-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 md:p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                 <table className="w-full text-left border-collapse">
                     {/* Table Header */}
                     <thead>
@@ -103,7 +107,7 @@ const PastConsultation = ({ setSubView }) => {
                             <tr
                                 key={item.id}
                                 className={`text-xs text-left hover:bg-[#E9F8FF] hover:border-0 border-b border-b-[#DEDEDE] `}
-                                
+
                             >
                                 <td className="py-3 px-4 rounded-l-full">{item.date}</td>
                                 <td className="py-3 px-4">{item.startTime}</td>

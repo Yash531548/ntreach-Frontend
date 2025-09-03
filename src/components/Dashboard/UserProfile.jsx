@@ -1,43 +1,51 @@
 import { ArrowRight, CircleArrowLeft } from 'lucide-react'
 import React from 'react'
 import ManAvatar from "../../assets/Dashboard/ManAvatar.jpg";
+import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 
-const UserProfile = ({setSelectedView}) => {
+const UserProfile = ({ setSelectedView }) => {
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-5 xl:pt-8 xl:px-10'>
-            <div className='flex  items-center gap-4'>
+        <div className='md:rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
+            <div className='flex  items-center justify-between '>
                 {/* 👇 Add click handler */}
-                <CircleArrowLeft className='text-gray-700 cursor-pointer'  
-                    onClick={()=> setSelectedView('Home')}
-                />
-                <p className='text-[#0063B9] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Profile</p>
+                <div className='flex items-center gap-2 md:gap-4'>
+
+                    <CircleArrowLeft className='text-gray-700 cursor-pointer'
+                        onClick={() => setSelectedView('Home')}
+                    />
+                    <p className='text-[#0063B9]  text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Profile</p>
+                </div>
+                <div className='relative' onClick={() => setSelectedView("Notifications")}>
+                    <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
+                    <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                </div>
             </div>
-            <div className='w-full rounded-4xl shadow-sm h-[55%] mt-[2rem] mb-[1rem] pt-6 p-8'>
-                <div className=' w-18 h-18 rounded-full'>
+            <div className='w-full rounded-2xl shadow-sm md:h-[55%] mt-[2rem] mb-[1rem] py-6 px-6 md:pt-6 md:p-8'>
+                <div className='w-full flex justify-center md:block md:w-18 md:h-18 rounded-full '>
                     <img
                         src={ManAvatar}
                         alt="User Avatar"
-                        className=" w-18 h-18 rounded-full border border-gray-200"
+                        className="w-22 h-22 md:w-18 md:h-18 rounded-full border border-gray-200"
                     />
                 </div>
                 <div>
                     <div className="w-full max-w-3xl space-y-3 text-sm mt-6 " style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                         {/* <!-- First Row --> */}
-                        <div className="flex gap-4">
-                            <input type="text" placeholder="First Name" className="flex-1 border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none placeholder-[#A9A9A9] "  />
+                        <div className="flex flex-col md:flex-row gap-4">
+                            <input type="text" placeholder="First Name" className="flex-1 border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none placeholder-[#A9A9A9] " />
                             <input type="text" placeholder="Last Name" className="flex-1 border border-[#92C2D7] rounded-full bg-[#F4F4F4] px-4 py-0.5 outline-none placeholder-[#A9A9A9]" />
                         </div>
 
                         {/* <!-- Second Row --> */}
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 flex-col md:flex-row">
                             <input type="text" placeholder="Mobile No." className="flex-1 border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none bg-[#F4F4F4] placeholder-[#A9A9A9]" />
                             <input type="email" placeholder="Email ID (optional)" className="flex-1 border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none bg-[#F4F4F4] placeholder-[#A9A9A9]" />
                         </div>
 
                         {/* <!-- Third Row --> */}
-                        <div className="flex gap-4">
-                            <input type="text" placeholder="Blood Group" className="flex-1 border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none bg-[#F4F4F4] placeholder-[#A9A9A9]" />
-                            <select defaultValue={'Gender'} className="flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9] ">
+                        <div className="flex md: gap-4">
+                            <input type="text" placeholder="Blood Group" className="w-full md:flex-1 border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none bg-[#F4F4F4] placeholder-[#A9A9A9]" />
+                            <select defaultValue={'Gender'} className="w-full md:flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9] ">
                                 <option disabled >Gender</option>
                                 <option>Male</option>
                                 <option>Female</option>
@@ -45,9 +53,9 @@ const UserProfile = ({setSelectedView}) => {
                             </select>
                         </div>
                         {/* <!-- Fourth Row --> */}
-                        <div className="flex gap-4 justify-between">
+                        <div className="flex flex-col md:flex-row gap-4 justify-between">
                             {/* Left side: State + District */}
-                            <div className="flex w-[48%]  gap-5 xl:gap-5 ">
+                            <div className="flex lg:w-[48%]  xl:w-[48.5%] gap-4 md:gap-5 ">
                                 <select defaultValue={'State'} className="w-[50%] xl:flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-1 xl:px-4 py-0.5 outline-none text-[#A9A9A9]">
                                     <option disabled >State</option>
                                     <option>Delhi</option>
