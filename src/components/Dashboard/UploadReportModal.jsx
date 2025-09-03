@@ -1,6 +1,7 @@
 
 import React, { useRef, useEffect } from "react";
 import UploadIcon from "../../assets/Dashboard/UploadIcon.png"; // ✅ adjust path as needed
+import { CircleX } from "lucide-react";
 
 const UploadReportModal = ({ open, onClose }) => {
     const modalRef = useRef(null);
@@ -61,13 +62,31 @@ const UploadReportModal = ({ open, onClose }) => {
         // </div>
         <div className="fixed inset-0 flex items-center justify-center bg-gray-950/50 bg-opacity-40 z-50">
             <div
-                ref={modalRef}
-                className="bg-white w-[500px] h-[500px] rounded-2xl shadow-lg p-6 cursor-pointer"
-                onClick={() => fileInputRef.current.click()} // ✅ entire box clickable
+                // ref={modalRef}
+                className="bg-white w-[90%] md:w-[45%] xl:w-[500px] xl:h-[500px] rounded-2xl shadow-lg p-6 cursor-pointer"
+                // onClick={() => fileInputRef.current.click()} // ✅ entire box clickable
             >
-                <h2 className="text-lg font-semibold mb-4">Upload Report</h2>
-                <div className="flex flex-col items-center justify-center h-[80%] border-2 border-dashed border-gray-300 rounded-xl">
-                   <img src={UploadIcon} alt="Upload" className="w-28 h-36 opacity-80" />
+                {/* <div className="flex justify-between">
+                    <h2 className="text-lg font-semibold mb-4">Upload Report</h2>
+                </div> */}
+                <div className="flex justify-between items-center">
+                    <h2 className="text-lg font-semibold mb-4">Upload Report</h2>
+                    <button
+                        type="button"
+                        aria-label="Close Modal"
+                        onClick={onClose}
+                        className="text-gray-400 hover:text-gray-700 hover:cursor-pointer focus:outline-none ml-2"
+                        tabIndex={0}
+                    >
+                        <CircleX className="w-6 h-6" />
+                    </button>
+                </div>
+
+                <div
+                ref={modalRef}
+                onClick={()=>fileInputRef.current.click()} 
+                className="flex flex-col items-center justify-center h-[80%] border-2 border-dashed border-gray-300 rounded-xl py-6 xl:py-0">
+                    <img src={UploadIcon} alt="Upload" className="w-22 h-auto md:w-28 md:h-36 opacity-80" />
                     {/* <p className="mt-3 text-gray-600">Drag & drop your report here</p> */}
 
                     {/* Hidden file input */}

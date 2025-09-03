@@ -127,52 +127,6 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                 <UploadReportModal open={openModal} onClose={() => setOpenModal(false)} />
             </div>
 
-            {/* <div className='w-full  overflow-auto rounded-4xl shadow-sm h-[60%] mt-[2rem] mb-[1rem] pt-3 p-8 '>
-                
-                    <table className="min-w-full border-collapse  " >
-                        <thead>
-                            <tr className="text-left text-gray-600 text-sm">
-                                <th className="px-4 py-3">Test Date</th>
-                                <th className="px-4 py-3">Type of Test</th>
-                                <th className="px-4 py-3">Status</th>
-                                <th className="px-4 py-3">Report/Result</th>
-                            </tr>
-                        </thead>
-                        <tbody className='border-2'>
-                            {mockReports.map((report, index) => (
-                                <tr
-                                    key={index}
-                                    className={`text-sm  ${index === 0 ? "bg-blue-50 rounded-full" : ""
-                                        }`}
-                                >
-                                    <td className="px-4 py-3">{report.date}</td>
-                                    <td className="px-4 py-3">{report.type}</td>
-                                    <td className="px-4 py-3">{report.status}</td>
-                                    <td className="px-4 py-3">
-                                        {report.reportType === "upload" && (
-                                            <span className="text-blue-600 cursor-pointer hover:underline">
-                                                {report.report}
-                                            </span>
-                                        )}
-                                        {report.reportType === "reupload" && (
-                                            <span className="text-red-500 cursor-pointer hover:underline flex items-center gap-1">
-                                                <span className="h-2 w-2 rounded-full bg-red-500 inline-block"></span>
-                                                {report.report}
-                                            </span>
-                                        )}
-                                        {report.reportType === "view" && (
-                                            <span className="text-blue-600 cursor-pointer hover:underline">
-                                                {report.report}
-                                            </span>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-            
-
-            </div> */}
             <div className='  mt-[1rem] w-full rounded-2xl shadow-sm h-[19%] pt-3 p-7'>
                 <p className='text-[#0063B9] text-lg mb-4' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Recommendations</p>
                 <button

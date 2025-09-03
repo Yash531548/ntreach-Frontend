@@ -1,18 +1,31 @@
 import { ArrowRight, CircleArrowLeft } from 'lucide-react'
 import React from 'react'
+import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 
-const RescheduleAppointment = ({ setSubView ,setSelectedView}) => {
+const RescheduleAppointment = ({ setSubView, setSelectedView }) => {
     return (
-        <div className='rounded-r-4xl w-full border border-gray-300 border-l-0 shadow-sm pt-5 px-4 xl:pt-8 xl:px-10'>
-            <div className='flex  items-center gap-4'>
-                {/* 👇 Add click handler */}
-                <CircleArrowLeft className='text-gray-700 cursor-pointer'
-                    onClick={() => setSubView(null)}
-                />
-                <p className='text-[#1475A1] text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Reschedule your Teleconsultation</p>
+        <div className='rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-4 xl:pt-8 xl:px-10'>
+            <div className='flex  items-start justify-between gap-1 md:gap-4'>
+                <div className='flex items-start md:items-center gap-2 md:gap-4'>
+
+                    {/* 👇 Add click handler */}
+                    <CircleArrowLeft className='text-gray-700 cursor-pointer'
+                        onClick={() => setSubView(null)}
+                    />
+                    {/* <p className='text-[#1475A1] whitespace-nowrap text-[18px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Reschedule your Teleconsultation</p> */}
+                    {/* <p className='text-[#1475A1] whitespace-nowrap text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Reschedule an Appointment</p> */}
+                    <div className='text-[#1475A1] whitespace-nowrap leading-none text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
+                        <p >Reschedule <span className='hidden md:inline-block'> an Appointment</span></p>
+                        <p className='md:hidden'>An Appointment </p>
+                    </div>
+                </div>
+                <div className='relative' onClick={() => setSelectedView("Notifications")}>
+                    <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
+                    <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                </div>
             </div>
-            <div className='w-full rounded-4xl shadow-sm h-[53%] mt-[2rem] mb-[1rem] pt-3 p-8 ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
-                <div className="grid grid-cols-2 gap-6 w-full max-w-3xl text-sm mt-6">
+            <div className='w-full rounded-2xl shadow-sm md:h-[53%] mt-[2rem] mb-[1rem] px-3 py-6 md:pt-3   md:p-8' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
+                <div className="grid md:grid-cols-2 gap-6 w-full max-w-3xl text-sm">
                     {/* Row 1 */}
                     <div className="flex flex-col" >
                         <label className="text-[#11688F] mb-2">Type of Consultation*</label>
@@ -32,7 +45,7 @@ const RescheduleAppointment = ({ setSubView ,setSelectedView}) => {
                         </select>
                     </div>
 
-                    {/* Row 2 */}
+                    {/* Row 2
                     <div className="flex flex-col">
                         <label className="text-[#11688F] mb-2">Select Date*</label>
                         <select style={{ fontFamily: "Sofia Pro", fontWeight: 300 }} className="w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9]">
@@ -49,8 +62,23 @@ const RescheduleAppointment = ({ setSubView ,setSelectedView}) => {
                             <option>10:00 AM</option>
                             <option>12:00 PM</option>
                         </select>
-                    </div>
+                    </div> */}
+                    <div className='flex gap-4 md:block'>
 
+                        <div className="flex flex-col w-1/2 md:w-full ">
+                            <label className="text-[#11688F] mb-2">Select Date*</label>
+                            <input type='date' style={{ fontFamily: "Sofia Pro", fontWeight: 300 }} className="w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9]" />
+                        </div>
+
+                        <div className="flex flex-col w-1/2 md:w-full md:mt-6">
+                            <label className="text-[#11688F] mb-2">Select Time*</label>
+                            <select defaultValue={'Select Time'} style={{ fontFamily: "Sofia Pro", fontWeight: 300 }} className="w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9]">
+                                <option disabled >Select Time</option>
+                                <option>10:00 AM</option>
+                                <option>12:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
                     {/* Row 3 */}
                     <div className="flex flex-col">
                         <label className="text-[#11688F] mb-2">Select Language*</label>
@@ -66,7 +94,7 @@ const RescheduleAppointment = ({ setSubView ,setSelectedView}) => {
             </div>
             <div className='mt-[1.7rem]'>
                 <button
-                    onClick={()=>{
+                    onClick={() => {
                         setSelectedView("Home")
                         setSubView("Appointment Detail")
                     }}
