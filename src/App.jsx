@@ -14,6 +14,8 @@ import LoginWithNumber from './pages/LoginWithNumber'
 import ScrollToTop from './Utility/ScrollToTop'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import FAQs from './pages/FAQs'
+import Team from './pages/Team'
 function App() {
   return (
     <>
@@ -27,6 +29,8 @@ function App() {
             <Route path='/Questionnaire' element={<Questionnaire />} />
             <Route path='/About' element={<About />} />
             <Route path='/Contact' element={<Contact />} />
+            <Route path='/team' element={<Team />} />
+            <Route path='/faqs' element={<FAQs />} />
             <Route path='/Login' element={<Login />} />
             <Route path='/LoginWithNumber' element={<LoginWithNumber />} />
             <Route path='/Dashboard' element={<Dashboard />} />
