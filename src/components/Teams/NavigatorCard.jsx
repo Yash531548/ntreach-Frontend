@@ -11,7 +11,7 @@ const NavigatorCard = () => (
     bg-[#DAF3FF]
     rounded-3xl
     flex flex-col items-center
-    p-4 sm:p-4 md:p-5
+    px-2 py-4 sm:p-4 md:p-5
     w-full max-w-[180px]
     sm:max-w-[220px]
     md:max-w-[220px]
