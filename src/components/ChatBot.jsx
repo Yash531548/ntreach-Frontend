@@ -4,7 +4,7 @@ import { Mic, SearchIcon } from 'lucide-react';
 const ChatBot = () => {
     return (
         // <div className="fixed bottom-[12%] right-[12%] gap-4 rounded-full  cursor-pointer bg-[#F3F3F3] drop-shadow-md">
-        <div className="absolute bottom-[12%] right-[12%] gap-4 rounded-full  cursor-pointer bg-[#F3F3F3] drop-shadow-md">
+         <div className="absolute bottom-[12%] right-[12%] gap-4 rounded-full  cursor-pointer bg-[#F3F3F3] drop-shadow-md">
                             
                                 <img src={chatbot} alt="Ask" className="w-14 h-14 rounded-full border-2 absolute top-[-26%] right-[92%]  " />
                                 <div className="flex items-center  ">
@@ -18,7 +18,6 @@ const ChatBot = () => {
                                         <Mic />
                                     </button>
                                 </div>
-                            
                         </div>
     );
 };

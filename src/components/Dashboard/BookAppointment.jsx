@@ -81,7 +81,6 @@ const BookAppointment = () => {
                 </div>
                 <div className='hidden md:block'>
                     <ChatBot />
-
                 </div>
             </main>
         </div>
