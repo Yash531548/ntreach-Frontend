@@ -21,7 +21,7 @@ const Team = () => {
             lg:grid-cols-3 
             xl:grid-cols-4
             justify-items-center
-            mb-4
+            mb-4 
             "
                 >
                     {/* Replace with dynamic mapping over your data */}
