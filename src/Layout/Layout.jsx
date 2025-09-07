@@ -58,7 +58,7 @@ const Layout = () => {
         <FooterContext.Provider value={{ inView, height, gap }}>
             <div className="flex flex-col min-h-screen bg-white">
                 <Header className="h-[64px]" />
-                <main className="flex-1 overflow-y-auto px-4">
+                <main className="flex-1 overflow-y-auto px-0">
                     <Outlet />
                 </main>
 

@@ -16,6 +16,7 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import FAQs from './pages/FAQs'
 import Team from './pages/Team'
+import Risk from './pages/Risk'
 function App() {
   return (
     <>
@@ -31,6 +32,7 @@ function App() {
             <Route path='/Contact' element={<Contact />} />
             <Route path='/team' element={<Team />} />
             <Route path='/faqs' element={<FAQs />} />
+            <Route path='/risk' element={<Risk />} />
             <Route path='/Login' element={<Login />} />
             <Route path='/LoginWithNumber' element={<LoginWithNumber />} />
             <Route path='/Dashboard' element={<Dashboard />} />

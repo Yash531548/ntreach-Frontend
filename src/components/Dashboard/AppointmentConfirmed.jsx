@@ -17,7 +17,7 @@ const AppointmentConfirmed = () => {
           w-full
           min-h-[calc(100vh-64px-60px)]
           flex items-center justify-center
-          px-1 sm:px-6 md:px-12
+          px-4 sm:px-6 md:px-12
         "
                 style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
             >

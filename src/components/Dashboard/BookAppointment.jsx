@@ -8,7 +8,7 @@ const BookAppointment = () => {
     return (
         // <div className=' "container w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
         <div className='  container w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center
-        px-2 sm:px-4
+        px-4 sm:px-4
         lg:px-10
         xl:px-0 
         2xl:ml-0
