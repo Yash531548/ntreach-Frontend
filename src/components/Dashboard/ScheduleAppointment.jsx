@@ -16,7 +16,7 @@ const ScheduleAppointment = () => {
         <div
             className="
         container w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center
-        px-2 sm:px-4
+        px-4 sm:px-4
         lg:px-10
         xl:px-0  
       "

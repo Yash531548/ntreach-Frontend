@@ -4,7 +4,7 @@ import contact_us from '../assets/Static/contact_us.png'
 import ChatBot from '../components/ChatBot';
 const Contact = () => {
     return (
-        <div className='container w-full  mx-auto flex items-center justify-center px-2  md:mb-8 sm:px-4
+        <div className='container w-full  mx-auto flex items-center justify-center px-4  md:mb-8 sm:px-4
         lg:px-10 
         xl:px-0 mt-9
         2xl:ml-0 '>

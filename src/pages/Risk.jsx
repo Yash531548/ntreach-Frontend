@@ -8,7 +8,7 @@ const riskButtons = [
 
 const Risk = () => {
     return (
-        <div className='container w-full mx-auto flex items-center px-2 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
+        <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
             <main
                 className="container max-w-[1200px] flex  mx-auto lg:max-w-[850px] xl:max-w-[1100px] gap-18 md:px-8 md:mt-8 "
                 style={{ fontFamily: "Sofia Pro", fontWeight: 400 }} >
