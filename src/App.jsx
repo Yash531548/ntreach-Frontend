@@ -17,6 +17,7 @@ import Contact from './pages/Contact'
 import FAQs from './pages/FAQs'
 import Team from './pages/Team'
 import Risk from './pages/Risk'
+import Blogs from './pages/Blogs'
 function App() {
   return (
     <>
@@ -33,6 +34,7 @@ function App() {
             <Route path='/team' element={<Team />} />
             <Route path='/faqs' element={<FAQs />} />
             <Route path='/risk' element={<Risk />} />
+            <Route path='/blog' element={<Blogs />} />
             <Route path='/Login' element={<Login />} />
             <Route path='/LoginWithNumber' element={<LoginWithNumber />} />
             <Route path='/Dashboard' element={<Dashboard />} />
