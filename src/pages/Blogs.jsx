@@ -19,8 +19,8 @@ const BlogSearchBar = () => (
 const BlogCard = () => (
     <div className="flex flex-col md:flex-row items-center lg:items-start  bg-white rounded-3xl shadow-[0px_0px_25px_-1px_#00000026] w-full max-w-[98%] mx-auto p-6 gap-6 md:gap-10 mb-5">
         {/* Left: Blog Image or Graphic */}
-        <div className="flex-shrink-0 w-[230px] h-[300px] md:w-[230px] md:h-[300px] rounded-2xl overflow-hidden bg-[#F5F5F5] flex items-center justify-center">
-            <img src={EYNBlog} alt="Blog Feature" className="w-full h-full object-cover rounded-2xl " />
+        <div className="flex-shrink-0 w-full md:w-[230px] md:h-[300px] rounded-2xl  bg-[#F5F5F5] flex items-center justify-center">
+            <img src={EYNBlog} alt="Blog Feature" className="w-full h-full  object-cover md:object-contain rounded-2xl  " />
         </div>
         {/* Right: Blog Info */}
         <div className="flex-1 flex flex-col h-[280px] justify-between w-full lg:max-w-[50%]">
