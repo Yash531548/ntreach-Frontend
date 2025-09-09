@@ -9,7 +9,7 @@ const Contact = () => {
         xl:px-0 mt-9
         2xl:ml-0 '>
             <main className='container max-w-[1200px]   flex flex-col md:flex-row  lg:max-w-[950px] 
-            xl:max-w-[1200px] gap-3 md:gap-12 xl:gap-38 md:mt-8' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
+            xl:max-w-[1250px] gap-3 md:gap-12 xl:gap-38 md:mt-8' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
                 <div className='w-full md:w-[50%]  flex flex-col gap-8'>
                     <div>
                         <h2 className=' text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] mb-9 md:mb-0'>Contact Us</h2>
