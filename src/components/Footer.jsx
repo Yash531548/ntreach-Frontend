@@ -92,38 +92,40 @@ import helpline from '../assets/helpline.png';
 import help from '../assets/help.png'
 import { SocialIcon } from 'react-social-icons';
 import alliance_india1 from '../assets/alliance_india1.png';
+import Newhumsafarlogo from '../assets/Newhumsafarlogo.png'
 const Footer = () => {
     return (
         <footer className="bg-[#DAF4FF] pb-[1rem] pt-[1rem] md:pb-[2rem] md:pt-[2rem] lg:pt-[1.5rem] lg:pb-[1.5rem] px-1  mt-[3rem] ">
 
             {/* Desktop Layout */}
             <div className="hidden lg:flex flex-col gap-12 items-center justify-center text-sm">
-                <div className="container max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between">
+                <div className="container max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between">
                     {/* Logos */}
-                    <div className="flex flex-row gap-5">
-                        <img src={humsafarlogo} alt="humsafarLogo" width={85}/>
-                        <img src={alliance_india1} alt="AllianceIndia" width={85}/>
+                    <div className="flex flex-row gap-4">
+                        {/* <img src={humsafarlogo} alt="humsafarLogo" width={85}/> */}
+                        <img src={Newhumsafarlogo} alt="humsafarLogo" width={100} />
+                        <img src={alliance_india1} alt="AllianceIndia" className='object-contain w-[85px]'/>
                     </div>
-                    <p className='text-lg'>Powered by The Humsafar Trust ❤️</p>
+                    <p className='text-lg text-[#0B1E2A] '>Powered by The Humsafar Trust ❤️</p>
                     {/* Helpline */}
-                    <div className="flex flex-row gap-3 text-xs items-center">
-                        <img src={help} alt="helpLineNumber" className='w-18 h-12'/>
-                        <p className='text-xs'>For AIDS Helpline <br />Phone no: <span className='underline'>1097</span></p>
+                    <div className="flex  flex-row gap-2 text-xs items-center">
+                        <img src={help} alt="helpLineNumber" className='w-14 h-9 object-cover'/>
+                        <p className='text-[11px] text-[#0B1E2A] font-light'>For AIDS Helpline <br />Phone no: <span className='underline'>1097</span></p>
                     </div>
                 </div>
 
-                <div className="container max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between">
+                <div className="container max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between">
                     {/* Disclaimer */}
                     <div className=" flex-1/3">
-                        <p className="pb-2 text-lg"><span style={{fontFamily:"Sofia Pro" , fontWeight:700}}>Disclaimer:</span></p>
-                        <p className="text-xs" style={{fontFamily:"Sofia Pro", fontWeight:300}}>By proceeding further on the NETREACH Website, you agree to provide requested details such as personal information, location, etc. to help connect you with the service you are looking for. The data collected will be kept confidential.</p>
+                        <p className="pb-2 text-sm"><span style={{fontFamily:"Sofia Pro" , fontWeight:600}}>Disclaimer:</span></p>
+                        <p className="text-[13px]" style={{fontFamily:"Sofia Pro", fontWeight:200}}>By proceeding further on the NETREACH Website, you agree to provide requested details such as personal information, location, etc. to help connect you with the service you are looking for. The data collected will be kept confidential.</p>
                     </div>
                     {/* Social Icons */}
                     <div className="flex-1 text-right flex flex-row justify-end gap-4 mt-6">
-                        <SocialIcon url="https://facebook.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 35, width: 35 }} />
-                        <SocialIcon url="https://youtube.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 35, width: 35 }} />
-                        <SocialIcon url="https://instagram.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 35, width: 35 }} />
-                        <SocialIcon url="https://x.com/" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 35, width: 35 }} />
+                        <SocialIcon url="https://facebook.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
+                        <SocialIcon url="https://youtube.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
+                        <SocialIcon url="https://instagram.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
+                        <SocialIcon url="https://x.com/" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
                     </div>
                 </div>
             </div>
