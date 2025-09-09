@@ -203,7 +203,7 @@ const Header = () => {
                             <NavLink
                                 to="/"
                                 className={({ isActive }) =>
-                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
+                                    isActive ? "text-[#1475A1] " : "hover:text-[#1475A1] "
                                 }
                             >
                                 Home
@@ -213,7 +213,7 @@ const Header = () => {
                             <NavLink
                                 to="/About"
                                 className={({ isActive }) =>
-                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
+                                    isActive ? "text-[#1475A1] " : "hover:text-[#1475A1]"
                                 }
                             >
                                 About us
@@ -223,7 +223,7 @@ const Header = () => {
                             <NavLink
                                 to="/faqs"
                                 className={({ isActive }) =>
-                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
+                                    isActive ? "text-[#1475A1] " : "hover:text-[#1475A1]"
                                 }
                             >
                                 FAQs
@@ -233,7 +233,7 @@ const Header = () => {
                             <NavLink
                                 to="/team"
                                 className={({ isActive }) =>
-                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
+                                    isActive ? "text-[#1475A1] " : "hover:text-[#1475A1]"
                                 }
                             >
                                 Team
@@ -243,7 +243,7 @@ const Header = () => {
                             <NavLink
                                 to="/risk"
                                 className={({ isActive }) =>
-                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
+                                    isActive ? "text-[#1475A1] " : "hover:text-[#1475A1]"
                                 }
                             >
                                 Know your Risk
@@ -253,7 +253,7 @@ const Header = () => {
                             <NavLink
                                 to="/blog"
                                 className={({ isActive }) =>
-                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
+                                    isActive ? "text-[#1475A1] " : "hover:text-[#1475A1]"
                                 }
                             >
                                 Blog
@@ -263,7 +263,7 @@ const Header = () => {
                             <NavLink
                                 to="/Contact"
                                 className={({ isActive }) =>
-                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
+                                    isActive ? "text-[#1475A1] " : "hover:text-[#1475A1]"
                                 }
                             >
                                 Contact us
