@@ -64,8 +64,8 @@ const MobileMenu = ({ isOpen, onClose }) => {
                                     onClick={onClose} // ✅ close menu on click
                                     className={({ isActive }) =>
                                         isActive
-                                            ? "block border-b border-blue-500 pb-2 text-blue-600 font-semibold"
-                                            : "block border-b border-gray-300 pb-2 hover:text-blue-600"
+                                            ? "block border-b border-blue-500 pb-2 text-[#1475A1] font-semibold"
+                                            : "block border-b border-gray-300 pb-2 hover:text-[#1475A1]"
                                     }
                                 >
                                     {item.name}

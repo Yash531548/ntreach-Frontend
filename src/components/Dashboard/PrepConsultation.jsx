@@ -74,7 +74,7 @@ const PrepConsultation = () => {
                     </div>
                 </div>
                 <div className='container max-w-[500px]  min-h-[calc(100vh-64px-100px)]  hidden md:flex justify-center items-center  '>
-                    <img src={stopAid} alt="getTested Image" className='w-[68%]  lg:w-[53%]' />
+                    <img src={stopAid} alt="getTested Image" className='w-[68%]  lg:w-[48%]' />
                 </div>
                 <div className='hidden md:block'>
                     <ChatBot />

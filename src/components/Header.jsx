@@ -177,11 +177,11 @@ const Header = () => {
 
     return (
         <>
-            <header className="bg-white container max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between py-4 ">
+            <header className="bg-white container max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between py-4 ">
                 {/* Logo */}
                 <div className="flex items-center space-x-2">
                     < NavLink to={'/'}>
-                        <img src={logoBac} alt="NETREACH Logo" className="h-10 w-auto " />
+                        <img src={logoBac} alt="NETREACH Logo" className="h-[49px] w-auto " />
                     </NavLink>
                 </div>
 
@@ -198,12 +198,12 @@ const Header = () => {
                     </ul>
                 </nav> */}
                 <nav className="hidden lg:block ml-[5%] lg:mr-[5px] xl:mr-0" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
-                    <ul className="flex text-black font-[400] text-xs gap-4 xl:gap-6">
+                    <ul className="flex text-black font-[400] text-xs  xl:text-[13px] gap-4 xl:gap-6">
                         <li>
                             <NavLink
                                 to="/"
                                 className={({ isActive }) =>
-                                    isActive ? "text-blue-600 font-semibold" : "hover:text-blue-600"
+                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
                                 }
                             >
                                 Home
@@ -213,7 +213,7 @@ const Header = () => {
                             <NavLink
                                 to="/About"
                                 className={({ isActive }) =>
-                                    isActive ? "text-blue-600 font-semibold" : "hover:text-blue-600"
+                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
                                 }
                             >
                                 About us
@@ -223,7 +223,7 @@ const Header = () => {
                             <NavLink
                                 to="/faqs"
                                 className={({ isActive }) =>
-                                    isActive ? "text-blue-600 font-semibold" : "hover:text-blue-600"
+                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
                                 }
                             >
                                 FAQs
@@ -233,7 +233,7 @@ const Header = () => {
                             <NavLink
                                 to="/team"
                                 className={({ isActive }) =>
-                                    isActive ? "text-blue-600 font-semibold" : "hover:text-blue-600"
+                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
                                 }
                             >
                                 Team
@@ -243,7 +243,7 @@ const Header = () => {
                             <NavLink
                                 to="/risk"
                                 className={({ isActive }) =>
-                                    isActive ? "text-blue-600 font-semibold" : "hover:text-blue-600"
+                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
                                 }
                             >
                                 Know your Risk
@@ -253,7 +253,7 @@ const Header = () => {
                             <NavLink
                                 to="/blog"
                                 className={({ isActive }) =>
-                                    isActive ? "text-blue-600 font-semibold" : "hover:text-blue-600"
+                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
                                 }
                             >
                                 Blog
@@ -263,7 +263,7 @@ const Header = () => {
                             <NavLink
                                 to="/Contact"
                                 className={({ isActive }) =>
-                                    isActive ? "text-blue-600 font-semibold" : "hover:text-blue-600"
+                                    isActive ? "text-[#1475A1] font-light" : "hover:text-[#1475A1]"
                                 }
                             >
                                 Contact us
@@ -310,7 +310,7 @@ const Header = () => {
                     </div>
 
                     {/* Login Button */}
-                    <button className=" bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white px-3 xl:px-6 py-0.5 rounded-full font-medium  transition drop-shadow-lg hover:shadow-lg/20" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
+                    <button className=" bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white px-3 xl:px-6 py-[5px] rounded-full  transition drop-shadow-lg hover:shadow-lg/20 text-[13px] " style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
 
                         <NavLink to={'/login'}>Login</NavLink>
                     </button>

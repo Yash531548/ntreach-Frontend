@@ -18,6 +18,8 @@ import FAQs from './pages/FAQs'
 import Team from './pages/Team'
 import Risk from './pages/Risk'
 import Blogs from './pages/Blogs'
+import CounsellarForm from './components/CounsellarForm'
+import AssementResult from './components/AssementResult'
 function App() {
   return (
     <>
@@ -42,6 +44,8 @@ function App() {
             <Route path='/healthWealth' element={<HealthWealth />} />
             <Route path='/bookAppointment' element={<BookAppointment />} />
             <Route path='/ScheduleAppointment' element={<ScheduleAppointment />} />
+            <Route path='/AssessmentResult' element={<AssementResult />} />
+            <Route path='/CounsellorForm' element={<CounsellarForm />} />
             <Route path='/appointmentConfirmed' element={<AppointmentConfirmed />} />
 
           </Route>

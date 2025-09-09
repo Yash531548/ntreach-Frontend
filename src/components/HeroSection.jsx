@@ -137,14 +137,14 @@ const HeroSection = () => {
                 <div className="flex items-center gap-4 mt-4 ">
                     <img src={chatbot} alt="Chatbot" className="rounded-full w-18 h-18" />
                     <div className="flex flex-col">
-                        <span className="font-medium text-lg">Or chat with Malini Didi</span>
-                        <span className="text-xs text-gray-500 italic" style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}>
+                        <span className="font-medium text-lg">Or Chat With Malini Didi</span>
+                        <span className="text-xs text-[#0B1E2A] italic" style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}>
                             Use the AI powered Chat bot
                         </span>
                     </div>
                 </div>
 
-                <div className="flex justify-center p-0">
+                <div className="flex justify-center p-0 xl:-mt-4">
                     <div className="flex items-center justify-between  pl-4   bg-gray-200 rounded-full min-w-[300px] max-w-[600px] sm:min-w-[250px] sm:max-w-[500px] w-full">
                         <div className="flex flex-row items-center flex-1 ">
                             {/* <img src={Vector1} alt="search" className="w-4 h-4" /> */}

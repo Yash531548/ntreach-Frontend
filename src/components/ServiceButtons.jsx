@@ -13,7 +13,7 @@ const ServiceButtons = ({ buttons }) => {
     const buttonData = buttons || [
         { label: "Book an HIV Test", action: "/LoginWithNumber" },
         { label: "Start PrEP Consultation", action: "/LoginWithNumber" },
-        { label: "Talk to our Counsellor", action: "/LoginWithNumber" },
+        { label: "Talk to our Counsellor", action: "/CounsellorForm" },
     ];
     const handleClick = (button) => {
         setSelectedService(button);

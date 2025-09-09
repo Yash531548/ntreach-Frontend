@@ -213,13 +213,10 @@ import step3 from "../assets/question/step3.png";
 import step4 from "../assets/question/step4.png";
 import step5 from "../assets/question/step5.png";
 import RiskOptionsStep from "../components/RiskOptionsStep";
+import { useNavigate } from "react-router";
 
 export default function Questionnaire() {
-    const { inView: isFooterVisible, height: footerHeight } = useFooter();
-    // how far to lift the fixed bar when footer is visible
-    // const mobileNavBottom = isFooterVisible ? footerHeight + 12 : 0; // +12px breathing room
-    const mobileNavBottom = isFooterVisible ?  350 : 0; // +12px breathing room
- 
+    const navigate = useNavigate();
     const stepImages = [step1, step2, step3, step4, step5];
     const stepImageClasses = [
         "w-[300px] h-[359px] object-contain ", // step1
@@ -231,7 +228,10 @@ export default function Questionnaire() {
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedRisk, setSelectedRisk] = useState(null);
     const step = steps[currentStep];
-
+    const handleGetResult = (e)=>{
+        console.log("GET RESULT")
+        navigate('/AssessmentResult')
+    }
     return (
         <div className="container relative w-full  lg:w-[95%] xl:max-w-[1000px] 2xl:max-w-[1250px] mx-auto mt-6 mb-6 px-6 sm:px-6">
 
@@ -403,7 +403,33 @@ export default function Questionnaire() {
                                             <button className="cursor-pointer">Previous</button>
                                         </div>
                                     )}
+                                    {currentStep < steps.length  && currentStep < 4 ? (
+                                        <button
+                                            onClick={() =>
+                                                setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
+                                            }
+                                            className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
+               bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
+                                        >
+                                            Next
+                                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
+                                                <ArrowRight width={17} />
+                                            </span>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={handleGetResult}
+                                            className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
+               bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
+                                        >
+                                            Get Result
+                                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
+                                                <ArrowRight width={17} />
+                                            </span>
+                                        </button>
+                                    )}
 
+                                    {/* 
                                     {currentStep < steps.length && (
                                         <button
                                             onClick={() =>
@@ -418,7 +444,7 @@ export default function Questionnaire() {
                                                 <ArrowRight width={17} />
                                             </span>
                                         </button>
-                                    )}
+                                    )} */}
                                 </div>
                             </div>
                         </div>
@@ -488,61 +514,61 @@ export default function Questionnaire() {
                             )}
                         </div>
                         <div className="flex justify-between flex-wrap-reverse md:flex-wrap mt-6 w-full gap-4 md:gap-0 ">
-                                {/* Left Side */}
-                                <div className="flex flex-col text-sm mx-auto w-[13.5rem]  md:mx-0">
-                                    {currentStep >= 2 || selectedRisk === 1 ? (
-                                        <button
-                                            className="flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] 
+                            {/* Left Side */}
+                            <div className="flex flex-col text-sm mx-auto w-[13.5rem]  md:mx-0">
+                                {currentStep >= 2 || selectedRisk === 1 ? (
+                                    <button
+                                        className="flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] 
                           bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
                           text-white rounded-full cursor-pointer"
-                                        >
-                                            Book Appointment
-                                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
-                                                <ArrowRight width={17} />
-                                            </span>
-                                        </button>
-                                    ) : (
-                                        <div className="w-[160px]" />
-                                    )}
-                                </div>
+                                    >
+                                        Book Appointment
+                                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
+                                            <ArrowRight width={17} />
+                                        </span>
+                                    </button>
+                                ) : (
+                                    <div className="w-[160px]" />
+                                )}
+                            </div>
 
-                                {/* Right Side */}
-                                <div className="flex gap-3 justify-between md:justify-end w-full md:w-[33%] ">
-                                    {currentStep > 0 ?  (
-                                        <div
-                                            onClick={() => setCurrentStep((s) => s - 1)}
-                                            className="flex flex-row justify-between items-center text-sm shadow-xl hover:shadow-lg/30 pr-3 pt-1 pb-1 
+                            {/* Right Side */}
+                            <div className="flex gap-3 justify-between md:justify-end w-full md:w-[33%] ">
+                                {currentStep > 0 ? (
+                                    <div
+                                        onClick={() => setCurrentStep((s) => s - 1)}
+                                        className="flex flex-row justify-between items-center text-sm shadow-xl hover:shadow-lg/30 pr-3 pt-1 pb-1 
                           border border-[#566AFF] 
                           bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
                           text-white rounded-full cursor-pointer gap-3 pl-1 "
-                                            style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
-                                        >
-                                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ">
-                                                <ArrowLeft width={17} />
-                                            </span>
-                                            <button className="cursor-pointer">Previous</button>
-                                        </div>
-                                    ):(
-                                        <div className="w-[160px]" />
-                                    )}
+                                        style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
+                                    >
+                                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ">
+                                            <ArrowLeft width={17} />
+                                        </span>
+                                        <button className="cursor-pointer">Previous</button>
+                                    </div>
+                                ) : (
+                                    <div className="w-[160px]" />
+                                )}
 
-                                    {currentStep < steps.length && (
-                                        <button
-                                            onClick={() =>
-                                                setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
-                                            }
-                                            className=" relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] 
+                                {currentStep < steps.length && (
+                                    <button
+                                        onClick={() =>
+                                            setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
+                                        }
+                                        className=" relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] 
                           bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
                           text-white rounded-full cursor-pointer"
-                                        >
-                                            Next
-                                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
-                                                <ArrowRight width={17} />
-                                            </span>
-                                        </button>
-                                    )}
-                                </div>
+                                    >
+                                        Next
+                                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
+                                            <ArrowRight width={17} />
+                                        </span>
+                                    </button>
+                                )}
                             </div>
+                        </div>
                     </div>
                 </div>
 
@@ -565,7 +591,7 @@ export default function Questionnaire() {
                         Next <ArrowRight width={17} />
                     </button>
                 </div> */}
-                
+
                 {/* ------------------ FIXED NAV (Mobile + Tablet) ------------------ */}
                 {/* <div
                     className="lg:hidden fixed left-0 w-full bg-white shadow-lg flex justify-between items-center px-4 py-3 z-50 transition-all duration-700 ease-in-out"
