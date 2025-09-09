@@ -121,7 +121,7 @@ const Footer = () => {
                         <p className="text-[13px]" style={{fontFamily:"Sofia Pro", fontWeight:200}}>By proceeding further on the NETREACH Website, you agree to provide requested details such as personal information, location, etc. to help connect you with the service you are looking for. The data collected will be kept confidential.</p>
                     </div>
                     {/* Social Icons */}
-                    <div className="flex-1 text-right flex flex-row justify-end gap-4 mt-6">
+                    <div className="flex-1 text-right flex flex-row justify-end gap-2 mt-6">
                         <SocialIcon url="https://facebook.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
                         <SocialIcon url="https://youtube.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
                         <SocialIcon url="https://instagram.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
@@ -137,14 +137,14 @@ const Footer = () => {
                 <div className="flex flex-row  items-center justify-between  w-full ">
                     {/* <img src={humsafarlogo} alt="humsafarLogo" className="h-12 " /> */}
                     <img src={humsafar_logo} alt="humsafarLogo" className="h-12 " />
-                    <p className='mt-6 text-sm'>Powered by <br />The  Humsafar Trust <br />❤️</p>
+                    <p className='mt-6 text-xs'>Powered by <br />The  Humsafar Trust <br />❤️</p>
                     <img src={alliance_india1} alt="AllianceIndia" className="h-11 mt-[-5px]" />
                 </div>
 
                 {/* Disclaimer */}
                 <div className=' md:mt-4'>
-                    <p className="pb-1 font-bold text-lg text-left">Disclaimer:</p>
-                    <p className='text-left text-sm'>
+                    <p className="pb-1 font-bold text-sm text-left">Disclaimer:</p>
+                    <p className='text-left text-xs'>
                         By proceeding further on the NETREACH Website, you agree to provide requested details such as personal information, location, etc. to help connect you with the service you are looking for. The data collected will be kept confidential.
                     </p>
                 </div>
@@ -153,7 +153,7 @@ const Footer = () => {
                 <div className="flex flex-row  items-center justify-between w-full gap-5">
                     <div className="flex flex-row gap-2 items-center justify-center">
                         <img src={helpline} alt="helpLineNumber" className="h-10 object-contain" />
-                        <p className='text-xs whitespace-nowrap'>For AIDS Helpline <br />Phone no: <span className='underline'>1097</span></p>
+                        <p className='text-[10px] whitespace-nowrap'>For AIDS Helpline <br />Phone no: <span className='underline'>1097</span></p>
                     </div>
                     {/* Social Icons */}
                     <div className="flex flex-row gap-1 ">

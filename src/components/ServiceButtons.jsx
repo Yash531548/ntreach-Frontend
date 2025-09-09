@@ -40,7 +40,7 @@ const ServiceButtons = ({ buttons }) => {
                     <button
                         key={index}
                         onClick={() => handleClick(button)}
-                        className="flex items-center justify-between shadow-xl hover:shadow-xl/20  
+                        className="flex items-center justify-between shadow-[0px_2px_14.6px_0px_#00000040] hover:shadow-[0px_2px_14.6px_5px_#00000040] 
               pl-6 pr-2 py-[9px] border border-[#566AFF] cursor-pointer 
               bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
               text-white rounded-full min-w-[300px] max-w-[600px] 

@@ -181,7 +181,7 @@ const Header = () => {
                 {/* Logo */}
                 <div className="flex items-center space-x-2">
                     < NavLink to={'/'}>
-                        <img src={logoBac} alt="NETREACH Logo" className="h-[49px] w-auto " />
+                        <img src={logoBac} alt="NETREACH Logo" className="h-10 xl:h-[49px] w-auto " />
                     </NavLink>
                 </div>
 
@@ -317,9 +317,9 @@ const Header = () => {
                 </div>
 
                 {/* Mobile Right Section */}
-                <div className="flex lg:hidden items-center space-x-2 ">
-                    <Search size={17} className="text-gray-600" />
-                    <Menu size={26} className="text-gray-600 cursor-pointer" onClick={() => setIsMenuOpen(true)} />
+                <div className="flex lg:hidden items-start  space-x-2 text-black">
+                    <Search size={20} className="" />
+                    <Menu size={28} className=" cursor-pointer -mt-0.5" onClick={() => setIsMenuOpen(true)} />
                 </div>
             </header>
 
