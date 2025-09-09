@@ -181,7 +181,7 @@ const Header = () => {
                 {/* Logo */}
                 <div className="flex items-center space-x-2">
                     < NavLink to={'/'}>
-                        <img src={logoBac} alt="NETREACH Logo" className="h-[49px] w-auto " />
+                        <img src={logoBac} alt="NETREACH Logo" className="h-10 xl:h-[49px] w-auto " />
                     </NavLink>
                 </div>
 
@@ -197,8 +197,8 @@ const Header = () => {
                         <li className="hover:text-blue-600 cursor-pointer">Contact us</li>
                     </ul>
                 </nav> */}
-                <nav className="hidden lg:block ml-[5%] lg:mr-[5px] xl:mr-0" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
-                    <ul className="flex text-black font-[400] text-xs  xl:text-[13px] gap-4 xl:gap-6">
+                <nav className="hidden lg:block ml-[3%] xl:ml-[5%]  " style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
+                    <ul className="flex text-black font-[400] text-xs  lg:text-[11px] xl:text-[13px] gap-4 xl:gap-6">
                         <li>
                             <NavLink
                                 to="/"
@@ -317,9 +317,9 @@ const Header = () => {
                 </div>
 
                 {/* Mobile Right Section */}
-                <div className="flex lg:hidden items-center space-x-2 ">
-                    <Search size={17} className="text-gray-600" />
-                    <Menu size={26} className="text-gray-600 cursor-pointer" onClick={() => setIsMenuOpen(true)} />
+                <div className="flex lg:hidden items-start  space-x-2 text-black">
+                    <Search size={20} className="" />
+                    <Menu size={28} className=" cursor-pointer -mt-0.5" onClick={() => setIsMenuOpen(true)} />
                 </div>
             </header>
 

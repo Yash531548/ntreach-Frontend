@@ -92,7 +92,7 @@ import RotatingWord from './RotatingWord.jsx';
 
 const HeroSection = () => {
     return (
-        <main className="flex flex-col md:flex-row items-center justify-center gap-1 px-4 md:gap-5 xl:gap-0  lg:px-14 lg:py-13 xl:px-16 xl:py-18 py-6 xl:ml-[-5rem]  ">
+        <main className="flex flex-col md:flex-row items-center justify-center gap-1 px-4 md:gap-5 xl:gap-0  lg:px-14 lg:py-13 xl:px-16 xl:py-18 py-6 xl:ml-[-3.8rem]  ">
             {/* Left side - Desktop only */}
 
             <div className="hidden lg:flex  justify-start xl:h-[28.75rem]  lg:w-[45%] xl:w-[500px] sm:hidden">
