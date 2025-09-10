@@ -15,23 +15,23 @@ const AssementResult = () => {
             <main
                 className="container max-w-[1200px] flex flex-col mx-auto lg:max-w-[850px] xl:max-w-[1100px]  md:px-8 md:mt-8"
                 style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
-                <div className='flex w-full flex-col md:flex-row border-b-1'>
-                    <div className='flex-1 max-w-[501px]'>
+                <div className='flex w-full flex-col md:flex-row md:border-b-1 gap-10 md:gap-0 '>
+                    <div className='flex-1 max-w-[501px] '>
                         <header className='px-3 xl:px-8 space-y-4'>
                             <h2 className=' text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] '>Assessment Complete</h2>
                             <p className='text-xl md:text-2xl text-center'>Your HIV Risk Is</p>
                         </header>
-                        <div className='flex justify-center mt-9 '>
+                        <div className='flex justify-center mt-6 xl:mt-9 border-b-1 md:border-0'>
                             <div className='relative'>
                                 {/* Meter */}
-                                <img src={MeterIcon} alt="Risk Meter" className='w-96' />
+                                <img src={MeterIcon} alt="Risk Meter" className=' w-full md:max-w-70 lg:max-w-80 xl:w-96' />
 
                                 <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center " style={{ transform: `rotate(${(riskValue / 100) * 180 - 90}deg)` }}>
-                                    <img src={BaseIcon} alt="baseicon" className="w-[46px] origin-bottom " />
+                                    <img src={BaseIcon} alt="baseicon" className="w-[40px] xl:w-[46px] origin-bottom " />
                                     <img
                                         src={NeedleIcon}
                                         alt="Needleicon"
-                                        className="w-[14px] absolute bottom-[35px]  origin-bottom "
+                                        className="w-[11px] md:w-[9px] lg:w-[12px] xl:w-[14px] absolute bottom-[35px]  origin-bottom "
                                     />
                                 </div>
 
@@ -40,11 +40,11 @@ const AssementResult = () => {
 
                     </div>
                     <div className=' flex-1 '>
-                        <div className='w-full max-w-lg bg-[#DAF3FF] px-4 py-4 xl:px-8 xl:py-8 rounded-2xl'>
+                        <div className='w-full  max-w-lg bg-[#DAF3FF] px-4 py-5 lg:px-5 lg:py-7 xl:px-8 xl:py-8 rounded-2xl'>
                             <header>
-                                <p className='text-xl md:text-2xl font-normal'>No Worries, <br /> Help Is Right Around the Corner. </p>
+                                <p className='text-xl  lg:text-2xl font-normal'>No Worries, <br /> Help Is Right Around the Corner. </p>
                             </header>
-                            <p className='font-semibold mt-3 text-lg mb-10'>Book an appointment to know your options</p>
+                            <p className='font-semibold mt-3 text-lg mb-7 lg:mb-10'>Book an appointment to know your options</p>
                             <button
                                 onClick={() =>
                                     console.log("hello")
@@ -60,9 +60,9 @@ const AssementResult = () => {
                         </div>
                     </div>
                 </div>
-                {/* <div className='border-[0.5px]'></div> */}
+                
                 {/* Virtual Navigator */}
-                <div className='space-y-10 mt-18'>
+                <div className='space-y-10 mt-14 xl:mt-18'>
                     <div>
                         <h2 className="text-3xl lg:text-4xl xl:text-[40px] md:mb-0">
                             Or Chat with <span className='text-[#1475A1]'> our Virtual Navigators </span>
