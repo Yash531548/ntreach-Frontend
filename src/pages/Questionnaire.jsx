@@ -551,22 +551,31 @@ export default function Questionnaire() {
                                 ) : (
                                     <div className="w-[160px]" />
                                 )}
-
-                                {currentStep < steps.length && (
-                                    <button
-                                        onClick={() =>
-                                            setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
-                                        }
-                                        className=" relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] 
-                          bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
-                          text-white rounded-full cursor-pointer"
-                                    >
-                                        Next
-                                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
-                                            <ArrowRight width={17} />
-                                        </span>
-                                    </button>
-                                )}
+                                 {currentStep < steps.length  && currentStep < 4 ? (
+                                        <button
+                                            onClick={() =>
+                                                setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
+                                            }
+                                            className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
+               bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
+                                        >
+                                            Next
+                                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
+                                                <ArrowRight width={17} />
+                                            </span>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            onClick={handleGetResult}
+                                            className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
+               bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
+                                        >
+                                            Get Result
+                                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
+                                                <ArrowRight width={17} />
+                                            </span>
+                                        </button>
+                                    )}
                             </div>
                         </div>
                     </div>

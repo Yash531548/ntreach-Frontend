@@ -27,11 +27,11 @@ const AssementResult = () => {
                                 <img src={MeterIcon} alt="Risk Meter" className=' w-full md:max-w-70 lg:max-w-80 xl:w-96' />
 
                                 <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center " style={{ transform: `rotate(${(riskValue / 100) * 180 - 90}deg)` }}>
-                                    <img src={BaseIcon} alt="baseicon" className="w-[40px] xl:w-[46px] origin-bottom " />
+                                    <img src={BaseIcon} alt="baseicon" className="w-[40px] xl:w-[44px] origin-bottom " />
                                     <img
                                         src={NeedleIcon}
                                         alt="Needleicon"
-                                        className="w-[11px] md:w-[9px] lg:w-[12px] xl:w-[14px] absolute bottom-[35px]  origin-bottom "
+                                        className="w-[11px] md:w-[9px] lg:w-[12px]  absolute bottom-[35px]  origin-bottom "
                                     />
                                 </div>
 
