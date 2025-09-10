@@ -9,7 +9,7 @@ import NeedleIcon from '../assets/Extra/Vector.png'
 
 
 const AssementResult = () => {
-    const [riskValue, setRiskValue] = useState(60)
+    const [riskValue, setRiskValue] = useState(65)
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
             <main
@@ -21,22 +21,17 @@ const AssementResult = () => {
                             <h2 className=' text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] '>Assessment Complete</h2>
                             <p className='text-xl md:text-2xl text-center'>Your HIV Risk Is</p>
                         </header>
-                        <div className='flex justify-center mt-6 '>
+                        <div className='flex justify-center mt-9 '>
                             <div className='relative'>
                                 {/* Meter */}
                                 <img src={MeterIcon} alt="Risk Meter" className='w-96' />
 
-                                {/* Needle */}
-                                {/* <div className='absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-5 '>
-                                    <img src={BaseIcon} alt="baseicon" className='w-10 relative' />
-                                    <img src={NeedleIcon} alt="Needleicon" className='w-4 absolute right-0 top-0' />
-                                </div> */}
                                 <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center " style={{ transform: `rotate(${(riskValue / 100) * 180 - 90}deg)` }}>
-                                    <img src={BaseIcon} alt="baseicon" className="w-11 origin-bottom " />
+                                    <img src={BaseIcon} alt="baseicon" className="w-[46px] origin-bottom " />
                                     <img
                                         src={NeedleIcon}
                                         alt="Needleicon"
-                                        className="w-[15px] absolute bottom-[33px]  origin-bottom "
+                                        className="w-[14px] absolute bottom-[35px]  origin-bottom "
                                     />
                                 </div>
 
@@ -67,7 +62,7 @@ const AssementResult = () => {
                 </div>
                 {/* <div className='border-[0.5px]'></div> */}
                 {/* Virtual Navigator */}
-                <div className='space-y-8 mt-8'>
+                <div className='space-y-10 mt-18'>
                     <div>
                         <h2 className="text-3xl lg:text-4xl xl:text-[40px] md:mb-0">
                             Or Chat with <span className='text-[#1475A1]'> our Virtual Navigators </span>
