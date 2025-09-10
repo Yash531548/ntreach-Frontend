@@ -2,21 +2,72 @@ import React from 'react'
 import NavigatorCard from './Teams/NavigatorCard'
 
 import { useState } from 'react'
-// import AssessmentRiskMeter from './AssementRiskMeter'
+import { ArrowRight } from 'lucide-react'
+import MeterIcon from '../assets/Extra/Meter.png'
+import BaseIcon from '../assets/Extra/Base.png'
+import NeedleIcon from '../assets/Extra/Vector.png'
 
 
 const AssementResult = () => {
-    const [riskValue , setRiskValue] = useState(65)
+    const [riskValue, setRiskValue] = useState(60)
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
             <main
-                className="container max-w-[1200px] flex flex-col mx-auto lg:max-w-[850px] xl:max-w-[1100px] gap-7 md:px-8 md:mt-8"
+                className="container max-w-[1200px] flex flex-col mx-auto lg:max-w-[850px] xl:max-w-[1100px]  md:px-8 md:mt-8"
                 style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
-                <div className='border flex  justify-between'>
-                    
+                <div className='flex w-full flex-col md:flex-row border-b-1'>
+                    <div className='flex-1 max-w-[501px]'>
+                        <header className='px-3 xl:px-8 space-y-4'>
+                            <h2 className=' text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] '>Assessment Complete</h2>
+                            <p className='text-xl md:text-2xl text-center'>Your HIV Risk Is</p>
+                        </header>
+                        <div className='flex justify-center mt-6 '>
+                            <div className='relative'>
+                                {/* Meter */}
+                                <img src={MeterIcon} alt="Risk Meter" className='w-96' />
+
+                                {/* Needle */}
+                                {/* <div className='absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-5 '>
+                                    <img src={BaseIcon} alt="baseicon" className='w-10 relative' />
+                                    <img src={NeedleIcon} alt="Needleicon" className='w-4 absolute right-0 top-0' />
+                                </div> */}
+                                <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center " style={{ transform: `rotate(${(riskValue / 100) * 180 - 90}deg)` }}>
+                                    <img src={BaseIcon} alt="baseicon" className="w-11 origin-bottom " />
+                                    <img
+                                        src={NeedleIcon}
+                                        alt="Needleicon"
+                                        className="w-[15px] absolute bottom-[33px]  origin-bottom "
+                                    />
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className=' flex-1 '>
+                        <div className='w-full max-w-lg bg-[#DAF3FF] px-4 py-4 xl:px-8 xl:py-8 rounded-2xl'>
+                            <header>
+                                <p className='text-xl md:text-2xl font-normal'>No Worries, <br /> Help Is Right Around the Corner. </p>
+                            </header>
+                            <p className='font-semibold mt-3 text-lg mb-10'>Book an appointment to know your options</p>
+                            <button
+                                onClick={() =>
+                                    console.log("hello")
+                                }
+                                className="relative flex items-center justify-between w-full max-w-[78%] px-2 pl-4 py-1 lg:py-1.5 xl:py-2 shadow-[0px_2px_14.6px_0px_#00000040] hover:shadow-[0px_2px_14.6px_5px_#00000040]   border border-[#566AFF]
+               bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer font-normal"
+                            >
+                                Book an Appointment
+                                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-white text-black text-lg ml-3">
+                                    <ArrowRight width={18} />
+                                </span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
+                {/* <div className='border-[0.5px]'></div> */}
                 {/* Virtual Navigator */}
-                <div className='space-y-8'>
+                <div className='space-y-8 mt-8'>
                     <div>
                         <h2 className="text-3xl lg:text-4xl xl:text-[40px] md:mb-0">
                             Or Chat with <span className='text-[#1475A1]'> our Virtual Navigators </span>
