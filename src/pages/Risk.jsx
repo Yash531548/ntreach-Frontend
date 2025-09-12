@@ -13,7 +13,7 @@ const Risk = () => {
                 className="container max-w-[1200px] flex  mx-auto lg:max-w-[850px] xl:max-w-[1100px] gap-18 md:px-8 md:mt-8 "
                 style={{ fontFamily: "Sofia Pro", fontWeight: 400 }} >
                 <div className=' flex flex-col gap-10  '>
-                    <div className='text-3xl lg:text-4xl xl:text-[40px] '>
+                    <div className='text-3xl lg:text-4xl xl:text-[2.625rem] '>
                         <h2 className="text-black mb-6 md:mb-2">
                             Know Your Risk
                         </h2>

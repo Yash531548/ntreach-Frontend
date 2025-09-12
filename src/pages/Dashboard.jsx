@@ -59,7 +59,7 @@ const Dashboard = () => {
         2xl:ml-0 
         ">
             <main className="container max-w-[1200px]  min-h-[calc(100vh-64px-100px)]  flex  lg:max-w-[950px] 
-            xl:max-w-[1200px]  justify-between">
+            xl:max-w-[1250px]  justify-between">
 
                 {/* Center Section with Left and Middle */}
                 <div className='w-full md:w-[80%] xl:w-[85%] rounded-4xl flex'>

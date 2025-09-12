@@ -12,16 +12,16 @@ const BookAppointment = () => {
         lg:px-10
         xl:px-0 
         2xl:ml-0
-           ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
+        ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
             {/* <main className='container max-w-[1050px]  min-h-[calc(100vh-64px-100px)]  flex justify-between '> */}
             <main className='container max-w-[1050px] min-h-[calc(100vh-64px-100px)] flex justify-between
-          lg:max-w-[850px] lg:justify-center
-          xl:max-w-[1050px]
-          xl:w-[1000px]
-          gap-8'>
+            lg:max-w-[850px] lg:justify-center
+            xl:max-w-[1050px]
+            xl:w-[1000px]
+            gap-8'>
                 <div className='container max-w-[500px]  min-h-[calc(100vh-64px-100px)]  flex flex-col gap-8 pt-2 '>
                     <div>
-                        <h1 className='text-[#1475A1] text-3xl lg:text-4xl xl:text-[40px] whitespace-nowrap'> Share Your Information</h1>
+                        <h1 className='text-black text-3xl lg:text-4xl xl:text-[2.625rem] whitespace-nowrap'> Share Your Information</h1>
                     </div>
                     <div className='flex flex-col gap-8'>
                         <div className='flex flex-col gap-2'>

@@ -31,7 +31,7 @@ const LoginWithNumber = () => {
                         <div className="w-full md:w-1/2  md:px-7 md:py-12 lg:p-12 lg:pl-16 py-6">
                             {step === 1 && (
                                 <>
-                                    <div className="text-[#1475A1] text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] 2xl:text-5xl" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
+                                    <div className="text-black text-3xl lg:text-4xl xl:text-[2.625rem]" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
                                         <h1>Enter Mobile </h1>
                                         <h1 className='mt-2'>Number</h1>
                                     </div>
@@ -56,7 +56,7 @@ const LoginWithNumber = () => {
         
                             {step === 2 && (
                                 <>
-                                    <div className="text-[#1475A1] text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] 2xl:text-5xl" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
+                                    <div className="text-3xl lg:text-4xl xl:text-[2.625rem] text-black" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
                                         <h1>Enter Login Code</h1>
                                         {/* <h1 className='mt-2'>Mobile Number</h1> */}
                                     </div>
