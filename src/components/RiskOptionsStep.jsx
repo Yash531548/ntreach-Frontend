@@ -53,8 +53,8 @@ import Icon1 from '../assets/question/Icon1.svg';
 import Icon2 from '../assets/question/Icon2.svg';
 
 const riskOptions = [
-    { id: 1, label: "I Know my Risk", subLabel: "(Book Appointment)", icon: Icon1 },
-    { id: 2, label: "I want to know my risk", subLabel: "(Produce Risk Meter)", icon: Icon2 },
+    { id: 1, label: "I Know my Risk", subLabel: "(Book Appointment)", icon: Icon2 },
+    { id: 2, label: "I want to know my risk", subLabel: "(Produce Risk Meter)", icon: Icon1 },
 ];
 
 export default function RiskOptionsStep({ selected, setSelected }) {

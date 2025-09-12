@@ -104,9 +104,9 @@ const Health = ({ setSubView ,setActive }) => {
                     <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
                 </div>
             </div>
-            <div className="w-full h-[30vh] overflow-y-auto overflow-x-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+            <div className="w-full h-[30vh] overflow-y-auto overflow-x-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4 " style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                 <p className='text-lg' style={{ fontFamily: "Sofia Pro", fontWeight: 600 }}>Reminders</p>
-                <table className="w-full text-left border-collapse">
+                <table  className="w-full text-left border-collapse overflow-y-auto overflow-x-auto   ">
                     {/* Table Header */}
                     <thead>
                         <tr className="text-black text-xs" >

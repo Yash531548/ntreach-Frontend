@@ -18,7 +18,7 @@ const AssementResult = () => {
                 <div className='flex w-full flex-col md:flex-row md:border-b-1 gap-10 md:gap-0 '>
                     <div className='flex-1 max-w-[501px] '>
                         <header className='px-3 xl:px-8 space-y-4'>
-                            <h2 className=' text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] '>Assessment Complete</h2>
+                            <h2 className=' ttext-3xl lg:text-4xl xl:text-[2.625rem]'>Assessment Complete</h2>
                             <p className='text-xl md:text-2xl text-center'>Your HIV Risk Is</p>
                         </header>
                         <div className='flex justify-center mt-6 xl:mt-9 border-b-1 md:border-0'>
@@ -64,7 +64,7 @@ const AssementResult = () => {
                 {/* Virtual Navigator */}
                 <div className='space-y-10 mt-14 xl:mt-18'>
                     <div>
-                        <h2 className="text-3xl lg:text-4xl xl:text-[40px] md:mb-0">
+                        <h2 className="text-3xl lg:text-4xl xl:text-[2.625rem] md:mb-0">
                             Or Chat with <span className='text-[#1475A1]'> our Virtual Navigators </span>
                         </h2>
                     </div>

@@ -12,7 +12,7 @@ const Contact = () => {
             xl:max-w-[1250px] gap-3 md:gap-12 xl:gap-38 md:mt-8' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
                 <div className='w-full md:w-[50%]  flex flex-col gap-8'>
                     <div>
-                        <h2 className=' text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] mb-9 md:mb-0'>Contact Us</h2>
+                        <h2 className=' text-3xl lg:text-4xl xl:text-[2.625rem] mb-9 md:mb-0'>Contact Us</h2>
                         <p className='text-xl md:text-2xl '>For collaboration and official engagement </p>
                     </div>
                     <div className='text-xl md:text-2xl '>

@@ -66,7 +66,7 @@ const Blogs = () => {
                 style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
             >
                 <div>
-                    <h2 className="text-3xl lg:text-4xl xl:text-[40px]  md:mb-0">
+                    <h2 className="text-3xl lg:text-4xl xl:text-[2.625rem] md:mb-0">
                         Blogs
                     </h2>
                 </div>

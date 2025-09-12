@@ -31,14 +31,14 @@ const faqs = [
 ];
 const getResponsiveRadius = (isOpen) => {
   // Match Tailwind's breakpoints and radius tokens in px/rem as in CSS config
-  if (window.innerWidth >= 1280) return isOpen ? "1.5rem" : "2rem"; // xl or desktop
+  if (window.innerWidth >= 1280) return isOpen ? "1.2rem" : "1.3rem"; // xl or desktop
   if (window.innerWidth >= 768) return isOpen ? "1.25rem" : "1.75rem"; // md/lg/tablet
   return isOpen ? "1rem" : "1.5rem"; // mobile
 };
 const FAQCard = ({ isOpen, onClick, question, answer }) => (
     
     <div className="relative w-full  " style={{
-        background: 'linear-gradient(180deg, #323FF7 0%, #33AEE5 100%)',
+        background: isOpen? 'linear-gradient(180deg, #323FF7 0%, #33AEE5 100%)': "white",
         // borderRadius: isOpen ? '1.5rem' : '2rem',
         borderRadius: getResponsiveRadius(isOpen),
         padding: '1px', // Or the thickness you want
@@ -49,7 +49,7 @@ const FAQCard = ({ isOpen, onClick, question, answer }) => (
             <button
                 className={`w-full block text-left bg-white transition-all duration-300
         ${isOpen ? "rounded-3xl md:rounded-[1.25rem] xl:rounded-[1.5rem]" : "rounded-4xl md:rounded-[1.75rem] xl:rounded-[2rem]"}
-        px-5 md:px-7 py-4 md:py-3.5 shadow-[0_0px_10px_-1px_rgba(0,0,0,0.15)]`}
+        px-5 md:px-7 py-4 md:py-3.5 shadow-[0px_0px_10.1px_-1px_#00000026]`}
                 onClick={onClick}
                 type="button"
                 style={{
@@ -89,7 +89,7 @@ const FAQs = () => {
                 style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
             >
                 <div>
-                    <h2 className="text-3xl lg:text-4xl xl:text-[40px]  md:mb-0">
+                    <h2 className="text-3xl lg:text-4xl xl:text-[2.625rem] md:mb-0">
                         FAQs
                     </h2>
                 </div>

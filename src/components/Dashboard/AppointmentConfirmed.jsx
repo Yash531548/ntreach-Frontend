@@ -34,9 +34,9 @@ const AppointmentConfirmed = () => {
             sm:py-10
           "
                 >
-                    <h1 className="text-3xl md:text-4xl lg:text-5xl text-[#1475A1] mb-2 md:mb-4">Thank You</h1>
+                    <h1 className="text-3xl lg:text-4xl xl:text-[2.625rem] text-black mb-2 md:mb-4">Thank You</h1>
                     <div>
-                        <p className="text-lg md:text-xl">Your appointment is <span className="font-bold">CONFIRMED</span></p>
+                        <p className="text-lg md:text-xl">Your appointment is <span >CONFIRMED</span></p>
                         <p style={{ fontFamily: "Sofia Pro", fontWeight: 700 }} className="text-center mt-1">You Will Receive an SMS Shortly</p>
                     </div>
                     <div className='flex items-center justify-center flex-col bg-[#DAF3FF] min-h-[20vh] rounded-4xl text-center gap-2 py-3 sm:py-5 w-full sm:w-[90%] md:w-[80%] lg:w-full xl:w-[80%]'>

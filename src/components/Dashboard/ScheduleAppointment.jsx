@@ -34,7 +34,7 @@ const ScheduleAppointment = () => {
           container w-[400px] max-w-[500px] xl:w-[500px] min-h-[calc(100vh-64px-100px)] flex flex-col gap-8 pt-2 mt-8
         ">
                     <div>
-                        <h1 className='text-[#1475A1] text-3xl lg:text-4xl xl:text-[40px] whitespace-nowrap xl:mt-6'>
+                        <h1 className='text-3xl lg:text-4xl xl:text-[2.625rem] text-black whitespace-nowrap xl:mt-6'>
                             Schedule Appointment
                         </h1>
                     </div>

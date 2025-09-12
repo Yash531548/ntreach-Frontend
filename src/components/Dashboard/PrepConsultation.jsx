@@ -21,7 +21,7 @@ const PrepConsultation = () => {
           xl:w-[1050px] '>
                 <div className='container max-w-[500px]  md:min-h-[calc(100vh-64px-100px)]  flex flex-col gap-8 pt-2  '>
                     <div className='mt-10'>
-                        <h1 className='text-[#1475A1] text-3xl lg:text-4xl xl:text-[40px] whitespace-nowrap'> Share Your Information</h1>
+                        <h1 className='text-3xl lg:text-4xl xl:text-[2.625rem] text-black whitespace-nowrap'> Share Your Information</h1>
                     </div>
                     <div className='flex flex-col gap-8'>
                         <div className='flex flex-col gap-2'>
