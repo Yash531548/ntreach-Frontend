@@ -44,7 +44,7 @@ const About = () => {
                         </section>
                     </section>
                     <article className=' flex justify-center items-center' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
-                        <div className='relative z-1 md:max-h-[320px] xl:max-h-[350px]  md:max-w-[380px] xl:max-w-[390px] shadow-[0px_0px_45px_-1px_rgba(0,0,0,0.15)] ' style={{borderRadius:"30px"}}>
+                        <div className='relative z-1  md:max-w-[380px] xl:max-w-[390px] shadow-[0px_0px_45px_-1px_rgba(0,0,0,0.15)] ' style={{borderRadius:"30px"}}>
                             <main className=" w-full text-black bg-[#DAF3FF] flex flex-col justify-center items-center gap-2  h-full  py-12 px-4 lg:px-12 " style={{borderRadius:"30px"}} >
                                 {/* Gradient border/glow */}
 
