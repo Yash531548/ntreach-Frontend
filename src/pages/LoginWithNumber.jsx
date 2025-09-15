@@ -16,7 +16,7 @@ const LoginWithNumber = () => {
         console.log("OTP Submitted:", otp);
         // call API to verify OTP here
         
-        navigate("/Questionnaire");
+        navigate("/questionnaire");
     };
 
     return (
@@ -41,12 +41,15 @@ const LoginWithNumber = () => {
                                             value={phoneNumber}
                                             onChange={(e) => setPhoneNumber(e.target.value)}
                                             placeholder="Enter mobile number"
-                                            className="outline-none bg-gray-100 px-6 rounded-[30px] w-full lg:w-[80%] py-3 "
+                                            // className="outline-none bg-gray-100 px-6 rounded-[30px] w-full lg:w-[80%] py-3 "
+                                            className='outline-none bg-gray-100 px-6 rounded-[30px] w-full lg:w-[80%] py-3 placeholder:text-[#878787]'
                                         />
                                         <button
                                             onClick={handlePhoneSubmit}
-                                            className="w-[35%] md:w-[35%] lg:w-[40%] xl:w-[22%] py-2   bg-gradient-to-b from-[#323FF7] via-[#323FF7] to-[#33AEE5] 
-                                 text-white rounded-4xl text-sm md:text-[16px]  cursor-pointer hover:shadow-lg/30"
+                                //             className="w-[35%] md:w-[35%] lg:w-[40%] xl:w-[22%] py-2   bg-gradient-to-b from-[#323FF7] via-[#323FF7] to-[#33AEE5] 
+                                //  text-white rounded-4xl text-sm md:text-[16px]  cursor-pointer hover:shadow-lg/30"
+                                className='w-[50%] md:w-[65%] lg:w-[45%] xl:w-[30%] py-2 md:py-1.5 ml-[6px]  border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)] 
+                         text-white rounded-4xl text-sm md:text-[13px]  cursor-pointer  shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040] '
                                         >
                                             Verify
                                         </button>
@@ -78,11 +81,13 @@ const LoginWithNumber = () => {
                                         <div className="w-full lg:w-[80%] flex justify-between ">
                                             <button
                                             onClick={handleOtpSubmit}
-                                            className="w-[35%] lg:w-[27%] ml-[5px] py-1.5 bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-3xl text-md  cursor-pointer hover:shadow-lg/30"
+                                            // className="w-[35%] lg:w-[27%] ml-[5px] py-1.5 bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-3xl text-md  cursor-pointer hover:shadow-lg/30"
+                                            className='w-[50%] md:w-[65%] lg:w-[45%] xl:w-[30%] py-2 md:py-1.5 ml-[6px]  border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)] 
+                         text-white rounded-4xl text-sm md:text-[13px]  cursor-pointer  shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040] '
                                         >
                                             Verify
                                         </button>
-                                            <button className="cursor-pointer text-[#5B5B5B] underline text-sm  md:text-[16px]">
+                                            <button className="cursor-pointer text-[#5B5B5B] underline text-sm  md:text-[13px]">
                                                 Resend Login Code
                                             </button>
                                         </div>

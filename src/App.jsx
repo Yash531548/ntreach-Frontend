@@ -30,23 +30,23 @@ function App() {
           <Route path='/' element={< Layout />}>
             {/* Nested routes inherit the layout */}
             <Route index element={<Home />} />
-            <Route path='/Questionnaire' element={<Questionnaire />} />
-            <Route path='/About' element={<About />} />
-            <Route path='/Contact' element={<Contact />} />
+            <Route path='/questionnaire' element={<Questionnaire />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/contact' element={<Contact />} />
             <Route path='/team' element={<Team />} />
             <Route path='/faqs' element={<FAQs />} />
             <Route path='/risk' element={<Risk />} />
             <Route path='/blog' element={<Blogs />} />
-            <Route path='/Login' element={<Login />} />
-            <Route path='/LoginWithNumber' element={<LoginWithNumber />} />
-            <Route path='/Dashboard' element={<Dashboard />} />
-            <Route path='/prepConsultation' element={<PrepConsultation />} />
-            <Route path='/healthWealth' element={<HealthWealth />} />
-            <Route path='/bookAppointment' element={<BookAppointment />} />
-            <Route path='/ScheduleAppointment' element={<ScheduleAppointment />} />
-            <Route path='/AssessmentResult' element={<AssementResult />} />
-            <Route path='/CounsellorForm' element={<CounsellarForm />} />
-            <Route path='/appointmentConfirmed' element={<AppointmentConfirmed />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/loginwithnumber' element={<LoginWithNumber />} />
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/prepconsultation' element={<PrepConsultation />} />
+            <Route path='/healthwealth' element={<HealthWealth />} />
+            <Route path='/bookappointment' element={<BookAppointment />} />
+            <Route path='/schedulesppointment' element={<ScheduleAppointment />} />
+            <Route path='/assessmentresult' element={<AssementResult />} />
+            <Route path='/counsellorform' element={<CounsellarForm />} />
+            <Route path='/appointmentconfirmed' element={<AppointmentConfirmed />} />
 
           </Route>
         </Routes>

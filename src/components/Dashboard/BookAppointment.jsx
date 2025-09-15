@@ -7,19 +7,17 @@ const BookAppointment = () => {
 
     return (
         // <div className=' "container w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
-        <div className='  container w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center
+        <div className='  w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center mx-auto
         px-4 sm:px-4
         lg:px-10
         xl:px-0 
         2xl:ml-0
         ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
-            {/* <main className='container max-w-[1050px]  min-h-[calc(100vh-64px-100px)]  flex justify-between '> */}
-            <main className='container max-w-[1050px] min-h-[calc(100vh-64px-100px)] flex justify-between
-            lg:max-w-[850px] lg:justify-center
-            xl:max-w-[1050px]
-            xl:w-[1000px]
-            gap-8'>
-                <div className='container max-w-[500px]  min-h-[calc(100vh-64px-100px)]  flex flex-col gap-8 pt-2 '>
+            <main className='w-full min-h-[calc(100vh-64px-100px)] flex justify-between
+            lg:max-w-[850px] 
+            xl:max-w-[1050px] 
+             '>
+                <div className='container max-w-[500px]  min-h-[calc(100vh-64px-100px)]  flex flex-col gap-8 pt-2  '>
                     <div>
                         <h1 className='text-black text-3xl lg:text-4xl xl:text-[2.625rem] whitespace-nowrap'> Share Your Information</h1>
                     </div>
@@ -45,11 +43,7 @@ const BookAppointment = () => {
                                         className="flex items-center justify-between bg-[#DAF3FF] rounded-full pl-4 pr-1.5 py-1 cursor-pointer"
                                     >
                                         <div className="flex items-center gap-3">
-                                            {/* <input
-                                                type="checkbox"
-                                                className="w-4 h-4 text-[#1475A1]  border-[#323FF7]  rounded focus:ring-0"
-                                            />
-                                            <span className="text-black text-sm" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>{service}</span> */}
+                
                                             <label className="flex items-center gap-2 cursor-pointer">
                                                 <input type="checkbox" className="hidden peer" />
                                                 <span className="w-4 h-4 border-1 border-[#323FF7] rounded peer-checked:bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  peer-checked:border-[#1475A1]"></span>
@@ -67,8 +61,8 @@ const BookAppointment = () => {
                             </div>
 
                             <div className="mt-6">
-                                <NavLink to={'/ScheduleAppointment'}>
-                                    <button className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-medium shadow-md/20">
+                                <NavLink to={'/schedulesppointment'}>
+                                    <button className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-light shadow-md/20">
                                         Let&apos;s Go
                                     </button>
                                 </NavLink>
@@ -76,8 +70,8 @@ const BookAppointment = () => {
                         </div>
                     </div>
                 </div>
-                <div className='container max-w-[500px]  min-h-[calc(100vh-64px-100px)]  md:flex justify-center lg:ml-[30px] lg:mr-[-30px] xl:m-0   items-center hidden  '>
-                    <img src={GetTested} alt="getTested Image" className='w-[90%] lg:w-full  lg:h-[78%] ' />
+                <div className=' max-w-[500px]  min-h-[calc(100vh-64px-100px)]  md:flex justify-end    items-center hidden  '>
+                    <img src={GetTested} alt="getTested Image" className='w-[90%] lg:w-[80%]  ' />
                 </div>
                 <div className='hidden md:block'>
                     <ChatBot />

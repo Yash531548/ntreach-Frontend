@@ -9,7 +9,7 @@ const ScheduleAppointment = () => {
 
     const handleSubmit = () => {
         const uniqueId = "NETREACH/HR/SELF/7464"
-        navigate('/appointmentConfirmed', { state: { uniqueId } })
+        navigate('/appointmentconfirmed', { state: { uniqueId } })
     }
 
     return (

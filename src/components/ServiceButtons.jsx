@@ -11,9 +11,9 @@ const ServiceButtons = ({ buttons }) => {
 
     // Fallback to default buttons if none provided
     const buttonData = buttons || [
-        { label: "Book an HIV Test", action: "/LoginWithNumber" },
-        { label: "Start PrEP Consultation", action: "/LoginWithNumber" },
-        { label: "Talk to our Counsellor", action: "/CounsellorForm" },
+        { label: "Book an HIV Test", action: "/loginwithnumber" },
+        { label: "Start PrEP Consultation", action: "/loginwithnumber" },
+        { label: "Talk to our Counsellor", action: "/counsellorform" },
     ];
     const handleClick = (button) => {
         setSelectedService(button);

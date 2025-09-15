@@ -113,9 +113,9 @@ const RightNavButton = ({ label, icon, isActive, onClick, to, Activeicon, hasNot
 const RightTab = ({ active, setActive }) => {
     const rightNavItems = [
     { label: "Notifications", ActiveIcon:NotificationsIcon, icon: NotificationsIcon, hasNotification: true }, // show dot
-    { label: "Book an Appointment", icon: BookAppointmentIcon, to: "/bookAppointment" },
-    { label: "PrEP Consultation", icon: ConnectTeamIcon, to: "/prepConsultation" },
-    { label: "Health & Wealth", icon: HealthWealthIcon, to: "/healthWealth" },
+    { label: "Book an Appointment", icon: BookAppointmentIcon, to: "/bookappointment" },
+    { label: "PrEP Consultation", icon: ConnectTeamIcon, to: "/prepconsultation" },
+    { label: "Health & Wealth", icon: HealthWealthIcon, to: "/healthwealth" },
     { label: "Testing Centers", ActiveIcon: TestingCentersVector, icon: TestingCentersIcon },
 ];
 
