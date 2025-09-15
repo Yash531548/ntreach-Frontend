@@ -41,7 +41,7 @@ const Login = () => {
     };
 
     return (
-        <div className="  w-full mt-2 lg:min-h-[calc(100vh-64px-60px)]  2xl:min-h-[calc(100vh-64px-60px)] flex items-center justify-center  max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-12 ">
+        <div className="  w-full mt-2 lg:min-h-[calc(100vh-64px-60px)]  2xl:min-h-[calc(100vh-64px-60px)] flex items-center justify-center  max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12 ">
             <main className="w-full 
             lg:min-h-[calc(100vh-64px-120px)] 
                    flex flex-col md:flex-row 
