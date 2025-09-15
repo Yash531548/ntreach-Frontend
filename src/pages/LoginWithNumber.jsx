@@ -16,7 +16,7 @@ const LoginWithNumber = () => {
         console.log("OTP Submitted:", otp);
         // call API to verify OTP here
         
-        navigate("/Questionnaire");
+        navigate("/questionnaire");
     };
 
     return (

@@ -61,7 +61,7 @@ const BookAppointment = () => {
                             </div>
 
                             <div className="mt-6">
-                                <NavLink to={'/ScheduleAppointment'}>
+                                <NavLink to={'/schedulesppointment'}>
                                     <button className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-light shadow-md/20">
                                         Let&apos;s Go
                                     </button>

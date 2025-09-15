@@ -37,7 +37,7 @@ const Login = () => {
         console.log("Profile Data:", profile);
         // final API call to save profile
         // ✅ redirect to dashboard
-        navigate("/Dashboard");
+        navigate("/dashboard");
     };
 
     return (
