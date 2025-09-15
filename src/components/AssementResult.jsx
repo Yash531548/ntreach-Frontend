@@ -6,9 +6,12 @@ import { ArrowRight } from 'lucide-react'
 import MeterIcon from '../assets/Extra/Meter.png'
 import BaseIcon from '../assets/Extra/Base.png'
 import NeedleIcon from '../assets/Extra/Vector.png'
+import { useNavigate } from 'react-router'
+
 
 
 const AssementResult = () => {
+    const navigate = useNavigate();    
     const [riskValue, setRiskValue] = useState(65)
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
@@ -47,7 +50,7 @@ const AssementResult = () => {
                             <p className='font-semibold mt-3 text-lg mb-7 lg:mb-10'>Book an appointment to know your options</p>
                             <button
                                 onClick={() =>
-                                    console.log("hello")
+                                    navigate("/bookappointment")
                                 }
                                 className="relative flex items-center justify-between w-full max-w-[78%] px-2 pl-4 py-1 lg:py-1.5 xl:py-2 shadow-[0px_2px_14.6px_0px_#00000040] hover:shadow-[0px_2px_14.6px_5px_#00000040]   border border-[#566AFF]
                bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer font-normal"
