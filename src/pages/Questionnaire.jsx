@@ -30,7 +30,7 @@ export default function Questionnaire() {
         navigate('/assessmentresult')
     }
     return (
-        <div className="container relative w-full  lg:w-[95%] xl:max-w-[1000px] 2xl:max-w-[1250px] mx-auto mt-6 mb-6 px-6 sm:px-6">
+        <div className="container relative w-full  lg:w-[95%] xl:max-w-[1300px] mx-auto mt-6 mb-6 px-6 sm:px-6">
 
             <div className="relative">
                 {/* ------------------ MOBILE + TABLET HEADER ------------------ */}
