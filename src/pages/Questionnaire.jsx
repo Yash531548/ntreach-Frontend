@@ -30,7 +30,7 @@ export default function Questionnaire() {
         navigate('/assessmentresult')
     }
     return (
-        <div className="container relative w-full  lg:w-[95%] xl:max-w-[1000px] 2xl:max-w-[1250px] mx-auto mt-6 mb-6 px-6 sm:px-6">
+        <div className="container relative w-full  lg:w-[95%] xl:max-w-[1300px] mx-auto mt-10 mb-6 px-6 sm:px-6">
 
             <div className="relative">
                 {/* ------------------ MOBILE + TABLET HEADER ------------------ */}
@@ -61,9 +61,9 @@ export default function Questionnaire() {
 
                 <div className="flex">
                     {/* ------------------ LAPTOP VIEW (with image + shadow + scroll) ------------------ */}
-                    <div className="hidden lg:grid grid-cols-12 gap-6 rounded-[2rem] shadow-[0px_0px_13.6px_-2px_#0000000F] pt-8 p-0 pr-8 lg:pr-2 xl:pr-8 mr-4 lg:w-[78%] xl:w-[80%]">
+                    <div className="hidden lg:grid grid-cols-12 gap-6 rounded-[2rem] shadow-[0px_0px_7.6px_-2px_#0000000F]  p-0 pr-8 lg:pr-2 xl:pr-8 mr-4 lg:w-[78%] xl:w-[80%]">
                         {/* Left Section */}
-                        <div className="lg:col-span-5 xl:col-span-4 flex flex-col items-start justify-start gap-16 bg-[#FCFCFC] h-full rounded-l-[2rem]">
+                        <div className="lg:col-span-5 xl:col-span-4 flex flex-col items-start justify-start gap-16 bg-[#FCFCFC] h-full rounded-l-[2rem] pt-8">
                             <h2
                                 className="text-4xl leading-tight text-black font-normal mx-auto lg:text-center "
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
@@ -79,7 +79,7 @@ export default function Questionnaire() {
 
                         {/* Right Section */}
                         <div
-                            className="lg:col-span-7 xl:col-span-8 pt-4 xl:pl-8 xl:pr-8 pb-8"
+                            className="lg:col-span-7 xl:col-span-8 pt-10 xl:pl-8 xl:pr-8 pb-8"
                             style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                         >
                             <p className="text-sm text-[#3285EC] font-medium mb-2">

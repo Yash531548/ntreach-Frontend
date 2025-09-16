@@ -1,0 +1,7 @@
+/* Target the option elements inside the select */
+select option {
+  background-color: white;  /* Makes the dropdown items white */
+  color: black;              /* Adjust text color for readability */
+  font-weight: 300;
+
+}

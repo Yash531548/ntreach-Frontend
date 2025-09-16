@@ -4,9 +4,11 @@ import WHO from '../assets/login/WHO.jpg'
 import Who from '../assets/login/Who.png'
 import { useNavigate } from 'react-router';
 import { ChevronDown } from 'lucide-react';
+import { useAuth } from '../Context/AuthContext';
 
 
 const Login = () => {
+    const { login } = useAuth();
     const [step, setStep] = useState(1); // track form step
     const [phoneNumber, setPhoneNumber] = useState("");
     const [otp, setOtp] = useState("");
@@ -36,12 +38,14 @@ const Login = () => {
     const handleProfileSubmit = () => {
         console.log("Profile Data:", profile);
         // final API call to save profile
+        const userData = { token: 'xyz', profile };
+        login(userData);
         // ✅ redirect to dashboard
         navigate("/dashboard");
     };
 
     return (
-        <div className="  w-full mt-2 lg:min-h-[calc(100vh-64px-60px)]  2xl:min-h-[calc(100vh-64px-60px)] flex items-center justify-center  max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-12 ">
+        <div className="  w-full mt-2 lg:min-h-[calc(100vh-64px-60px)]  2xl:min-h-[calc(100vh-64px-60px)] flex items-center justify-center  max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12 ">
             <main className="w-full 
             lg:min-h-[calc(100vh-64px-120px)] 
                    flex flex-col md:flex-row 

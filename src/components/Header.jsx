@@ -171,9 +171,11 @@ import SpeakerIcon from "../assets/SpeakerIcon.png";
 import { Menu, Search } from "lucide-react"; // icons
 import { NavLink } from "react-router";
 import MobileMenu from "./MobileMenu";
+import { useAuth } from "../Context/AuthContext";
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { isAuthenticated, logout } = useAuth();
 
     return (
         <>
@@ -310,9 +312,9 @@ const Header = () => {
                     </div>
 
                     {/* Login Button */}
+                    
                     <button className=" bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white px-3 xl:px-6 py-[5px] rounded-full  transition drop-shadow-lg hover:shadow-lg/20 text-[13px] " style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
-
-                        <NavLink to={'/login'}>Login</NavLink>
+                                {isAuthenticated ? (<NavLink to={'/dashboard'}>Dashboard</NavLink>):(<NavLink to={'/login'}>Login</NavLink>)}
                     </button>
                 </div>
 
