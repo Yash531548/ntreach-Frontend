@@ -4,9 +4,11 @@ import WHO from '../assets/login/WHO.jpg'
 import Who from '../assets/login/Who.png'
 import { useNavigate } from 'react-router';
 import { ChevronDown } from 'lucide-react';
+import { useAuth } from '../Context/AuthContext';
 
 
 const Login = () => {
+    const { login } = useAuth();
     const [step, setStep] = useState(1); // track form step
     const [phoneNumber, setPhoneNumber] = useState("");
     const [otp, setOtp] = useState("");
@@ -36,6 +38,8 @@ const Login = () => {
     const handleProfileSubmit = () => {
         console.log("Profile Data:", profile);
         // final API call to save profile
+        const userData = { token: 'xyz', profile };
+        login(userData);
         // ✅ redirect to dashboard
         navigate("/dashboard");
     };

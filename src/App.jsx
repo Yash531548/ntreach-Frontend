@@ -20,6 +20,7 @@ import Risk from './pages/Risk'
 import Blogs from './pages/Blogs'
 import CounsellarForm from './components/CounsellarForm'
 import AssementResult from './components/AssementResult'
+import ProtectedRoute from './Utility/ProtectedRoute'
 function App() {
   return (
     <>
@@ -30,7 +31,11 @@ function App() {
           <Route path='/' element={< Layout />}>
             {/* Nested routes inherit the layout */}
             <Route index element={<Home />} />
-            <Route path='/questionnaire' element={<Questionnaire />} />
+            <Route path="/questionnaire" element={
+              <ProtectedRoute >
+                <Questionnaire />
+              </ProtectedRoute>
+            } />
             <Route path='/about' element={<About />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/team' element={<Team />} />
@@ -39,8 +44,17 @@ function App() {
             <Route path='/blog' element={<Blogs />} />
             <Route path='/login' element={<Login />} />
             <Route path='/loginwithnumber' element={<LoginWithNumber />} />
-            <Route path='/dashboard' element={<Dashboard />} />
-            <Route path='/prepconsultation' element={<PrepConsultation />} />
+            <Route path='/dashboard' element={
+              <ProtectedRoute >
+
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/prepconsultation" element={
+              <ProtectedRoute>
+                <PrepConsultation />
+              </ProtectedRoute>
+            } />
             <Route path='/healthwealth' element={<HealthWealth />} />
             <Route path='/bookappointment' element={<BookAppointment />} />
             <Route path='/schedulesppointment' element={<ScheduleAppointment />} />

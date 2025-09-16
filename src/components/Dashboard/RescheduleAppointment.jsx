@@ -1,6 +1,8 @@
 import { ArrowRight, CircleArrowLeft } from 'lucide-react'
 import React from 'react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
+import './reschedule.css'
+
 
 const RescheduleAppointment = ({ setSubView, setSelectedView }) => {
     return (
@@ -25,7 +27,7 @@ const RescheduleAppointment = ({ setSubView, setSelectedView }) => {
                 </div>
             </div>
             <div className='w-full rounded-2xl shadow-sm md:h-[53%] mt-[2rem] mb-[1rem] px-3 py-6 md:pt-3   md:p-8' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
-                <div className="grid md:grid-cols-2 gap-6 w-full max-w-3xl text-sm">
+                <div className="grid md:grid-cols-2 gap-6 w-full max-w-3xl text-sm mt-6">
                     {/* Row 1 */}
                     <div className="flex flex-col" >
                         <label className="text-[#11688F] mb-2">Type of Consultation*</label>
@@ -67,26 +69,27 @@ const RescheduleAppointment = ({ setSubView, setSelectedView }) => {
 
                         <div className="flex flex-col w-1/2 md:w-full ">
                             <label className="text-[#11688F] mb-2">Select Date*</label>
-                            <input type='date' style={{ fontFamily: "Sofia Pro", fontWeight: 300 }} className="w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9]" />
+                            <input type='date' style={{ fontFamily: "Sofia Pro", fontWeight: 300 }} className="w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-1 pl-4 py-0.5 outline-none text-[#A9A9A9]" />
                         </div>
 
                         <div className="flex flex-col w-1/2 md:w-full md:mt-6">
-                            <label className="text-[#11688F] mb-2">Select Time*</label>
-                            <select defaultValue={'Select Time'} style={{ fontFamily: "Sofia Pro", fontWeight: 300 }} className="w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9]">
-                                <option disabled >Select Time</option>
-                                <option>10:00 AM</option>
-                                <option>12:00 PM</option>
+                            <label className="text-[#11688F] mb-2">Select Language*</label>
+                            <select style={{ fontFamily: "Sofia Pro", fontWeight: 300 }} className="w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9]">
+                                <option disabled selected>Select Language</option>
+                                <option>English</option>
+                                <option>Hindi</option>
+                                <option>Other</option>
                             </select>
+
                         </div>
                     </div>
                     {/* Row 3 */}
                     <div className="flex flex-col">
-                        <label className="text-[#11688F] mb-2">Select Language*</label>
-                        <select style={{ fontFamily: "Sofia Pro", fontWeight: 300 }} className="w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9]">
-                            <option disabled selected>Select Language</option>
-                            <option>English</option>
-                            <option>Hindi</option>
-                            <option>Other</option>
+                        <label className="text-[#11688F] mb-2">Select Time*</label>
+                        <select defaultValue={'Select Time'} style={{ fontFamily: "Sofia Pro", fontWeight: 300 }} className="w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none text-[#A9A9A9]">
+                            <option disabled >Select Time</option>
+                            <option>10:00 AM</option>
+                            <option>12:00 PM</option>
                         </select>
                     </div>
                 </div>
