@@ -1,17 +1,3 @@
-
-// import { Navigate, useLocation } from 'react-router';
-// import { useAuth } from '../Context/AuthContext';
-
-
-// export default function ProtectedRoute({ children }) {
-//     const { isAuthenticated } = useAuth();
-//     const location = useLocation();
-//     if (!isAuthenticated) {
-//         return <Navigate to="/loginwithnumber" state={{ from: location }} replace />;
-//     }
-//     return children;
-// }
-
 import { Navigate, useLocation } from "react-router";
 import { useAuth } from "../Context/AuthContext";
 
