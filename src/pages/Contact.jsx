@@ -8,7 +8,7 @@ const Contact = () => {
         lg:px-10 
         xl:px-0 mt-9
         2xl:ml-0 '>
-            <main className='container max-w-[1200px]   flex flex-col md:flex-row  lg:max-w-[950px] 
+            <main className='container max-w-[1200px] mx-auto  flex flex-col md:flex-row  lg:max-w-[850px]  
             xl:max-w-[1250px] gap-3 md:gap-12 xl:gap-38 md:mt-8' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
                 <div className='w-full md:w-[50%]  flex flex-col gap-8'>
                     <div>
