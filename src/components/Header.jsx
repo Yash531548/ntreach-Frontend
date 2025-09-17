@@ -5,7 +5,7 @@ import { Menu, Search } from "lucide-react"; // icons
 import { NavLink } from "react-router";
 import MobileMenu from "./MobileMenu";
 import { useAuth } from "../Context/AuthContext";
-import '../index.css'
+import '../App.css'
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
