@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+    
     // 🔹 Step 1: Read from localStorage at initial load
     const [isAuthenticated, setIsAuthenticated] = useState(() =>
         !!localStorage.getItem('userToken') // ✅ Check if token exists

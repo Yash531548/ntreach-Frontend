@@ -71,7 +71,7 @@ const LoginWithNumber = () => {
                                     type="text"
                                     value={phoneNumber}
                                     disabled
-                                    placeholder="Enter mobile number"
+                                    placeholder="Mobile number"
                                     className="outline-none bg-gray-100 px-6 rounded-[30px] w-full lg:w-[80%] py-3"
                                 />
                                 <input
