@@ -1,6 +1,6 @@
 import { useFooter } from "../Context/FooterContext.jsx";
 import { steps } from "../libs/StepConfig";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import tell1 from "../assets/question/tell1.png";
 import chatbot from "../assets/chatbot.png";
 import { ArrowLeft, ArrowRight, Mic, SearchIcon } from "lucide-react";
@@ -11,6 +11,7 @@ import step4 from "../assets/question/step4.png";
 import step5 from "../assets/question/step5.png";
 import RiskOptionsStep from "../components/RiskOptionsStep";
 import { useNavigate } from "react-router";
+import { fetchQuestionSteps } from "../Api/Questionnaire/getQuestions.js";
 
 export default function Questionnaire() {
     const navigate = useNavigate();
@@ -25,10 +26,18 @@ export default function Questionnaire() {
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedRisk, setSelectedRisk] = useState(null);
     const step = steps[currentStep];
-    const handleGetResult = (e)=>{
+    const handleGetResult = (e) => {
         console.log("GET RESULT")
         navigate('/assessmentresult')
     }
+    useEffect(() => {
+        async function load() {
+            const steps = await fetchQuestionSteps();
+            // setSteps(steps);
+            console.log("Get Question Api result",steps)
+        }
+        load();
+    }, []);
     return (
         <div className="container relative w-full  lg:w-[95%] xl:max-w-[1300px] mx-auto mt-10 mb-6 px-6 sm:px-6">
 
@@ -200,7 +209,7 @@ export default function Questionnaire() {
                                             <button className="cursor-pointer">Previous</button>
                                         </div>
                                     )}
-                                    {currentStep < steps.length  && currentStep < 4 ? (
+                                    {currentStep < steps.length && currentStep < 4 ? (
                                         <button
                                             onClick={() =>
                                                 setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
@@ -348,31 +357,31 @@ export default function Questionnaire() {
                                 ) : (
                                     <div className="w-[160px]" />
                                 )}
-                                 {currentStep < steps.length  && currentStep < 4 ? (
-                                        <button
-                                            onClick={() =>
-                                                setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
-                                            }
-                                            className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
+                                {currentStep < steps.length && currentStep < 4 ? (
+                                    <button
+                                        onClick={() =>
+                                            setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
+                                        }
+                                        className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
                bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
-                                        >
-                                            Next
-                                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
-                                                <ArrowRight width={17} />
-                                            </span>
-                                        </button>
-                                    ) : (
-                                        <button
-                                            onClick={handleGetResult}
-                                            className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
+                                    >
+                                        Next
+                                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
+                                            <ArrowRight width={17} />
+                                        </span>
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={handleGetResult}
+                                        className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
                bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
-                                        >
-                                            Get Result
-                                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
-                                                <ArrowRight width={17} />
-                                            </span>
-                                        </button>
-                                    )}
+                                    >
+                                        Get Result
+                                        <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
+                                            <ArrowRight width={17} />
+                                        </span>
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
