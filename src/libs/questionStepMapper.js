@@ -17,6 +17,6 @@ export const questionStepMap = {
     18:3,
     19: 4, // question_id 10 → step 4
     20:4,
-
     22:0, // step 0
+
 };
