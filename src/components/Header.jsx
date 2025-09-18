@@ -22,8 +22,8 @@ const Header = () => {
                 </div>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden lg:block  xl:ml-[8%] " style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
-                    <ul className="flex text-black  font-[400] text-xs  lg:text-[11px] xl:text-[13px] gap-3 xl:gap-6">
+                <nav className="hidden lg:block  xl:ml-[4vw] " style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
+                    <ul className="flex text-black  font-[400] text-xs  lg:text-[11px] xl:text-[13px]  gap-3 xl:gap-5">
                         <li>
                             <NavLink
                                 to="/"

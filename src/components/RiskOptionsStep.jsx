@@ -96,13 +96,14 @@ export default function RiskOptionsStep({ selected, setSelected }) {
                         </div>
 
                         {/* Radio */}
-                        <input
-                            type="radio"
-                            name="risk"
-                            checked={selected === opt.id}
-                            onChange={() => setSelected(opt.id)}
-                            className="mt-2"
-                        />
+                        {/* Custom radio circle */}
+                        <div
+                            className={`w-4 h-4 mt-4  rounded-full border flex items-center justify-center  border-gray-600 ${selected === opt.id ?'shadow-[0px_0px_3.4px_1px_#00000040]': "border"  } `}
+                        >
+                            {selected === opt.id && (
+                                <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+                            )}
+                        </div>
                     </label>
                 ))}
             </div>
