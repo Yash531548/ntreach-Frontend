@@ -82,8 +82,8 @@ export default function Questionnaire() {
         // You can use axios/fetch here
         // await submitAnswers(payload);
         console.log("Submitting answers:", payload); // Remove after testing
-        // setAnswers([])
-        // navigate('/assessmentresult')
+        setAnswers([])
+        navigate('/assessmentresult')
     };
 
     // If data is not ready
