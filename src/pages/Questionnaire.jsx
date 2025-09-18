@@ -378,47 +378,6 @@ export default function Questionnaire() {
                     </div>
                 </div>
 
-                {/* ------------------ FIXED NAV (Mobile + Tablet) ------------------ */}
-                {/* <div className="lg:hidden fixed bottom-0 left-0 w-full bg-white shadow-lg flex justify-between items-center px-4 py-3 z-50">
-                    {currentStep > 0 && (
-                        <button
-                            onClick={() => setCurrentStep((s) => s - 1)}
-                            className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm shadow"
-                        >
-                            <ArrowLeft width={17} /> Previous
-                        </button>
-                    )}
-                    <button
-                        onClick={() =>
-                            setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
-                        }
-                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm shadow"
-                    >
-                        Next <ArrowRight width={17} />
-                    </button>
-                </div> */}
-
-                {/* ------------------ FIXED NAV (Mobile + Tablet) ------------------ */}
-                {/* <div
-                    className="lg:hidden fixed left-0 w-full bg-white shadow-lg flex justify-between items-center px-4 py-3 z-50 transition-all duration-700 ease-in-out"
-                    style={{ bottom: mobileNavBottom }}
-                >
-                    {currentStep > 0 && (
-                        <button
-                            onClick={() => setCurrentStep((s) => s - 1)}
-                            className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm shadow"
-                        >
-                            <ArrowLeft width={17} /> Previous
-                        </button>
-                    )}
-                    <button
-                        onClick={() => setCurrentStep((s) => Math.min(s + 1, steps.length - 1))}
-                        className="flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm shadow"
-                    >
-                        Next <ArrowRight width={17} />
-                    </button>
-                </div> */}
-
 
                 {/* ------------------ FLOATING CHAT WIDGET (Laptop only) ------------------ */}
                 <div className="hidden lg:flex absolute bottom-0 right-0 lg:right-[-24px]  lg:bottom-10 2xl:right-3 2xl:bottom-6 gap-4 rounded-full cursor-pointer bg-gray-200 shadow-lg">
