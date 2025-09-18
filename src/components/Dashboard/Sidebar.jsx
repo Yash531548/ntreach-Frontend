@@ -8,8 +8,9 @@ import LogoutIcon from "../../assets/Dashboard/Logout.svg";
 import UpcomingAppointmentIcon from "../../assets/Dashboard/Upcoming Appointments.svg";
 import TeleconsultationIcon from "../../assets/Dashboard/Book a Teleconsultation.svg";
 import { useAuth } from "../../Context/AuthContext";
+import { useNavigate } from "react-router";
 const NavButton = ({ label, icon, isActive, onClick }) => {
-    
+
     return (
         <button
             style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
@@ -28,7 +29,16 @@ const NavButton = ({ label, icon, isActive, onClick }) => {
 };
 
 const Sidebar = ({ active, setActive }) => {
-    const {logout} = useAuth();
+    const navigate = useNavigate();
+    const { logout } = useAuth();
+    const handleLogout = () => {
+        console.log("logout start")
+        logout();
+        console.log("After logout ")
+        navigate('/');
+        console.log("After redirect ")
+        // After logging out, redirect to home
+    };
     const navItems = [
         { label: "Home", text: "Home", icon: HomeIcon },
         { label: "Upcoming Appointments", text: "Upcoming Appointments", icon: UpcomingAppointmentIcon },
@@ -106,7 +116,7 @@ const Sidebar = ({ active, setActive }) => {
             <div className="mt-29">
                 <div className="h-[1px] bg-gray-300  w-[100%] mx-auto rounded"></div>
                 <div className="lg:p-3 xl:p-6">
-                    <button onClick={logout} className="mt-auto  flex items-center gap-3 px-1 py-1.5 rounded-4xl  hover:bg-blue-100 transition  text-sm text-gray-700">
+                    <button onClick={handleLogout} className="mt-auto  flex items-center gap-3 px-1 py-1.5 rounded-4xl  hover:bg-blue-100 transition  text-sm text-gray-700">
                         <img src={LogoutIcon} alt="Logout icon" className="w-7 h-7" /> Logout
                     </button>
                 </div>

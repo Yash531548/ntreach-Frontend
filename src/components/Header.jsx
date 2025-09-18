@@ -102,7 +102,7 @@ const Header = () => {
                 <div className="hidden lg:flex items-center space-x-2 lg:space-x-3 ">
                     {/* Language Selector */}
                     <div className="flex flex-col items-center h-full relative text-[0.688rem] xl:text-xs">
-                        <select className="border border-[#0B1E2A] text-[rgba(11,30,42,0.9)] font-medium tracking-normal rounded-full lg:px-2 xl:px-3 py-1  focus:outline-none focus:ring-2 focus:ring-blue-400" style={{fontFamily:"Red Hat Display, sans-serif"}} >
+                        <select className="border border-[#0B1E2A] text-[rgba(11,30,42,0.9)] font-medium tracking-normal rounded-full lg:px-2 xl:px-3 py-1  focus:outline-none focus:ring-2 focus:ring-blue-400 font-redhat"  >
                             <option>Language</option>
                             <option>English</option>
                             <option>French</option>
