@@ -1,5 +1,5 @@
 import { useFooter } from "../Context/FooterContext.jsx";
-import { steps } from "../libs/StepConfig";
+// import { steps } from "../libs/StepConfig";
 import { useEffect, useState } from "react";
 import tell1 from "../assets/question/tell1.png";
 import chatbot from "../assets/chatbot.png";
@@ -23,21 +23,73 @@ export default function Questionnaire() {
         "w-[230px] h-[230px]  rounded-lg ml-14 object-contain  ", // step4
         "w-[230px] h-[230px]  rounded-lg ml-12 object-contain ", // step5
     ];
+    const [steps, setSteps] = useState([]);           // Array of arrays for each step's questions
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedRisk, setSelectedRisk] = useState(null);
-    const step = steps[currentStep];
-    const handleGetResult = (e) => {
-        console.log("GET RESULT")
-        navigate('/assessmentresult')
-    }
+    const [answers, setAnswers] = useState({});       // Answers keyed by question_id
+    // const step = steps[currentStep];
+    // const handleGetResult = (e) => {
+    //     console.log("GET RESULT")
+    //     navigate('/assessmentresult')
+    // }
     useEffect(() => {
         async function load() {
-            const steps = await fetchQuestionSteps();
-            // setSteps(steps);
-            console.log("Get Question Api result",steps)
+            // const steps = await fetchQuestionSteps();
+            const groupedSteps = await fetchQuestionSteps();
+            setSteps(groupedSteps);
+            console.log("Get Question Api result", groupedSteps)
         }
         load();
     }, []);
+    // Render current step's questions
+    const questions = steps[currentStep];
+    // On answer change
+    const handleInputChange = (question, value) => {
+        setAnswers(prev => ({
+            ...prev,
+            [question.question_id]: value,
+        }));
+    };
+
+    // For checkbox (multi-answer)
+    const handleCheckboxChange = (question, value) => {
+        setAnswers(prev => {
+            const old = prev[question.question_id] || [];
+            if (old.includes(value)) {
+                // Remove
+                return {
+                    ...prev,
+                    [question.question_id]: old.filter(v => v !== value)
+                }
+            }
+            // Add
+            return {
+                ...prev,
+                [question.question_id]: [...old, value]
+            }
+        });
+    };
+
+    // Submit answers
+    const handleGetResult = async () => {
+        // Example POST logic (replace URL with your POST endpoint)
+        const payload = {
+            responses: Object.entries(answers).map(([qid, ans]) => ({
+                question_id: Number(qid),
+                answer: ans, // adapt if backend expects answer_id or value
+            }))
+        };
+        // You can use axios/fetch here
+        // await submitAnswers(payload);
+        console.log("Submitting answers:", payload); // Remove after testing
+        // setAnswers([])
+        // navigate('/assessmentresult')
+    };
+
+    // If data is not ready
+    if (!steps.length) {
+        return <div>Loading...</div>;
+    }
     return (
         <div className="container relative w-full  lg:w-[95%] xl:max-w-[1300px] mx-auto mt-10 mb-6 px-6 sm:px-6">
 
@@ -55,8 +107,16 @@ export default function Questionnaire() {
                     </p>
                     {/* Progress bar */}
                     <div className="flex  gap-2 mt-2 ">
-
-                        {steps.map((s, index) => (
+                        {steps.map((stepGroup, index) => (
+                            <div
+                                key={index}
+                                className={`h-[5px] flex-1 rounded ${index <= currentStep
+                                    ? "bg-gradient-to-b from-[#323FF7] to-[#33AEE5]"
+                                    : "bg-gray-200"
+                                    }`}
+                            />
+                        ))}
+                        {/* {steps.map((s, index) => (
                             <div
                                 key={s.id}
                                 className={`h-[5px] flex-1 rounded ${index <= currentStep
@@ -64,7 +124,7 @@ export default function Questionnaire() {
                                     : "bg-gray-200"
                                     }`}
                             />
-                        ))}
+                        ))} */}
                     </div>
                 </div>
 
@@ -81,7 +141,7 @@ export default function Questionnaire() {
                             </h2>
                             <img
                                 src={stepImages[currentStep]}
-                                alt={step.title}
+                                alt={currentStep}
                                 className={stepImageClasses[currentStep]}
                             />
                         </div>
@@ -97,7 +157,16 @@ export default function Questionnaire() {
                             {/* Progress Bar */}
                             <div className="mb-6">
                                 <div className="flex gap-4">
-                                    {steps.map((s, index) => (
+                                    {steps.map((stepGroup, index) => (
+                                        <div
+                                            key={index}
+                                            className={`h-[5px] flex-1 rounded ${index <= currentStep
+                                                ? "bg-gradient-to-b from-[#323FF7] to-[#33AEE5]"
+                                                : "bg-gray-200"
+                                                }`}
+                                        />
+                                    ))}
+                                    {/* {steps.map((s, index) => (
                                         <div
                                             key={s.id}
                                             className={`h-[5px] flex-1 rounded ${index <= currentStep
@@ -105,64 +174,86 @@ export default function Questionnaire() {
                                                 : "bg-gray-200"
                                                 }`}
                                         />
-                                    ))}
+                                    ))} */}
                                 </div>
                             </div>
 
                             {/* Questions (scrollable) */}
-                            <div className="space-y-6 max-h-[350px] overflow-y-auto pr-2 h-[350px]">
+                            <div className="space-y-6 max-h-[350px] overflow-y-auto pr-2 h-[350px] pb-3">
                                 {currentStep === 1 ? (
                                     <RiskOptionsStep
                                         selected={selectedRisk}
                                         setSelected={setSelectedRisk}
                                     />
                                 ) : (
-                                    step.questions.map((q) => (
-                                        <div key={q.id} className="text-sm">
+                                    // step.questions.map((q) => (
+                                    questions.map((q, index) => (
+                                        <div key={index} className="text-sm">
                                             <p className="font-medium mb-2 text-[#11688F]">
-                                                {q.id}. {q.label}
+                                                {q.question_id}. {q.question}
                                             </p>
 
                                             {/* Radio */}
-                                            {q.type === "radio" && (
+                                            {q.answer_input_type === "radio" && (
                                                 <div className="flex gap-6 lg:flex-wrap lg:gap-3 xl:flex-nowrap">
+                                                    {/* {q.options.map((opt) => ( */}
                                                     {q.options.map((opt) => (
                                                         <label
-                                                            key={opt}
+                                                            key={opt.answer_id}
                                                             className="flex items-center gap-2 border rounded-2xl px-1.5 border-[#A9A9A9] bg-[#F4F4F4] pr-2.5  xl:whitespace-nowrap"
                                                         >
-                                                            <input type="radio" name={`q${q.id}`} /> {opt}
+                                                            {/* <input type="radio" name={`q${q.id}`} /> {opt} */}
+                                                            <input
+                                                                type="radio"
+                                                                name={`q${q.question_id}`}
+                                                                value={opt.answer_id}
+                                                                checked={answers[q.question_id] === opt.answer_id}
+                                                                onChange={() => handleInputChange(q, opt.answer_id)}
+                                                            /> {opt.answer}
                                                         </label>
                                                     ))}
                                                 </div>
                                             )}
 
                                             {/* Text */}
-                                            {q.type === "text" && (
+                                            {q.answer_input_type === "text" && (
                                                 <input
                                                     type="text"
-                                                    className="p-2 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4]"
+                                                    value={answers[q.question_id] || ""}
+                                                    onChange={e => handleInputChange(q, e.target.value)}
+                                                    className="p-1 max-w-60 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4] outline-none"
                                                 />
                                             )}
 
                                             {/* Select */}
-                                            {q.type === "select" && (
-                                                <select className="border outline-none lg:min-w-[250px] xl:min-w-[300px]  py-1 text-[13px] rounded-full px-3 border-[#A9A9A9] bg-[#F4F4F4]">
-                                                    {q.options.map((opt) => (
-                                                        <option key={opt}>{opt}</option>
-                                                    ))}
+                                            {q.answer_input_type === "select" && (
+                                                <select
+                                                    value={answers[q.question_id] || ""}
+                                                    onChange={e => handleInputChange(q, e.target.value)}
+                                                    className="border outline-none lg:min-w-[250px] xl:min-w-[300px]  py-1 text-[13px] rounded-full px-3 border-[#A9A9A9] bg-[#F4F4F4]">
+                                                    <option value="">Select</option>
+                                                    {q.options.map(opt =>
+                                                        <option key={opt.answer_id} value={opt.answer_id}>{opt.answer}</option>
+                                                    )}
+                                                    {/* {q.options.map((opt) => (
+                                                        <option key={opt.answer_id} value={opt.answer_id}>{opt.answer}</option>
+                                                    ))} */}
                                                 </select>
                                             )}
 
                                             {/* Checkbox */}
-                                            {q.type === "checkbox" && (
+                                            {q.answer_input_type === "checkbox" && (
                                                 <div className="flex flex-col gap-3">
                                                     {q.options.map((opt) => (
                                                         <label
-                                                            key={opt}
+                                                            key={opt.answer_id}
                                                             className="flex items-center gap-2 text-[13px] border rounded-full px-1.5 border-[#A9A9A9] bg-[#F4F4F4] py-0.5"
                                                         >
-                                                            <input type="checkbox" name={`q${q.id}`} /> {opt}
+                                                            <input
+                                                                type="checkbox"
+                                                                value={opt.answer_id}
+                                                                checked={Array.isArray(answers[q.question_id]) && answers[q.question_id].includes(opt.answer_id)}
+                                                                onChange={() => handleCheckboxChange(q, opt.answer_id)} /> {opt.answer}
                                                         </label>
                                                     ))}
                                                 </div>
@@ -265,52 +356,63 @@ export default function Questionnaire() {
                                     setSelected={setSelectedRisk}
                                 />
                             ) : (
-                                step.questions.map((q) => (
-                                    <div key={q.id} className="text-[16px] md:text-sm">
+                                // step.questions.map((q) => (
+                                questions.map((q) => (
+                                    <div key={q.question_id} className="text-[16px] md:text-sm">
                                         <p className="font-medium mb-2 text-[#11688F]">
-                                            {q.id}. {q.label}
+                                            {q.question_id}. {q.question}
                                         </p>
                                         {/* Same question rendering as above */}
                                         {/* Radio */}
-                                        {q.type === "radio" && (
+
+                                        {q.answer_input_type === "radio" && (
                                             <div className="flex flex-wrap gap-3 text-sm">
                                                 {q.options.map((opt) => (
                                                     <label
-                                                        key={opt}
+                                                        key={opt.answer_id}
                                                         className="flex items-center gap-2 border rounded-2xl px-1.5 border-[#A9A9A9] bg-[#F4F4F4] pr-2.5   md:whitespace-nowrap"
                                                     >
-                                                        <input type="radio" name={`q${q.id}`} /> {opt}
+                                                        <input type="radio" name={`q${q.question_id}`} /> {opt.answer}
                                                     </label>
                                                 ))}
                                             </div>
                                         )}
 
                                         {/* Text */}
-                                        {q.type === "text" && (
+                                        {q.answer_input_type === "text" && (
                                             <input
                                                 type="text"
+                                                value={answers[q.question_id] || ""}
+                                                onChange={e => handleInputChange(q, e.target.value)}
                                                 className="p-2 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4]"
                                             />
                                         )}
 
                                         {/* Select */}
-                                        {q.type === "select" && (
-                                            <select className="border outline-none w-full  md:w-[250px] py-1 text-[13px] rounded-full px-3 border-[#A9A9A9] bg-[#F4F4F4]">
-                                                {q.options.map((opt) => (
-                                                    <option key={opt}>{opt}</option>
-                                                ))}
+                                        {q.answer_input_type === "select" && (
+                                            <select
+                                                value={answers[q.question_id] || ""}
+                                                onChange={e => handleInputChange(q, e.target.value)}
+                                                className="border outline-none w-full  md:w-[250px] py-1 text-[13px] rounded-full px-3 border-[#A9A9A9] bg-[#F4F4F4]">
+                                                <option value="">Select</option>
+                                                {q.options.map(opt =>
+                                                    <option key={opt.answer_id} value={opt.answer_id}>{opt.answer}</option>
+                                                )}
                                             </select>
                                         )}
 
                                         {/* Checkbox */}
-                                        {q.type === "checkbox" && (
+                                        {q.answer_input_type === "checkbox" && (
                                             <div className="flex flex-col gap-3">
                                                 {q.options.map((opt) => (
                                                     <label
-                                                        key={opt}
+                                                        key={opt.answer_id}
                                                         className="flex items-center gap-2 text-[13px] border rounded-full px-1.5 border-[#A9A9A9] bg-[#F4F4F4] py-0.5"
                                                     >
-                                                        <input type="checkbox" name={`q${q.id}`} /> {opt}
+                                                        <input type="checkbox"
+                                                            value={opt.answer_id}
+                                                            checked={Array.isArray(answers[q.question_id]) && answers[q.question_id].includes(opt.answer_id)}
+                                                            onChange={() => handleCheckboxChange(q, opt.answer_id)} /> {opt.answer}
                                                     </label>
                                                 ))}
                                             </div>
