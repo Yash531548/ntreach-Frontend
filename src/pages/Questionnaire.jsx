@@ -41,8 +41,13 @@ export default function Questionnaire() {
         }
         load();
     }, []);
+    // Calculate offset for the current step
+    const offset = steps
+        .slice(0, currentStep)
+        .reduce((acc, stepQuestions) => acc + stepQuestions.length, 0);
     // Render current step's questions
-    const questions = steps[currentStep];
+    const questions = steps[currentStep] || [];
+    console.log("Current step data:", steps[currentStep]);
     // On answer change
     const handleInputChange = (question, value) => {
         setAnswers(prev => ({
@@ -154,11 +159,14 @@ export default function Questionnaire() {
                         >
                             <p className="text-sm text-[#3285EC] font-medium mb-2">
                                 Step {currentStep + 1}
+                                {questions.length > 0 && (
+                                    <> (Q{offset + 1}–Q{offset + questions.length})</>
+                                )}
                             </p>
                             {/* Progress Bar */}
                             <div className="mb-6">
                                 <div className="flex gap-4">
-                                    
+
                                     {stepImages.map((stepGroup, index) => (
                                         <div
                                             key={index}
@@ -168,7 +176,7 @@ export default function Questionnaire() {
                                                 }`}
                                         />
                                     ))}
-                                    
+
                                 </div>
                             </div>
 
@@ -184,7 +192,8 @@ export default function Questionnaire() {
                                     questions.map((q, index) => (
                                         <div key={index} className="text-sm">
                                             <p className="font-medium mb-2 text-[#11688F]">
-                                                {q.question_id}. {q.question}
+                                                {/* {q.question_id}. {q.question} */}
+                                                {offset + index + 1}. {q.question}
                                             </p>
 
                                             {/* Radio */}
@@ -351,10 +360,10 @@ export default function Questionnaire() {
                                 />
                             ) : (
                                 // step.questions.map((q) => (
-                                questions.map((q) => (
+                                questions.map((q, index) => (
                                     <div key={q.question_id} className="text-[16px] md:text-sm">
                                         <p className="font-medium mb-2 text-[#11688F]">
-                                            {q.question_id}. {q.question}
+                                            {offset + index + 1}. {q.question}
                                         </p>
                                         {/* Same question rendering as above */}
                                         {/* Radio */}
