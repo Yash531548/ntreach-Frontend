@@ -81,7 +81,7 @@ export default function Questionnaire() {
         };
         // Call API 
         // await submitAnswers(payload);
-        console.log("Submitting answers:", payload ); // Remove after testing
+        console.log("Submitting answers:", payload); // Remove after testing
         // setAnswers([]) // uncomment later 
         navigate('/assessmentresult')
     };
@@ -107,7 +107,8 @@ export default function Questionnaire() {
                     </p>
                     {/* Progress bar */}
                     <div className="flex  gap-2 mt-2 ">
-                        {steps.map((stepGroup, index) => (
+                        {/* {steps.map((stepGroup, index) => ( */}
+                        {stepImages.map((stepGroup, index) => (
                             <div
                                 key={index}
                                 className={`h-[5px] flex-1 rounded ${index <= currentStep
@@ -157,7 +158,8 @@ export default function Questionnaire() {
                             {/* Progress Bar */}
                             <div className="mb-6">
                                 <div className="flex gap-4">
-                                    {steps.map((stepGroup, index) => (
+                                    
+                                    {stepImages.map((stepGroup, index) => (
                                         <div
                                             key={index}
                                             className={`h-[5px] flex-1 rounded ${index <= currentStep
@@ -166,15 +168,7 @@ export default function Questionnaire() {
                                                 }`}
                                         />
                                     ))}
-                                    {/* {steps.map((s, index) => (
-                                        <div
-                                            key={s.id}
-                                            className={`h-[5px] flex-1 rounded ${index <= currentStep
-                                                ? "bg-gradient-to-b from-[#323FF7] to-[#33AEE5]"
-                                                : "bg-gray-200"
-                                                }`}
-                                        />
-                                    ))} */}
+                                    
                                 </div>
                             </div>
 
