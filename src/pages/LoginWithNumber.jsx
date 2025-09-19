@@ -2,24 +2,50 @@ import React, { useState } from 'react'
 import Hand from '../assets/login/Hand.png'
 import { useNavigate } from 'react-router';
 import { useAuth } from '../Context/AuthContext';
+import { sendOtp, verifyOtp } from '../Api/Authentication/auth';
+
 const LoginWithNumber = () => {
     const { login } = useAuth();
     const [step, setStep] = useState(1); // track form step
     const [phoneNumber, setPhoneNumber] = useState("");
     const [otp, setOtp] = useState("");
     const navigate = useNavigate();  // ✅ initialize
-    const handlePhoneSubmit = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
+    const handlePhoneSubmit = async () => {
         console.log("Phone Number Submitted:", phoneNumber);
         // call API to send OTP here
-        setStep(2);
+        setLoading(true);
+        setError("");
+        try {
+            await sendOtp(phoneNumber); // Even if error, proceed to next step
+            setStep(2);
+        } catch (err) {
+            setError('OTP failed, try again later.');
+            setStep(2); // still move forward
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleOtpSubmit = () => {
+    const handleOtpSubmit = async () => {
         console.log("OTP Submitted:", otp);
+        setLoading(true);
+        setError("");
         // call API to verify OTP here
-        const userData = { token: 'xyz' }; // replace with real data
-        login(userData);
-        navigate("/questionnaire");
+        try {
+            const response = await verifyOtp(phoneNumber, otp);
+            if(response.token && response.status){
+                console.log("response: token : " ,response.token);
+                const userData = { token: response.token }; // replace with real data
+                login(userData);
+                navigate('/questionnaire');
+            }
+        } catch (error) {
+            setError('Login failed, check OTP and try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

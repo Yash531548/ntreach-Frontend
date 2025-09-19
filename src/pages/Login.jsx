@@ -5,6 +5,7 @@ import Who from '../assets/login/Who.png'
 import { useNavigate } from 'react-router';
 import { ChevronDown } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
+import { sendOtp, verifyOtp } from '../Api/Authentication/auth';
 
 
 const Login = () => {
@@ -12,6 +13,8 @@ const Login = () => {
     const [step, setStep] = useState(1); // track form step
     const [phoneNumber, setPhoneNumber] = useState("");
     const [otp, setOtp] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
     const [profile, setProfile] = useState({
         name: "",
         age: "",
@@ -22,24 +25,50 @@ const Login = () => {
         language: ""
     });
     const navigate = useNavigate();  // ✅ initialize
-    const handlePhoneSubmit = () => {
+    const handlePhoneSubmit = async () => {
         console.log("Phone Number Submitted:", phoneNumber);
         // call API to send OTP here
-        setStep(2);
+        // setStep(2);
+        setLoading(true);
+        setError("");
+        try {
+            await sendOtp(phoneNumber); // Even if error, proceed to next step
+            setStep(2);
+        } catch (err) {
+            setError('OTP failed, try again later.');
+            setStep(2); // still move forward
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleOtpSubmit = () => {
+    const handleOtpSubmit = async () => {
         console.log("OTP Submitted:", otp);
+        console.log("Phone Submitted:", phoneNumber);
         // call API to verify OTP here
-
-        setStep(3);
+        setLoading(true);
+        setError("");
+        try {
+            const response = await verifyOtp(phoneNumber, otp);
+            if (response.status && response.token) {
+                console.log("user detail", response.user);
+                login({ token: response.token, user: response.user });
+                setStep(3); // next: profile fill step
+            } else {
+                setError(response.message || 'Invalid OTP or login failed.');
+            }
+        } catch (err) {
+            setError('Login failed, check OTP and try again.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleProfileSubmit = () => {
         console.log("Profile Data:", profile);
         // final API call to save profile
-        const userData = { token: 'xyz', profile };
-        login(userData);
+        // const userData = { token: 'xyz', profile };
+        // login(userData);
         // ✅ redirect to dashboard
         navigate("/dashboard");
     };
@@ -88,8 +117,8 @@ const Login = () => {
                             <div className="flex flex-col items-start mt-6 md:mt-18  gap-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                                 <input
                                     type="text"
-                                    // value={phoneNumber}
-                                    value={91925}
+                                    value={phoneNumber}
+                                    // value={91925}
                                     disabled
                                     placeholder="Enter mobile number"
                                     className="outline-none bg-gray-100 px-6 rounded-[30px] w-full lg:w-[80%] py-3 text-[16px] placeholder:text-[#878787] "
