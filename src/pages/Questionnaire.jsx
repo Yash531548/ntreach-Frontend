@@ -12,6 +12,7 @@ import step5 from "../assets/question/step5.png";
 import RiskOptionsStep from "../components/RiskOptionsStep";
 import { useNavigate } from "react-router";
 import { fetchQuestionSteps } from "../Api/Questionnaire/getQuestions.js";
+import { fetchStates } from "../Api/getState.js";
 
 export default function Questionnaire() {
     const navigate = useNavigate();
@@ -23,15 +24,23 @@ export default function Questionnaire() {
         "w-[230px] h-[230px]  rounded-lg ml-14 object-contain  ", // step4
         "w-[230px] h-[230px]  rounded-lg ml-12 object-contain ", // step5
     ];
+    const [states, setStates] = useState([]);
     const [steps, setSteps] = useState([]);           // Array of arrays for each step's questions
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedRisk, setSelectedRisk] = useState(null);
     const [answers, setAnswers] = useState({});       // Answers keyed by question_id
-    // const step = steps[currentStep];
-    // const handleGetResult = (e) => {
-    //     console.log("GET RESULT")
-    //     navigate('/assessmentresult')
-    // }
+    useEffect(() => {
+        async function getStates() {
+            try {
+                const data = await fetchStates();
+                setStates(data);
+            } catch (error) {
+                console.error("Failed to fetch states:", error);
+            }
+        }
+        getStates()
+    }, [])
+    // console.log("state list", states)
     useEffect(() => {
         async function load() {
             // const steps = await fetchQuestionSteps();
@@ -47,7 +56,7 @@ export default function Questionnaire() {
         .reduce((acc, stepQuestions) => acc + stepQuestions.length, 0);
     // Render current step's questions
     const questions = steps[currentStep] || [];
-    console.log("Current step data:", steps[currentStep]);
+    // console.log("Current step data:", steps[currentStep]);
     // On answer change
     const handleInputChange = (question, value) => {
         setAnswers(prev => ({
@@ -235,12 +244,23 @@ export default function Questionnaire() {
                                                     onChange={e => handleInputChange(q, e.target.value)}
                                                     className="border outline-none lg:min-w-[250px] xl:min-w-[300px]  py-1 text-[13px] rounded-full px-3 border-[#A9A9A9] bg-[#F4F4F4]">
                                                     <option value="">Select</option>
-                                                    {q.options.map(opt =>
+                                                    {/* If this is the state question, render states from API */}
+                                                    {q.question === "State" && states.length > 0 ?
+                                                        states.map(state => (
+                                                            <option key={state.id} value={state.id}>
+                                                                {state.state_name}
+                                                            </option>
+                                                        ))
+                                                        :
+                                                        (
+                                                            q.options.map(opt =>
+                                                                <option key={opt.answer_id} value={opt.answer_id} >{opt.answer}</option>
+                                                            )
+                                                        )
+                                                    }
+                                                    {/* {q.options.map(opt =>
                                                         <option key={opt.answer_id} value={opt.answer_id}>{opt.answer}</option>
-                                                    )}
-                                                    {/* {q.options.map((opt) => (
-                                                        <option key={opt.answer_id} value={opt.answer_id}>{opt.answer}</option>
-                                                    ))} */}
+                                                    )} */}
                                                 </select>
                                             )}
 
@@ -398,9 +418,22 @@ export default function Questionnaire() {
                                                 onChange={e => handleInputChange(q, e.target.value)}
                                                 className="border outline-none w-full  md:w-[250px] py-1 text-[13px] rounded-full px-3 border-[#A9A9A9] bg-[#F4F4F4]">
                                                 <option value="">Select</option>
-                                                {q.options.map(opt =>
+                                                {q.question === "State" && states.length > 0 ?
+                                                    states.map(state => (
+                                                        <option key={state.id} value={state.id}>
+                                                            {state.state_name}
+                                                        </option>
+                                                    ))
+                                                    :
+                                                    (
+                                                        q.options.map(opt =>
+                                                            <option key={opt.answer_id} value={opt.answer_id} >{opt.answer}</option>
+                                                        )
+                                                    )
+                                                }
+                                                {/* {q.options.map(opt =>
                                                     <option key={opt.answer_id} value={opt.answer_id}>{opt.answer}</option>
-                                                )}
+                                                )} */}
                                             </select>
                                         )}
 
