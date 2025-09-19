@@ -79,7 +79,7 @@ export default function Questionnaire() {
                 answer: ans, // adapt if backend expects answer_id or value
             }))
         };
-        // You can use axios/fetch here
+        // Call API 
         // await submitAnswers(payload);
         console.log("Submitting answers:", payload ); // Remove after testing
         // setAnswers([]) // uncomment later 
