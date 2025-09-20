@@ -4,6 +4,9 @@ import ManAvatar from "../../assets/Dashboard/ManAvatar.jpg";
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 import { useAuth } from '../../Context/AuthContext';
 import { updateUserProfile } from '../../Api/user/updateUserProfile';
+import { fetchUserProfile } from '../../Api/user/fetchUserProfile';
+import { fetchStates } from '../../Api/getState';
+import { fetchDistrictsApi } from '../../Api/fetchDistrictsApi';
 const initialProfile = {
     name: '',
     last_name: '',
@@ -21,26 +24,38 @@ const UserProfile = ({ setSelectedView }) => {
     const [profile, setProfile] = useState(initialProfile);
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState('')
+    const [states, setStates] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [districtLoading, setDistrictLoading] = useState(false);
+
     // Prefill form state with data from the logged-in user's context
     useEffect(() => {
-        if (user) {
-            // console.log("User object in useEffect:", user);
-            // console.log("Setting profile mobile from:", user.user.phone_number);
+        const loadUserProfile = async () => {
+            try {
+                setLoading(true);
+                const { data } = await fetchUserProfile();
+                console.log("User detail from api", data)
+                if (data.status && data.user) {
+                    setProfile({
+                        name: data.user.name || '',
+                        last_name: data.user.last_name || '',
+                        mobile: data.user.phone_number || '',
+                        email: data.user.email || '',
+                        blood_group: data.user.blood_group || '',
+                        gender: data.user.gender || '',
+                        state: data.user.state || '',
+                        district: data.user.district || '',
+                        preferd_language: data.user.preferd_language || ''
+                    });
+                }
+            } catch (error) {
+                setMessage('Failed to load profile');
+            }
+            setLoading(false);
+        };
+        loadUserProfile();
+    }, []);
 
-            setProfile(prev => ({
-                ...prev,
-                name: user.user.name || '',
-                last_name: user.user.last_name || '',
-                mobile: user.user.phone_number || '',
-                email: user.user.email || '',
-                blood_group: user.user.blood_group || '',
-                gender: user.user.gender || '',
-                state: user.user.state || '',
-                district: user.user.district || '',
-                preferd_language: user.user.preferd_language || ''
-            }));
-        }
-    }, [user]);
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProfile((prev) => ({ ...prev, [name]: value }));
@@ -63,18 +78,18 @@ const UserProfile = ({ setSelectedView }) => {
     //     }
     //     setLoading(false);
     // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setMessage('');
         try {
             // Remove mobile from the payload if backend doesn't accept it
-            const { mobile,last_name,blood_group,gender,  ...updatePayload } = profile;
+            const { mobile, last_name, blood_group, gender, ...updatePayload } = profile;
             console.log("Submitting profile update payload:", updatePayload);
 
             const response = await updateUserProfile(updatePayload);
             console.log("API response:", response);
-
             setMessage(response.data.message || 'Profile updated!');
         } catch (error) {
             // Log detailed error info for debugging
@@ -94,6 +109,38 @@ const UserProfile = ({ setSelectedView }) => {
         }
         setLoading(false);
     };
+    useEffect(() => {
+        async function getStates() {
+            try {
+                const data = await fetchStates();
+                setStates(data);
+            } catch (error) {
+                console.error("Failed to fetch states:", error);
+            }
+        }
+        getStates()
+    }, [])
+    // Fetch districts on State change
+    useEffect(() => {
+        if (!profile.state) {
+            setDistricts([]);
+            setProfile(prev => ({ ...prev, district: '' })); // reset district
+            return;
+        }
+        const fetchDistricts = async () => {
+            setDistrictLoading(true);
+            try {
+                const data = await fetchDistrictsApi(profile.state); // define and import fetchDistrictsApi
+                setDistricts(data);
+            } catch (error) {
+                console.error("Failed to fetch districts", error);
+                setDistricts([]);
+            }
+            setDistrictLoading(false);
+        };
+        fetchDistricts();
+    }, [profile.state]);
+    // console.log("district", districts)
 
     return (
         <div className='md:rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
@@ -151,14 +198,20 @@ const UserProfile = ({ setSelectedView }) => {
                                 <div className="flex lg:w-[48%]  xl:w-[48.5%] gap-4 md:gap-5 ">
                                     <select name="state" value={profile.state} onChange={handleChange} className="w-[50%] xl:flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-1 xl:px-4 py-0.5 outline-none text-[#A9A9A9]">
                                         <option  > State</option>
-                                        <option>Delhi</option>
-                                        <option>Maharashtra</option>
-                                        <option>Karnataka</option>
+                                        {states.map(state => (
+                                            <option key={state.id} value={state.id}>
+                                                {state.state_name}
+                                            </option>
+                                        ))}
                                     </select>
-                                    <select name="district" value={profile.district} onChange={handleChange} className=" w-1/2 xl:flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-1 py-0.5 outline-none text-[#A9A9A9]">
+                                    <select name="district" value={profile.district} disabled={!profile.state || districtLoading} onChange={handleChange} className=" w-1/2 xl:flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-1 py-0.5 outline-none text-[#A9A9A9]">
                                         <option  > District</option>
-                                        <option>North East</option>
-                                        <option>East</option>
+                                        {/* {districts.map(district => (
+                                            <option key={district.id} value={district.id}>{district.district_name}</option>
+                                        ))} */}
+                                        {districts.map(district => (
+                                            <option key={district.id} value={district.id}>{district.district_name}</option>
+                                        ))}
                                     </select>
                                 </div>
 
