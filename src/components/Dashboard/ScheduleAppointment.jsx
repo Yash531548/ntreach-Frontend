@@ -1,17 +1,54 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ChatBot from '../ChatBot'
 import GetTested from '../../assets/Dashboard/GetTested.png'
 import { useNavigate } from 'react-router'
 import { ChevronDown } from 'lucide-react'
+import { fetchStates } from '../../Api/getState'
+import { fetchDistrictsApi } from '../../Api/fetchDistrictsApi'
 
 const ScheduleAppointment = () => {
     const navigate = useNavigate()
-
+    const [states, setStates] = useState([]);
+    const [selectedState, setSelectedState] = useState(''); // selected state id
+    const [districts, setDistricts] = useState([]);
+    const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [districtLoading, setDistrictLoading] = useState(false);
     const handleSubmit = () => {
         const uniqueId = "NETREACH/HR/SELF/7464"
         navigate('/appointmentconfirmed', { state: { uniqueId } })
     }
-
+    // Fetch states once on mount
+    useEffect(() => {
+        async function getState() {
+            try {
+                const data = await fetchStates();
+                setStates(data)
+            } catch (error) {
+                console.error("error");
+            }
+        }
+        getState();
+    }, [])
+    // // Fetch districts whenever selectedState changes
+    useEffect(() => {
+        if (!selectedState) {
+            setDistricts([]);
+            setSelectedDistrict('');
+            return;
+        }
+        async function loadDistricts() {
+            setDistrictLoading(true);
+            try {
+                const data = await fetchDistrictsApi(selectedState);
+                setDistricts(data);
+            } catch (error) {
+                console.error("Failed to fetch districts", error);
+                setDistricts([]);
+            }
+            setDistrictLoading(false);
+        }
+        loadDistricts()
+    }, [selectedState]);
     return (
         <div
             className="
@@ -43,15 +80,18 @@ const ScheduleAppointment = () => {
                         <div className="relative">
                             <label htmlFor="State" className='text-[#11688F] text-lg'>State</label>
                             <select
-                                defaultValue={'Select State'}
+
                                 className="w-full appearance-none bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 mt-1 text-[#A9A9A9] outline-none text-sm"
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 id='State'
+                                name="state"
+                                value={selectedState}
+                                onChange={e => setSelectedState(e.target.value)}
                             >
-                                <option disabled>Select State</option>
-                                <option>Maharashtra</option>
-                                <option>Delhi</option>
-                                <option>Karnataka</option>
+                                <option >Select State</option>
+                                {states.map(state => (
+                                    <option key={state.id} value={state.id}>{state.state_name}</option>
+                                ))}
                             </select>
                             <ChevronDown className="absolute right-2 top-3/4 -translate-y-1/2 text-gray-500 pointer-events-none" />
                         </div>
@@ -59,15 +99,21 @@ const ScheduleAppointment = () => {
                         <div className="relative">
                             <label htmlFor="District" className='text-[#11688F] text-lg'>District</label>
                             <select
-                                defaultValue={'Select District'}
+
                                 className="w-full appearance-none bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 mt-1 text-[#A9A9A9] outline-none text-sm"
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 id='District'
+                                value={selectedDistrict}
+                                onChange={e => setSelectedDistrict(e.target.value)}
+                                disabled={!selectedState || districtLoading}
                             >
-                                <option disabled>Select District</option>
-                                <option>Pune</option>
-                                <option>Mumbai</option>
-                                <option>Bengaluru</option>
+                                <option >Select District</option>
+                                {
+                                    
+                                    districts.map(district => (
+                                        <option value={district.id} key={district.id} >{district.district_name}</option>
+                                    ))
+                                }
                             </select>
                             <ChevronDown className="absolute right-2 top-3/4 -translate-y-1/2 text-gray-500 pointer-events-none" />
                         </div>
