@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router'
 import { ChevronDown } from 'lucide-react'
 import { fetchStates } from '../../Api/getState'
 import { fetchDistrictsApi } from '../../Api/fetchDistrictsApi'
+import { fetchTestingCentersApi } from '../../Api/fetchTestingCentersApi'
 
 const ScheduleAppointment = () => {
     const navigate = useNavigate()
@@ -13,6 +14,9 @@ const ScheduleAppointment = () => {
     const [districts, setDistricts] = useState([]);
     const [selectedDistrict, setSelectedDistrict] = useState('');
     const [districtLoading, setDistrictLoading] = useState(false);
+    const [centers, setCenters] = useState([]);
+    const [selectedCenter, setSelectedCenter] = useState('');
+    const [centerLoading, setCenterLoading] = useState(false);
     const handleSubmit = () => {
         const uniqueId = "NETREACH/HR/SELF/7464"
         navigate('/appointmentconfirmed', { state: { uniqueId } })
@@ -49,6 +53,42 @@ const ScheduleAppointment = () => {
         }
         loadDistricts()
     }, [selectedState]);
+    // Fetch testing centers on selectedDistrict change
+    useEffect(() => {
+        if (!selectedState && !selectedDistrict) {
+            setCenters([]);
+            setSelectedCenter('');
+            return;
+        }
+
+        // Find the matching state object's code
+        const stateObj = states.find(s => String(s.id) === String(selectedState));
+        const state_code = stateObj ? stateObj.state_code : '';
+        console.log("state_code",state_code)
+        console.log("selected district",selectedDistrict)
+        if (!state_code) {
+            setCenters([]);
+            setSelectedCenter('');
+            return;
+        }
+        const fetchCenters = async () => {
+            setCenterLoading(true);
+            try {
+                const data = await fetchTestingCentersApi({
+                    district_id: selectedDistrict,
+                    state_code: state_code,
+                });
+                console.log("data",data)
+                setCenters(data.length > 0 ? data : []);
+                setSelectedCenter('');
+            } catch (error) {
+                setCenters([]);
+                setSelectedCenter('');
+            }
+            setCenterLoading(false);
+        }
+        fetchCenters();
+    }, [selectedDistrict])
     return (
         <div
             className="
@@ -109,7 +149,7 @@ const ScheduleAppointment = () => {
                             >
                                 <option >Select District</option>
                                 {
-                                    
+
                                     districts.map(district => (
                                         <option value={district.id} key={district.id} >{district.district_name}</option>
                                     ))
@@ -121,14 +161,21 @@ const ScheduleAppointment = () => {
                         <div className="relative">
                             <label htmlFor="Testing centre" className='text-[#11688F] text-lg'>Testing Centre</label>
                             <select
-                                defaultValue={"Select Center"}
+                                
                                 className="w-full appearance-none bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 mt-1 text-[#A9A9A9] outline-none text-sm"
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 id='Testing centre'
+                                value={selectedCenter}
+                                onChange={(e) => setSelectedCenter(e.target.value)}
+                                disabled={!selectedDistrict || centerLoading}
+
                             >
-                                <option disabled>Select Center</option>
-                                <option>Center 1</option>
-                                <option>Center 2</option>
+                                <option >Select Center</option>
+                                {centerLoading ? <option disabled>Loading center...</option> : null}
+                                {centers.length === 0 && !centerLoading && <option disabled>No testing center available here</option>}
+                                {centers.map(center => (
+                                    <option value={center.id} key={center.id}>{center.name}</option>
+                                ))}
                             </select>
                             <ChevronDown className="cursor-pointer absolute right-2 top-3/4 -translate-y-1/2 text-gray-500 pointer-events-none" />
                         </div>

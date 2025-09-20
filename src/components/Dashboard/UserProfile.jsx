@@ -16,7 +16,7 @@ const initialProfile = {
     gender: '',
     state: '',
     district: '',
-    preferd_language: ''
+    language:  ''
 };
 const UserProfile = ({ setSelectedView }) => {
     const { user } = useAuth(); // 👈 This has current user's latest details
@@ -45,7 +45,7 @@ const UserProfile = ({ setSelectedView }) => {
                         gender: data.user.gender || '',
                         state: data.user.state || '',
                         district: data.user.district || '',
-                        preferd_language: data.user.preferd_language || ''
+                        language: data.user.language || ''
                     });
                 }
             } catch (error) {
@@ -85,10 +85,12 @@ const UserProfile = ({ setSelectedView }) => {
         setMessage('');
         try {
             // Remove mobile from the payload if backend doesn't accept it
-            const { mobile, last_name, blood_group, gender, ...updatePayload } = profile;
-            console.log("Submitting profile update payload:", updatePayload);
+            // const { mobile, last_name, blood_group, gender, ...updatePayload } = profile;
+            // console.log("Submitting profile update payload:", updatePayload);
 
-            const response = await updateUserProfile(updatePayload);
+            // const response = await updateUserProfile(updatePayload);
+            console.log("profile data",profile)
+            const response = await updateUserProfile(profile);
             console.log("API response:", response);
             setMessage(response.data.message || 'Profile updated!');
         } catch (error) {
@@ -216,7 +218,7 @@ const UserProfile = ({ setSelectedView }) => {
                                 </div>
 
                                 {/* Right side: Preferred Language */}
-                                <select name="preferd_language" value={profile.preferd_language} onChange={handleChange} className="flex-1 border border-[#92C2D7] bg-[#F4F4F4] text-[#A9A9A9] rounded-full px-4 py-0.5 outline-none">
+                                <select name="language" value={profile.language} onChange={handleChange} className="flex-1 border border-[#92C2D7] bg-[#F4F4F4] text-[#A9A9A9] rounded-full px-4 py-0.5 outline-none">
                                     <option  > Preferred language</option>
                                     <option>English</option>
                                     <option>Hindi</option>
