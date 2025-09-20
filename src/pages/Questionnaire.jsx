@@ -104,6 +104,14 @@ export default function Questionnaire() {
     if (!steps.length) {
         return <div>Loading...</div>;
     }
+    // Only for Step 1 (currentStep === 0)
+    const isStep1Complete = questions.every(q => {
+        const ans = answers[q.question_id];
+        if (q.answer_input_type === 'checkbox') {
+            return Array.isArray(ans) && ans.length > 0;
+        }
+        return ans !== undefined && ans !== null && ans !== '';
+    });
     return (
         <div className="container relative w-full  lg:w-[95%] xl:max-w-[1300px] mx-auto mt-10 mb-6 px-6 sm:px-6">
 
@@ -325,11 +333,18 @@ export default function Questionnaire() {
                                     )}
                                     {currentStep < steps.length && currentStep < 4 ? (
                                         <button
+                                            disabled={currentStep === 0 && !isStep1Complete}
                                             onClick={() =>
                                                 setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
                                             }
-                                            className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
-               bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
+                                            //                                 className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
+                                            //    bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
+                                            className={`relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
+                                                    rounded-full cursor-pointer
+                                                    ${currentStep === 0 && !isStep1Complete
+                                                    ? 'bg-gray-400 cursor-not-allowed opacity-70' // Disabled styles
+                                                    : 'bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white'
+                                                }`}
                                         >
                                             Next
                                             <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
