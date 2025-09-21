@@ -2,8 +2,8 @@ import React from 'react'
 import ServiceButtons from '../components/ServiceButtons' // Adjust import path as needed
 import RiskIcon from '../assets/Static/Risk.png'
 const riskButtons = [
-    { label: "HIV Testing", action: "/LoginWithNumber" },
-    { label: "PrEP Consultation", action: "/LoginWithNumber" },
+    { label: "HIV Testing", action: "/questionnaire" },
+    { label: "PrEP Consultation", action: "/prepconsultation" },
 ];
 
 const Risk = () => {
