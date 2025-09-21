@@ -7,7 +7,7 @@ const AppointmentConfirmed = () => {
     const [showModal, setShowModal] = useState(false);
     const location = useLocation();
     const appointmentData = location.state;
-
+    console.log("appointment data", appointmentData)
     const handleClick = () => setShowModal(true);
 
     return (
