@@ -208,9 +208,7 @@ const UserProfile = ({ setSelectedView }) => {
                                     </select>
                                     <select name="district" value={profile.district} disabled={!profile.state || districtLoading} onChange={handleChange} className=" w-1/2 xl:flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-1 py-0.5 outline-none text-[#A9A9A9]">
                                         <option  > District</option>
-                                        {/* {districts.map(district => (
-                                            <option key={district.id} value={district.id}>{district.district_name}</option>
-                                        ))} */}
+                                       
                                         {districts.map(district => (
                                             <option key={district.id} value={district.id}>{district.district_name}</option>
                                         ))}
