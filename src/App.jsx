@@ -55,7 +55,7 @@ function App() {
                 <PrepConsultation />
               </ProtectedRoute>
             } />
-            <Route path='/healthwealth' element={<HealthWealth />} />
+           
             <Route path='/bookappointment' element={<BookAppointment />} />
             <Route path='/schedulesppointment' element={<ScheduleAppointment />} />
             <Route path='/assessmentresult' element={<AssementResult />} />

@@ -172,10 +172,13 @@ const TestingCenters = ({ setActive }) => {
                     {centers.map(center => (
                         <li
                             key={center.id}
-                            className="text-[#323232] text-sm hover:bg-[#E9F8FF] bg-[#F7F8FA] rounded-xl px-5 py-3 shadow flex items-center"
+                            className="text-[#323232] text-sm hover:bg-[#E9F8FF] bg-[#F7F8FA] rounded-xl px-5 py-3 shadow flex items-start flex-col"
                             style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
                         >
-                            {center.name}
+                            {/* {center.name} ,{' '} {center.address} */}
+                            <div className="font-semibold">{center.name}</div>
+                            <div className="text-gray-600">{center.address}</div>
+
                         </li>
                     ))}
                 </ul>

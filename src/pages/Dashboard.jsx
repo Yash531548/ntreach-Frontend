@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Dashboard/Sidebar';
 import RightTab from '../components/Dashboard/RightTab';
 import UserProfile from '../components/Dashboard/UserProfile';
@@ -13,36 +13,42 @@ import Health from '../components/Dashboard/Health';
 import AppointmentDetail from '../components/Dashboard/AppointmentDetail';
 import Notification from '../components/Dashboard/Notification';
 
+
 const Dashboard = () => {
     const [selectedView, setSelectedView] = useState('Home');
     const [subView, setSubView] = useState(null); // for inside pages like Reschedule
+    
     const renderContent = () => {
         switch (selectedView) {
             case 'Home':
-                if(subView === "Appointment Detail"){
-                    return < AppointmentDetail setSubView={setSubView} setSelectedView={setSelectedView}/>
+                if (subView === "Appointment Detail") {
+                    return < AppointmentDetail setSubView={setSubView} setSelectedView={setSelectedView} />
                 }
-                return < Health setSubView={setSubView} setActive={setSelectedView}/>;
+                return < Health setSubView={setSubView} setActive={setSelectedView} />;
             case 'Upcoming Appointments':
-                if(subView ==='Reschedule'){
-                    return < RescheduleAppointment setSubView={setSubView} setSelectedView={setSelectedView}/>
+                if (subView === 'Reschedule') {
+                    return < RescheduleAppointment setSubView={setSubView} setSelectedView={setSelectedView} />
                 }
                 return < UpcomingAppointMent setSubView={setSubView} />;
             case 'teleconsultation':
-                if(subView === 'Past Consultation'){
-                    return < PastConsultation setSubView={setSubView}/>
+                if (subView === 'Past Consultation') {
+                    return < PastConsultation setSubView={setSubView} />
                 }
                 return < BookAConsultant setSubView={setSubView} setSelectedView={setSelectedView} />;
             case 'My Results/Past Data':
-                return < ResultData setSubView={setSubView} setSelectedView={setSelectedView}/>;
+                return < ResultData setSubView={setSubView} setSelectedView={setSelectedView} />;
             case "userProfile":
                 return < UserProfile setSelectedView={setSelectedView} />
             case "Notifications":
-                return < Notification setSelectedView={setSelectedView}/>;
-            case "Health & Wealth":
-                return <div className="p-6 text-xl font-semibold">👤 Health & Wealth</div>;
+                return < Notification setSelectedView={setSelectedView} />;
+            // case "Health & Wealth":
+            //     // Redirect to /blog and return nothing
+            //     console.log("click on health & wealth icon")
+            //     navigate("/blog");
+            //     return null;
+
             case "Testing Centers":
-                return < TestingCenters  setActive={setSelectedView}/>;
+                return < TestingCenters setActive={setSelectedView} />;
             case "PrEP Consultation":
                 return <div className="p-6 text-xl font-semibold">👤 PrEP Consultation</div>;
             case "Book an Appointment":
@@ -66,7 +72,7 @@ const Dashboard = () => {
 
                     {/* Left Panel */}
                     <div className='hidden bg-[#DAE9F0] rounded-l-4xl w-[30%]  lg:flex flex-col gap-4 '>
-                        
+
                         <Sidebar active={selectedView} setActive={setSelectedView} />
                     </div>
 
@@ -79,7 +85,7 @@ const Dashboard = () => {
                 {/* Right Panel */}
                 {/* <div className=' w-[20%] '> */}
                 <div className=' hidden md:block w-[20%] xl:w-[15%] '>
-                    <RightTab active={selectedView} setActive={setSelectedView}/>
+                    <RightTab active={selectedView} setActive={setSelectedView} />
                 </div>
             </main>
         </div>
