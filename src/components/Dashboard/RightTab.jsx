@@ -115,7 +115,7 @@ const RightTab = ({ active, setActive }) => {
     { label: "Notifications", ActiveIcon:NotificationsIcon, icon: NotificationsIcon, hasNotification: true }, // show dot
     { label: "Book an Appointment", icon: BookAppointmentIcon, to: "/bookappointment" },
     { label: "PrEP Consultation", icon: ConnectTeamIcon, to: "/prepconsultation" },
-    { label: "Health & Wealth", icon: HealthWealthIcon, to: "/healthwealth" },
+    { label: "Health & Wealth", icon: HealthWealthIcon, to: "/blog" },
     { label: "Testing Centers", ActiveIcon: TestingCentersVector, icon: TestingCentersIcon },
 ];
 
