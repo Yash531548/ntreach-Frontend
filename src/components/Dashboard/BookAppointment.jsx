@@ -1,9 +1,51 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import GetTested from '../../assets/Dashboard/GetTested.png'
 import ChatBot from '../ChatBot';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
+import { fetchServiceTypes } from '../../Api/fetchServiceTypes';
 const BookAppointment = () => {
     const [UserName, setUserName] = useState("");
+    const [services, setServices] = useState([]);
+    const [selectedServices, setSelectedServices] = useState(new Set());
+    const navigate = useNavigate();
+    // Preserved service_type_ids in required order
+    const filterOrder = [1, 2, 4, 6, 8, 7];
+    // Names as per original static list for matching display (must map carefully)
+    const serviceNamesMap = {
+        1: "HIV Test",
+        2: "STI Services",
+        4: "PEP",
+        6: "Counselling on Mental Health",
+        8: "Referral to TI services",
+        7: "ART Linkages"
+    };
+    useEffect(() => {
+        async function getServices() {
+            const allServices = await fetchServiceTypes();
+            const filtered = filterOrder
+                .map(id => allServices.find(s => s.service_type_id === id))
+                .filter(Boolean); // remove any undefined if missing in api
+            setServices(filtered);
+        }
+        getServices();
+    }, []);
+
+    const toggleService = (id) => {
+        setSelectedServices(prev => {
+            const copy = new Set(prev);
+            if (copy.has(id)) {
+                copy.delete(id);
+            } else {
+                copy.add(id);
+            }
+            return copy;
+        });
+    };
+    const handleLetsGo = () => {
+        // Convert Set to Array, or send as preferred
+        console.log("selected service " , selectedServices)
+        navigate('/schedulesppointment', { state: { selectedServices: Array.from(selectedServices) } });
+    };
 
     return (
         // <div className=' "container w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
@@ -30,7 +72,32 @@ const BookAppointment = () => {
                             {/* Select service required */}
                             <h2 className="text-[#11688F] text-lg mb-3">Select services required</h2>
                             <div className="flex flex-col gap-2">
-                                {[
+                                {services.length === 0 ? (
+                                    <p>Loading services...</p>
+                                ) : (
+                                    services.map(service => (
+                                        <label
+                                            key={service.service_type_id}
+                                            className="flex items-center justify-between bg-[#DAF3FF] rounded-full pl-4 pr-1.5 py-1 cursor-pointer"
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <label className="flex items-center gap-2 cursor-pointer">
+                                                    <input type="checkbox" className="" checked={selectedServices.has(service.service_type_id)} onChange={() => toggleService(service.service_type_id)} />
+                                                    <span className="text-black text-sm" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+                                                        {serviceNamesMap[service.service_type_id]}
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                className="w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm italic"
+                                            >
+                                                i
+                                            </button>
+                                        </label>
+                                    ))
+                                )}
+                                {/* {[
                                     "HIV Test",
                                     "STI Services",
                                     "PEP",
@@ -43,10 +110,10 @@ const BookAppointment = () => {
                                         className="flex items-center justify-between bg-[#DAF3FF] rounded-full pl-4 pr-1.5 py-1 cursor-pointer"
                                     >
                                         <div className="flex items-center gap-3">
-                
+
                                             <label className="flex items-center gap-2 cursor-pointer">
-                                                <input type="checkbox" className="hidden peer" />
-                                                <span className="w-4 h-4 border-1 border-[#323FF7] rounded peer-checked:bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  peer-checked:border-[#1475A1]"></span>
+                                                <input type="checkbox" className="" />
+                                                
                                                 <span className="text-black text-sm" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>{service}</span>
                                             </label>
                                         </div>
@@ -57,15 +124,15 @@ const BookAppointment = () => {
                                             i
                                         </button>
                                     </label>
-                                ))}
+                                ))} */}
                             </div>
 
                             <div className="mt-6">
-                                <NavLink to={'/schedulesppointment'}>
-                                    <button className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-light shadow-md/20">
+                                {/* <NavLink to={'/schedulesppointment'}> */}
+                                    <button onClick={handleLetsGo} className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-light shadow-md/20">
                                         Let&apos;s Go
                                     </button>
-                                </NavLink>
+                                {/* </NavLink> */}
                             </div>
                         </div>
                     </div>

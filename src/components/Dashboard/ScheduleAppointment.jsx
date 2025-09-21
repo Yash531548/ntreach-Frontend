@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import ChatBot from '../ChatBot'
 import GetTested from '../../assets/Dashboard/GetTested.png'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { ChevronDown } from 'lucide-react'
 import { fetchStates } from '../../Api/getState'
 import { fetchDistrictsApi } from '../../Api/fetchDistrictsApi'
 import { fetchTestingCentersApi } from '../../Api/fetchTestingCentersApi'
+import { bookAppointment } from '../../Api/bookAppointment'
 
 const ScheduleAppointment = () => {
+    const location = useLocation();
+    const incomingServices = location.state?.selectedServices || [];
+    // console.log("incomingservice",incomingServices);
     const navigate = useNavigate()
     const [states, setStates] = useState([]);
     const [selectedState, setSelectedState] = useState(''); // selected state id
@@ -17,10 +21,10 @@ const ScheduleAppointment = () => {
     const [centers, setCenters] = useState([]);
     const [selectedCenter, setSelectedCenter] = useState('');
     const [centerLoading, setCenterLoading] = useState(false);
-    const handleSubmit = () => {
-        const uniqueId = "NETREACH/HR/SELF/7464"
-        navigate('/appointmentconfirmed', { state: { uniqueId } })
-    }
+
+    const [appointmentDate, setAppointmentDate] = useState('')
+    const [loadingSubmit, setLoadingSubmit] = useState(false)
+
     // Fetch states once on mount
     useEffect(() => {
         async function getState() {
@@ -64,8 +68,8 @@ const ScheduleAppointment = () => {
         // Find the matching state object's code
         const stateObj = states.find(s => String(s.id) === String(selectedState));
         const state_code = stateObj ? stateObj.state_code : '';
-        console.log("state_code",state_code)
-        console.log("selected district",selectedDistrict)
+        console.log("state_code", state_code)
+        console.log("selected district", selectedDistrict)
         if (!state_code) {
             setCenters([]);
             setSelectedCenter('');
@@ -78,7 +82,7 @@ const ScheduleAppointment = () => {
                     district_id: selectedDistrict,
                     state_code: state_code,
                 });
-                console.log("data",data)
+                console.log("data", data)
                 setCenters(data.length > 0 ? data : []);
                 setSelectedCenter('');
             } catch (error) {
@@ -89,6 +93,49 @@ const ScheduleAppointment = () => {
         }
         fetchCenters();
     }, [selectedDistrict])
+    // Convert the date from YYYY-MM-DD to DD-MM-YYYY before sending API:
+    const formatDateForAPI = (dateStr) => {
+        const [year, month, day] = dateStr.split('-');
+        return `${day}-${month}-${year}`;
+    };
+    // Handle booking submission
+    const handleSubmit = async () => {
+        if (!incomingServices.length) {
+            alert('Please select at least one service.')
+            return
+        }
+        if (!selectedState || !selectedDistrict || !selectedCenter || !appointmentDate) {
+            alert('Please complete all fields.')
+            return
+        }
+        setLoadingSubmit(true)
+        const serviceToSend = incomingServices[0] // Send first service only for now
+
+        const data = {
+            service: String(serviceToSend),
+            state: String(selectedState),
+            district: String(selectedDistrict),
+            testing_center: String(selectedCenter),
+            appointment_date: formatDateForAPI(appointmentDate),
+        };
+
+        console.log("data to send on book an appointment", data);
+        try {
+            const response = await bookAppointment(data)
+            if (response.data.status) {
+                const uniqueId = response.data.unique_id
+                navigate('/appointmentconfirmed', { state: { uniqueId } })
+            } else {
+                alert('Failed to book appointment: ' + response.data.message)
+            }
+        } catch (error) {
+            console.error(error)
+            alert('An error occurred while booking appointment.')
+        }
+        setLoadingSubmit(false)
+        // const uniqueId = "NETREACH/HR/SELF/7464"
+        // navigate('/appointmentconfirmed', { state: { uniqueId } })
+    }
     return (
         <div
             className="
@@ -161,7 +208,7 @@ const ScheduleAppointment = () => {
                         <div className="relative">
                             <label htmlFor="Testing centre" className='text-[#11688F] text-lg'>Testing Centre</label>
                             <select
-                                
+
                                 className="w-full appearance-none bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 mt-1 text-[#A9A9A9] outline-none text-sm"
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 id='Testing centre'
@@ -187,14 +234,17 @@ const ScheduleAppointment = () => {
                                 className="w-full bg-[#F4F4F4] border border-[#92C2D7] rounded-full pl-4 pr-3 py-0.5 text-[#A9A9A9] outline-none text-sm mt-1"
                                 id='Appointment Date'
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
+                                value={appointmentDate}
+                                onChange={(e) => setAppointmentDate(e.target.value)}
                             />
                         </div>
                         {/* Button */}
                         <button
                             onClick={handleSubmit}
+                            disabled={loadingSubmit}
                             className="w-full cursor-pointer py-2 mt-4 rounded-full text-white font-medium bg-gradient-to-b from-[#323FF7] to-[#33AEE5] shadow-lg"
                         >
-                            Generate Receipt
+                            {loadingSubmit ? "Booking..." : "Generate Receipt"}
                         </button>
                     </div>
                 </div>
