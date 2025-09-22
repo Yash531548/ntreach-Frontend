@@ -2,8 +2,10 @@
 import React from "react";
 import { X } from "lucide-react";
 import { NavLink } from "react-router";
+import { useAuth } from "../Context/AuthContext";
 
 const MobileMenu = ({ isOpen, onClose }) => {
+    const { isAuthenticated, logout } = useAuth();
     const navItems = [
         { name: "Home", path: "/" },
         { name: "About us", path: "/about" },
@@ -51,7 +53,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                             onClick={onClose} // auto-close menu after click
                             className="block w-[106px] h-[35px] border border-[#566AFF] bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full font-medium hover:opacity-90 transition text-center leading-[35px]"
                         >
-                            Login
+                            {isAuthenticated ? (<NavLink to={'/dashboard'}>Dashboard</NavLink>):(<NavLink to={'/login'}>Login</NavLink>)}
                         </NavLink>
                     </div>
 
