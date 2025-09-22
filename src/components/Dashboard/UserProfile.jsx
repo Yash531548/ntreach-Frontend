@@ -1,5 +1,5 @@
 import { ArrowRight, CircleArrowLeft } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import ManAvatar from "../../assets/Dashboard/ManAvatar.jpg";
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 import { useAuth } from '../../Context/AuthContext';
@@ -7,6 +7,8 @@ import { updateUserProfile } from '../../Api/user/updateUserProfile';
 import { fetchUserProfile } from '../../Api/user/fetchUserProfile';
 import { fetchStates } from '../../Api/getState';
 import { fetchDistrictsApi } from '../../Api/fetchDistrictsApi';
+import { fetchProfilePhoto } from '../../Api/user/fetchProfilePhoto';
+import { updateProfilePhoto } from '../../Api/user/updateProfilePhoto';
 const initialProfile = {
     name: '',
     last_name: '',
@@ -16,17 +18,19 @@ const initialProfile = {
     gender: '',
     state: '',
     district: '',
-    language:  ''
+    language: ''
 };
 const UserProfile = ({ setSelectedView }) => {
     const { user } = useAuth(); // 👈 This has current user's latest details
     // console.log("user details", user)
     const [profile, setProfile] = useState(initialProfile);
+    const [avatarUrl, setAvatarUrl] = useState(ManAvatar);
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState('')
     const [states, setStates] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [districtLoading, setDistrictLoading] = useState(false);
+    const fileInputRef = useRef(null);
 
     // Prefill form state with data from the logged-in user's context
     useEffect(() => {
@@ -56,40 +60,19 @@ const UserProfile = ({ setSelectedView }) => {
         loadUserProfile();
     }, []);
 
+
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProfile((prev) => ({ ...prev, [name]: value }));
     };
-    // console.log("Profile state after set:", profile);
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     setLoading(true);
-    //     setMessage('');
-    //     try {
-    //         console.log("profile data", profile);
-    //         // Remove 'mobile' from payload BEFORE posting
-    //         const { mobile, ...updatePayload } = profile;
-    //         const { data } = await updateUserProfile(updatePayload);
-    //         setMessage(data.message || 'Profile updated!');
-    //         // Optionally, update auth context or global user here if needed
-    //     } catch (err) {
-    //         console.log(err)
-    //         setMessage('Update failed.');
-    //     }
-    //     setLoading(false);
-    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setMessage('');
         try {
-            // Remove mobile from the payload if backend doesn't accept it
-            // const { mobile, last_name, blood_group, gender, ...updatePayload } = profile;
-            // console.log("Submitting profile update payload:", updatePayload);
-
-            // const response = await updateUserProfile(updatePayload);
-            console.log("profile data",profile)
+            console.log("profile data", profile)
             const response = await updateUserProfile(profile);
             console.log("API response:", response);
             setMessage(response.data.message || 'Profile updated!');
@@ -143,7 +126,52 @@ const UserProfile = ({ setSelectedView }) => {
         fetchDistricts();
     }, [profile.state]);
     // console.log("district", districts)
+    // Load profile photo from API
+    const loadProfilePhoto = async () => {
+        try {
+            const { data } = await fetchProfilePhoto();
+            if (data.status && data.profile_pic_url) {
+                setAvatarUrl(data.profile_pic_url);
+            } else {
+                setAvatarUrl(ManAvatar);
+            }
+        } catch {
+            setAvatarUrl(ManAvatar);
+        }
+    };
 
+    useEffect(() => {
+        loadProfilePhoto();
+    }, []);
+
+    const MAX_FILE_SIZE_MB = 2;
+    const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+    // Handle file selection and upload
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > MAX_FILE_SIZE_BYTES) {
+            setMessage(`Image size should be lower than ${MAX_FILE_SIZE_MB}MB.`);
+            return;
+        }
+
+        setLoading(true);
+        setMessage('');
+        try {
+            const response = await updateProfilePhoto(file);
+            setMessage(response.data.message || 'Profile photo updated!');
+            await loadProfilePhoto();
+        } catch {
+            setMessage('Upload failed');
+        }
+        setLoading(false);
+    };
+    // Trigger hidden file input on avatar click
+    const triggerFileInput = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
     return (
         <div className='md:rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between '>
@@ -162,11 +190,19 @@ const UserProfile = ({ setSelectedView }) => {
             </div>
             <form onSubmit={handleSubmit}>
                 <div className='w-full rounded-2xl shadow-sm md:h-[55%] mt-[2rem] mb-[1rem] py-6 px-6 md:pt-6 md:p-8'>
-                    <div className='w-full flex justify-center md:block md:w-18 md:h-18 rounded-full '>
+                    <div className='w-full flex justify-center md:block md:w-18 md:h-18 rounded-full ' onClick={triggerFileInput}>
                         <img
-                            src={ManAvatar}
+                            // src={ManAvatar}
+                            src={avatarUrl}
                             alt="User Avatar"
                             className="w-22 h-22 md:w-18 md:h-18 rounded-full border border-gray-200"
+                        />
+                        <input
+                            type="file"
+                            ref={fileInputRef}
+                            className="hidden"
+                            accept="image/png,image/jpeg,image/jpg"
+                            onChange={handleFileChange}
                         />
                     </div>
                     <div>
@@ -208,7 +244,7 @@ const UserProfile = ({ setSelectedView }) => {
                                     </select>
                                     <select name="district" value={profile.district} disabled={!profile.state || districtLoading} onChange={handleChange} className=" w-1/2 xl:flex-1 bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-1 py-0.5 outline-none text-[#A9A9A9]">
                                         <option  > District</option>
-                                       
+
                                         {districts.map(district => (
                                             <option key={district.id} value={district.id}>{district.district_name}</option>
                                         ))}

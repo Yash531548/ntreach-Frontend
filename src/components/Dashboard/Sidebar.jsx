@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ManAvatar from "../../assets/Dashboard/ManAvatar.jpg";
 import { ChevronRight } from "lucide-react";
 import MyResultsIcon from "../../assets/Dashboard/My Results Icon.svg";
@@ -9,6 +9,8 @@ import UpcomingAppointmentIcon from "../../assets/Dashboard/Upcoming Appointment
 import TeleconsultationIcon from "../../assets/Dashboard/Book a Teleconsultation.svg";
 import { useAuth } from "../../Context/AuthContext";
 import { useNavigate } from "react-router";
+import { fetchUserProfile } from "../../Api/user/fetchUserProfile";
+import { fetchProfilePhoto } from "../../Api/user/fetchProfilePhoto";
 const NavButton = ({ label, icon, isActive, onClick }) => {
 
     return (
@@ -29,8 +31,34 @@ const NavButton = ({ label, icon, isActive, onClick }) => {
 };
 
 const Sidebar = ({ active, setActive }) => {
+
     const navigate = useNavigate();
     const { logout } = useAuth();
+    const [userName, setUserName] = useState("Loading...");
+    const [phone, setPhone] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState(ManAvatar);
+
+    useEffect(() => {
+        async function loadUserData() {
+            try {
+                const { data } = await fetchUserProfile();
+                if (data.status && data.user) {
+                    setUserName(`${data.user.name} ${data.user.last_name}`);
+                    setPhone(data.user.phone_number);
+                }
+                const picData = await fetchProfilePhoto();
+                if (picData.data.status && picData.data.profile_pic_url) {
+                    setAvatarUrl(picData.data.profile_pic_url);
+                }
+            } catch (error) {
+                setUserName("Unknown User");
+                setPhone("");
+                setAvatarUrl(ManAvatar);
+            }
+        }
+        loadUserData();
+    }, []);
+
     const handleLogout = () => {
         console.log("logout start")
         logout();
@@ -55,7 +83,8 @@ const Sidebar = ({ active, setActive }) => {
             <div className="flex flex-col gap-4 lg:p-3 xl:p-6">
                 <div className="flex items-center gap-4">
                     <img
-                        src={ManAvatar}
+                        // src={ManAvatar}
+                        src={avatarUrl}
                         alt="User Avatar"
                         className="w-14 h-14 rounded-full"
                     />
@@ -64,13 +93,15 @@ const Sidebar = ({ active, setActive }) => {
                             className="text-sm text-black"
                             style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
                         >
-                            Saptarshi Mandal
+                            {/* Saptarshi Mandal */}
+                            {userName}
                         </h2>
                         <p
                             className="text-black text-[12px]"
                             style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                         >
-                            +91 8976453264
+                            {/* +91 8976453264 */}
+                            {phone}
                         </p>
                     </div>
                 </div>
