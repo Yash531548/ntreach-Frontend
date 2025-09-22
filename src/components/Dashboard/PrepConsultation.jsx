@@ -1,9 +1,50 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ChatBot from '../ChatBot';
 import stopAid from '../../assets/Dashboard/stopAid.png'
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
+import { fetchServiceTypes } from '../../Api/fetchServiceTypes';
 const PrepConsultation = () => {
     const [UserName, setUserName] = useState("");
+    const [services, setServices] = useState([]);
+    const [selectedServices, setSelectedServices] = useState(new Set());
+    const navigate = useNavigate();
+    // The display name to always match your static UI ("Pre-Exposure Prophylaxis (PrEP)").
+    const serviceNameMap = {
+        3: "Pre-Exposure Prophylaxis (PrEP)"
+    };
+
+    useEffect(() => {
+        const getServices = async () => {
+            // const allServices = await fetch
+            const allServices = await fetchServiceTypes();
+            const filtered = allServices.filter(s => s.service_type_id === 3);
+            setServices(filtered);
+        };
+        getServices();
+    }, []);
+
+    const toggleService = (id) => {
+        setSelectedServices(prev => {
+            const next = new Set(prev);
+            if (next.has(id)) {
+                next.delete(id);
+            } else {
+                next.add(id);
+            }
+            return next;
+        });
+    };
+
+    // Navigation handler
+    const handleLetsGo = () => {
+        // Only send selected service ids (currently only 3)
+        console.log("services", services);
+        navigate('/schedulesppointment', {
+            state: {
+                selectedServices: Array.from(selectedServices)
+            }
+        });
+    };
     return (
         <div className=' container w-full md:min-h-[calc(100vh-64px-60px)] flex items-center justify-center
         px-4 sm:px-4
@@ -11,8 +52,8 @@ const PrepConsultation = () => {
         xl:px-0
         xl:ml-[30px]
         2xl:ml-0
-        ' 
-        style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
+        '
+            style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
 
             {/* <main className='container max-w-[1050px]  min-h-[calc(100vh-64px-100px)]  flex justify-between '> */}
             <main className='container max-w-[1050px] md:min-h-[calc(100vh-64px-100px)] flex justify-between
@@ -32,7 +73,37 @@ const PrepConsultation = () => {
                             {/* Select service required */}
                             <h2 className="text-[#11688F] text-lg mb-3">Select services required</h2>
                             <div className="flex flex-col gap-2">
-                                {[
+                                {services.length === 0 ? (
+                                    <p>Loading service...</p>
+                                ) : (
+                                    services.map(service => (
+                                        <label
+                                            key={service.service_type_id}
+                                            className="flex items-center justify-between bg-[#DAF3FF] rounded-full pl-4 pr-1.5 py-1 cursor-pointer"
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <label className="flex items-center gap-2 cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={selectedServices.has(service.service_type_id)}
+                                                        onChange={() => toggleService(service.service_type_id)}
+                                                        className="w-4 h-4 text-[#1475A1] border-[#323FF7] rounded focus:ring-0"
+                                                    />
+                                                    <span className="text-black text-sm" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+                                                        {serviceNameMap[service.service_type_id]}
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                className="w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm italic"
+                                            >
+                                                i
+                                            </button>
+                                        </label>
+                                    ))
+                                )}
+                                {/* {[
                                     "Pre-Exposure Prophylaxis (PrEP)",
                                     ,
                                 ].map((service, index) => (
@@ -41,11 +112,7 @@ const PrepConsultation = () => {
                                         className="flex items-center justify-between bg-[#DAF3FF] rounded-full pl-4 pr-1.5 py-1 cursor-pointer"
                                     >
                                         <div className="flex items-center gap-3">
-                                            {/* <input
-                                                type="checkbox"
-                                                className="w-4 h-4 text-[#1475A1]  border-[#323FF7]  rounded focus:ring-0"
-                                            />
-                                            <span className="text-black text-sm" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>{service}</span> */}
+                                           
                                             <label className="flex items-center gap-2 cursor-pointer">
                                                 <input type="checkbox" className="hidden peer" />
                                                 <span className="w-4 h-4 border-1 border-[#323FF7] rounded peer-checked:bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  peer-checked:border-[#1475A1]"></span>
@@ -59,16 +126,16 @@ const PrepConsultation = () => {
                                             i
                                         </button>
                                     </label>
-                                ))}
+                                ))} */}
                             </div>
 
                             <div className="mt-6">
-                                <NavLink to={'/schedulesppointment'}>
+                                {/* <NavLink to={'/schedulesppointment'}> */}
 
-                                    <button className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-medium shadow-md/20">
+                                    <button onClick={handleLetsGo} disabled={selectedServices.size === 0} className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-medium shadow-md/20">
                                         Let&apos;s Go
                                     </button>
-                                </NavLink>
+                                {/* </NavLink> */}
                             </div>
                         </div>
                     </div>
