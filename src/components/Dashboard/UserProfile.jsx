@@ -9,6 +9,7 @@ import { fetchStates } from '../../Api/getState';
 import { fetchDistrictsApi } from '../../Api/fetchDistrictsApi';
 import { fetchProfilePhoto } from '../../Api/user/fetchProfilePhoto';
 import { updateProfilePhoto } from '../../Api/user/updateProfilePhoto';
+import { useProfile } from '../../Context/ProfileContext';
 const initialProfile = {
     name: '',
     last_name: '',
@@ -23,6 +24,9 @@ const initialProfile = {
 const UserProfile = ({ setSelectedView }) => {
     const { user } = useAuth(); // 👈 This has current user's latest details
     // console.log("user details", user)
+    // Profile context state with renaming to avoid conflict
+    const { profile: profileContext, setProfile: setProfileContext } = useProfile();
+    // Local form state
     const [profile, setProfile] = useState(initialProfile);
     const [avatarUrl, setAvatarUrl] = useState(ManAvatar);
     const [loading, setLoading] = useState(false)
@@ -40,6 +44,7 @@ const UserProfile = ({ setSelectedView }) => {
                 const { data } = await fetchUserProfile();
                 console.log("User detail from api", data)
                 if (data.status && data.user) {
+                    // Update local form state
                     setProfile({
                         name: data.user.name || '',
                         last_name: data.user.last_name || '',
@@ -51,6 +56,13 @@ const UserProfile = ({ setSelectedView }) => {
                         district: data.user.district || '',
                         language: data.user.language || ''
                     });
+                    // Update global context profile state for shared info
+                    setProfileContext(prev => ({
+                        ...prev,
+                        name: data.user.name || '',
+                        last_name: data.user.last_name || '',
+                        mobile: data.user.phone_number || '',
+                    }));
                 }
             } catch (error) {
                 setMessage('Failed to load profile');
@@ -58,15 +70,16 @@ const UserProfile = ({ setSelectedView }) => {
             setLoading(false);
         };
         loadUserProfile();
-    }, []);
+    }, [setProfileContext]);
 
 
-
+    // Handle form input changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProfile((prev) => ({ ...prev, [name]: value }));
     };
 
+    // Submit profile updates (except photo)
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -94,6 +107,7 @@ const UserProfile = ({ setSelectedView }) => {
         }
         setLoading(false);
     };
+    // Load states for selection dropdown
     useEffect(() => {
         async function getStates() {
             try {
@@ -126,12 +140,16 @@ const UserProfile = ({ setSelectedView }) => {
         fetchDistricts();
     }, [profile.state]);
     // console.log("district", districts)
-    // Load profile photo from API
+    /// Load profile photo from API and update both local and context states
     const loadProfilePhoto = async () => {
         try {
             const { data } = await fetchProfilePhoto();
             if (data.status && data.profile_pic_url) {
                 setAvatarUrl(data.profile_pic_url);
+                setProfileContext(prev => ({
+                    ...prev,
+                    avatarUrl: data.profile_pic_url
+                }));
             } else {
                 setAvatarUrl(ManAvatar);
             }
@@ -142,7 +160,7 @@ const UserProfile = ({ setSelectedView }) => {
 
     useEffect(() => {
         loadProfilePhoto();
-    }, []);
+    }, [setProfileContext]);
 
     const MAX_FILE_SIZE_MB = 2;
     const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;

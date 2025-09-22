@@ -11,6 +11,7 @@ import { useAuth } from "../../Context/AuthContext";
 import { useNavigate } from "react-router";
 import { fetchUserProfile } from "../../Api/user/fetchUserProfile";
 import { fetchProfilePhoto } from "../../Api/user/fetchProfilePhoto";
+import { useProfile } from "../../Context/ProfileContext";
 const NavButton = ({ label, icon, isActive, onClick }) => {
 
     return (
@@ -34,30 +35,36 @@ const Sidebar = ({ active, setActive }) => {
 
     const navigate = useNavigate();
     const { logout } = useAuth();
-    const [userName, setUserName] = useState("Loading...");
-    const [phone, setPhone] = useState("");
-    const [avatarUrl, setAvatarUrl] = useState(ManAvatar);
+    // const [userName, setUserName] = useState("Loading...");
+    // const [phone, setPhone] = useState("");
+    // const [avatarUrl, setAvatarUrl] = useState(ManAvatar);
+    // Use global profile from context
+    const { profile } = useProfile();
 
-    useEffect(() => {
-        async function loadUserData() {
-            try {
-                const { data } = await fetchUserProfile();
-                if (data.status && data.user) {
-                    setUserName(`${data.user.name} ${data.user.last_name}`);
-                    setPhone(data.user.phone_number);
-                }
-                const picData = await fetchProfilePhoto();
-                if (picData.data.status && picData.data.profile_pic_url) {
-                    setAvatarUrl(picData.data.profile_pic_url);
-                }
-            } catch (error) {
-                setUserName("Unknown User");
-                setPhone("");
-                setAvatarUrl(ManAvatar);
-            }
-        }
-        loadUserData();
-    }, []);
+    const avatarUrl = profile.avatarUrl || ManAvatar;
+    const userName = profile.name || "Unknown User";
+    const phone = profile.mobile || "";
+
+    // useEffect(() => {
+    //     async function loadUserData() {
+    //         try {
+    //             const { data } = await fetchUserProfile();
+    //             if (data.status && data.user) {
+    //                 setUserName(`${data.user.name} ${data.user.last_name}`);
+    //                 setPhone(data.user.phone_number);
+    //             }
+    //             const picData = await fetchProfilePhoto();
+    //             if (picData.data.status && picData.data.profile_pic_url) {
+    //                 setAvatarUrl(picData.data.profile_pic_url);
+    //             }
+    //         } catch (error) {
+    //             setUserName("Unknown User");
+    //             setPhone("");
+    //             setAvatarUrl(ManAvatar);
+    //         }
+    //     }
+    //     loadUserData();
+    // }, []);
 
     const handleLogout = () => {
         console.log("logout start")
