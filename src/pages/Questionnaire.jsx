@@ -13,9 +13,11 @@ import RiskOptionsStep from "../components/RiskOptionsStep";
 import { useNavigate } from "react-router";
 import { fetchQuestionSteps } from "../Api/Questionnaire/getQuestions.js";
 import { fetchStates } from "../Api/getState.js";
+import { useProfile } from "../Context/ProfileContext.jsx";
 
 export default function Questionnaire() {
     const navigate = useNavigate();
+    const { profile: profileContext } = useProfile();
     const stepImages = [step1, step2, step3, step4, step5];
     const stepImageClasses = [
         "w-[300px] h-[359px] object-contain ", // step1
@@ -86,12 +88,36 @@ export default function Questionnaire() {
 
     // Submit answers
     const handleGetResult = async () => {
+        // Calculate total weight based on answers and steps data
+        let totalWeight = 0;
+        Object.entries(answers).forEach(([questionId, selected]) => {
+            const question = steps.flat().find(q => q.question_id === Number(questionId));
+            if (!question) return;
+
+            if (Array.isArray(selected)) {
+                // multiple selected answers (checkbox)
+                selected.forEach(selectedId => {
+                    const option = question.options.find(opt => opt.answer_id === selectedId);
+                    if (option) {
+                        totalWeight += option.weight || 0;
+                    }
+                });
+            } else {
+                // single selected answer
+                const option = question.options.find(opt => opt.answer_id === selected);
+                if (option) {
+                    totalWeight += option.weight || 0;
+                }
+            }
+        });
         // Example POST logic (replace URL with your POST endpoint)
+        // payload including totalWeight if needed by backend
         const payload = {
             responses: Object.entries(answers).map(([qid, ans]) => ({
                 question_id: Number(qid),
                 answer: ans, // adapt if backend expects answer_id or value
-            }))
+            })),
+            total_weight: totalWeight, // additional field
         };
         // Call API 
         // await submitAnswers(payload);
@@ -236,14 +262,21 @@ export default function Questionnaire() {
                                             )}
 
                                             {/* Text */}
-                                            {q.answer_input_type === "text" && (
+                                            {q.answer_input_type === "text" && q.question_id === 1 ? (
+                                                <input
+                                                    type="text"
+                                                    value={profileContext.mobile || ""}
+                                                    readOnly
+                                                    className="p-1 max-w-60 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4] outline-none"
+                                                />
+                                            ) : q.answer_input_type === "text" ? (
                                                 <input
                                                     type="text"
                                                     value={answers[q.question_id] || ""}
                                                     onChange={e => handleInputChange(q, e.target.value)}
                                                     className="p-1 max-w-60 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4] outline-none"
                                                 />
-                                            )}
+                                            ) : null}
 
                                             {/* Select */}
                                             {q.answer_input_type === "select" && (
@@ -417,14 +450,21 @@ export default function Questionnaire() {
                                         )}
 
                                         {/* Text */}
-                                        {q.answer_input_type === "text" && (
+                                        {q.answer_input_type === "text" && q.question_id === 1 ? (
+                                            <input
+                                                type="text"
+                                                value={profileContext.mobile || ""}
+                                                readOnly
+                                                className="p-2 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4]"
+                                            />
+                                        ) : q.answer_input_type === "text" ? (
                                             <input
                                                 type="text"
                                                 value={answers[q.question_id] || ""}
                                                 onChange={e => handleInputChange(q, e.target.value)}
                                                 className="p-2 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4]"
                                             />
-                                        )}
+                                        ) : null}
 
                                         {/* Select */}
                                         {q.answer_input_type === "select" && (
