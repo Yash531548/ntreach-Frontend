@@ -48,13 +48,12 @@ const MobileMenu = ({ isOpen, onClose }) => {
                         </button>
                     </div> */}
                     <div className="border-b pb-4">
-                        <NavLink
-                            to="/login"
+                        <div
                             onClick={onClose} // auto-close menu after click
                             className="block w-[106px] h-[35px] border border-[#566AFF] bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full font-medium hover:opacity-90 transition text-center leading-[35px]"
                         >
                             {isAuthenticated ? (<NavLink to={'/dashboard'}>Dashboard</NavLink>):(<NavLink to={'/login'}>Login</NavLink>)}
-                        </NavLink>
+                        </div>
                     </div>
 
                     {/* Navigation Links */}

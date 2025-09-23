@@ -49,7 +49,7 @@ const Sidebar = ({ active, setActive }) => {
 
     const phone = profile.mobile || "";
 
-    console.log("username on sidebar", userName)
+    // console.log("username on sidebar", userName)
     // useEffect(() => {
     //     async function loadUserData() {
     //         try {
