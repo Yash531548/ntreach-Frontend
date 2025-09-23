@@ -42,9 +42,14 @@ const Sidebar = ({ active, setActive }) => {
     const { profile } = useProfile();
 
     const avatarUrl = profile.avatarUrl || ManAvatar;
-    const userName = profile.name || "Unknown User";
+    // const userName = profile.name +  profile.last_name || "Unknown User";
+    const userName = profile.name && profile.last_name
+        ? `${profile.name} ${profile.last_name}`
+        : "Unknown User";
+
     const phone = profile.mobile || "";
 
+    console.log("username on sidebar", userName)
     // useEffect(() => {
     //     async function loadUserData() {
     //         try {
