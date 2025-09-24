@@ -350,6 +350,7 @@ export default function Questionnaire() {
                                 <div className="flex flex-col text-sm ">
                                     {currentStep >= 2 || selectedRisk === 1 ? (
                                         <button
+                                            onClick={handleGetResult}
                                             className="flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] 
                           bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
                           text-white rounded-full cursor-pointer"
@@ -543,6 +544,7 @@ export default function Questionnaire() {
                             <div className="flex flex-col text-sm mx-auto w-[13.5rem]  md:mx-0">
                                 {currentStep >= 2 || selectedRisk === 1 ? (
                                     <button
+                                        onClick={handleGetResult}
                                         className="flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] 
                           bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
                           text-white rounded-full cursor-pointer"
