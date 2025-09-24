@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router'
 
 const AssementResult = () => {
     const navigate = useNavigate();    
-    const [riskValue, setRiskValue] = useState(65)
+    const [riskValue, setRiskValue] = useState(85)
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
             <main
