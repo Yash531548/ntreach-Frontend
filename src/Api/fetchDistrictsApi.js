@@ -11,6 +11,7 @@ export const fetchDistrictsApi = async (stateId) => {
         },
     });
     if (response.data.status === 'success') {
+        // Sort in Alphabetical order
         return response.data.data.sort((a,b)=> a.district_name.localeCompare(b.district_name));
     }
     return [];
