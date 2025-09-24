@@ -14,7 +14,8 @@ import { useNavigate } from "react-router";
 import { fetchQuestionSteps } from "../Api/Questionnaire/getQuestions.js";
 import { fetchStates } from "../Api/getState.js";
 import { useProfile } from "../Context/ProfileContext.jsx";
-import { ClipLoader } from 'react-spinners';
+
+
 
 
 export default function Questionnaire() {
@@ -233,8 +234,9 @@ export default function Questionnaire() {
 
                             {/* Questions (scrollable) */}
                             {!steps.length ? (
-                                <div className="flex justify-center items-center py-10">
-                                    <ClipLoader color="#11688F" size={80} />
+                                <div className="flex justify-center items-center py-10 text-6xl">
+                                    {/* <ClipLoader color="#11688F" size={80} /> */}
+                                    Loading Question....
                                 </div>
                             ) : (
                                 <div className="space-y-6 max-h-[350px] overflow-y-auto pr-2 h-[350px] pb-3">
@@ -437,8 +439,9 @@ export default function Questionnaire() {
 
                     <div className="block lg:hidden w-full bg-white shadow-md rounded-2xl p-4 mt-4 ">
                         {!steps.length ? (
-                            <div className="flex justify-center py-10">
-                                <ClipLoader color="#323FF7" size={50} />
+                            <div className="flex justify-center py-10 text-3xl">
+                                {/* <ClipLoader color="#323FF7" size={50} /> */}
+                                Loading Question...
                             </div>
                         ) : (
                             <div className="space-y-3 h-auto overflow-visible">
