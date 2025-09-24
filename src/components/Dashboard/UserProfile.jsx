@@ -57,12 +57,18 @@ const UserProfile = ({ setSelectedView }) => {
                         language: data.user.language || ''
                     });
                     // Update global context profile state for shared info
+                    // setProfileContext(prev => ({
+                    //     ...prev,
+                    //     name: data.user.name || '',
+                    //     last_name: data.user.last_name || '',
+                    //     mobile: data.user.phone_number || '',
+                    // }));
                     setProfileContext(prev => ({
                         ...prev,
-                        name: data.user.name || '',
-                        last_name: data.user.last_name || '',
+                        name: data.user.name ? `${data.user.name} ${data.user.last_name || ''}`.trim() : '',
                         mobile: data.user.phone_number || '',
                     }));
+
                 }
             } catch (error) {
                 setMessage('Failed to load profile');
@@ -89,6 +95,13 @@ const UserProfile = ({ setSelectedView }) => {
             const response = await updateUserProfile(profile);
             console.log("API response:", response);
             setMessage(response.data.message || 'Profile updated!');
+            // Update profile context immediately
+            setProfileContext(prev => ({
+                ...prev,
+                name: `${profile.name} ${profile.last_name || ""}`.trim(),
+                mobile: profile.mobile || prev.mobile,
+            }));
+            console.log("profile", profile)
         } catch (error) {
             // Log detailed error info for debugging
             if (error.response) {
