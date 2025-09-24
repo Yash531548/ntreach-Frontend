@@ -86,6 +86,16 @@ export default function Questionnaire() {
         });
     };
 
+    // Only for Step 1 (currentStep === 0)
+    useEffect(()=>{
+        if(profileContext.mobile){
+            // This ensures answers[1] is always filled if user is logged in
+            setAnswers(prev => ({
+                ...prev,
+                1:profileContext.mobile
+            }))
+        }
+    },[profileContext.mobile])
     // Submit answers
     const handleGetResult = async () => {
         // Calculate total weight based on answers and steps data
@@ -130,7 +140,7 @@ export default function Questionnaire() {
     if (!steps.length) {
         return <div>Loading...</div>;
     }
-    // Only for Step 1 (currentStep === 0)
+    
     const isStep1Complete = questions.every(q => {
         const ans = answers[q.question_id];
         if (q.answer_input_type === 'checkbox') {
