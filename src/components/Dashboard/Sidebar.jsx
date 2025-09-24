@@ -40,16 +40,16 @@ const Sidebar = ({ active, setActive }) => {
     // const [avatarUrl, setAvatarUrl] = useState(ManAvatar);
     // Use global profile from context
     const { profile } = useProfile();
-
+    console.log("profile",profile)
     const avatarUrl = profile.avatarUrl || ManAvatar;
-    // const userName = profile.name +  profile.last_name || "Unknown User";
-    const userName = profile.name && profile.last_name
-        ? `${profile.name} ${profile.last_name}`
-        : "Unknown User";
+    const userName = profile.name || "Unknown User";
+    // const userName = profile.name 
+    //     ? `${profile.name}`
+    //     : "Unknown User";
 
     const phone = profile.mobile || "";
 
-    // console.log("username on sidebar", userName)
+    console.log("username on sidebar", userName)
     // useEffect(() => {
     //     async function loadUserData() {
     //         try {
