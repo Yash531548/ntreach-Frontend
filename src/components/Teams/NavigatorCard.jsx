@@ -20,10 +20,12 @@ const NavigatorCard = ({ VnImage, VnName, VnState, VnMobile }) => (
     "
         style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
     >
-        <div className="mb-4 sm:mb-5 flex justify-center">
-            <img src={VnImage} alt="" className="w-16 sm:w-20 md:w-24 object-cover rounded-full" />
+        <div className='h-[6rem]  md:h-[8rem]'>
+            <div className="mb-4 sm:mb-5 flex justify-center ">
+                <img src={VnImage} alt="" className="w-16 sm:w-20 md:w-24 object-cover rounded-full" />
+            </div>
         </div>
-        <div className="text-lg sm:text-xl md:text-2xl font-semibold text-black text-center">
+        <div className="text-lg sm:text-xl md:text-2xl font-semibold text-black text-center ">
             {VnName}
         </div>
         <div className="flex items-start mt-1 text-xs sm:text-sm w-full  justify-center  ">
