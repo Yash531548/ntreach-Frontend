@@ -1,11 +1,11 @@
 import React from 'react';
 import { MapPin } from 'lucide-react';
-import Pooja1 from '../../assets/Static/Pooja1.png'
+
 import WhatsappIcon from '../../assets/Static/WhatsApp.png'
 import FacebookIcon from '../../assets/Static/Facebook.png'
 import InstagramIcon1 from "../../assets/Static/Instagram1.png"
 
-const NavigatorCard = () => (
+const NavigatorCard = ({ VnImage, VnName, VnState, VnMobile }) => (
     <div
         className="
     bg-[#DAF3FF]
@@ -21,20 +21,20 @@ const NavigatorCard = () => (
         style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
     >
         <div className="mb-4 sm:mb-5 flex justify-center">
-            <img src={Pooja1} alt="" className="w-16 sm:w-20 md:w-24 object-cover rounded-full" />
+            <img src={VnImage} alt="" className="w-16 sm:w-20 md:w-24 object-cover rounded-full" />
         </div>
         <div className="text-lg sm:text-xl md:text-2xl font-semibold text-black text-center">
-            Pooja
+            {VnName}
         </div>
         <div className="flex items-start mt-1 text-xs sm:text-sm w-full  justify-center  ">
             <MapPin className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mr-1 text-[#FF5593]" />
-            <div className="max-w-[110px] sm:max-w-[150px]  text-center ">
-                Delhi
+            <div className="max-w-[110px] sm:max-w-[150px]  text-start  ">
+                {VnState}
                 {/* Karnataka, Kerala, Tamil Nadu, Puducherry */}
             </div>
         </div>
         <div className="mt-2 text-black font-bold text-sm sm:text-base">
-            9177823428
+            {VnMobile}
         </div>
         <div className="flex gap-2 mt-3 w-full items-center justify-center">
             <img src={InstagramIcon1} alt="" className="w-5 sm:w-6" />
