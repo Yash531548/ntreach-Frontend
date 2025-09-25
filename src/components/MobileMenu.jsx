@@ -16,6 +16,15 @@ const MobileMenu = ({ isOpen, onClose }) => {
         { name: "Contact Us", path: "/contact" },
     ];
 
+    const handleLogout = () => {
+        console.log("logout start")
+        logout();
+        console.log("After logout ")
+        navigate('/');
+        console.log("After redirect ")
+        // After logging out, redirect to home
+    };
+
     return (
         <>
             {/* Background Overlay */}
@@ -28,7 +37,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
 
             {/* Slide-in Menu */}
             <div
-                className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:hidden z-50 ${isOpen ? "translate-x-0" : "translate-x-full"
+                className={`fixed top-2 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:hidden z-50 ${isOpen ? "translate-x-0" : "translate-x-full"
                     }`}
             >
                 {/* Close Icon */}
@@ -74,9 +83,16 @@ const MobileMenu = ({ isOpen, onClose }) => {
                             </li>
                         ))}
                     </ul>
-
+                    
+                    
+                    <div
+                        onClick={handleLogout}
+                        className={` w-[106px] h-[35px] border border-[#566AFF] bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full font-medium hover:opacity-90 transition text-center leading-[35px] ${isAuthenticated ? "block" : "hidden" }`}
+                    >
+                        Logout
+                    </div>
                     {/* Language Selector */}
-                    <div className="border-t pt-4 pb-4 mt-[8rem]">
+                    <div className="border-t pt-4 pb-4 mt-[2rem]">
                         <div className="relative  inline-block">
                             <select className="border border-gray-300 text-gray-700 rounded-full px-2 pr-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none ">
                                 <option>Language</option>
