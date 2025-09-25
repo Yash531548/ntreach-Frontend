@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logoBac from "../assets/logo-bac.png";
 import SpeakerIcon from "../assets/SpeakerIcon.png";
-import { Menu, Search } from "lucide-react"; // icons
+import { ChevronDown, Menu, Search } from "lucide-react"; // icons
 import { NavLink } from "react-router";
 import MobileMenu from "./MobileMenu";
 import { useAuth } from "../Context/AuthContext";
@@ -13,7 +13,7 @@ const Header = () => {
 
     return (
         <>
-            <header className="bg-white container max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between py-4 "  style={{ fontFamily: 'Sofia Pro' }}>
+            <header className="bg-white container max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between py-4 " style={{ fontFamily: 'Sofia Pro' }}>
                 {/* Logo */}
                 <div className="flex items-center space-x-2">
                     < NavLink to={'/'}>
@@ -41,7 +41,7 @@ const Header = () => {
                                     isActive ? "text-[#1475A1] " : "hover:text-[#1475A1]"
                                 }
                             >
-                                About us
+                                About Us
                             </NavLink>
                         </li>
                         <li>
@@ -91,7 +91,7 @@ const Header = () => {
                                     isActive ? "text-[#1475A1] " : "hover:text-[#1475A1]"
                                 }
                             >
-                                Contact us
+                                Contact Us
                             </NavLink>
                         </li>
                     </ul>
@@ -102,12 +102,15 @@ const Header = () => {
                 <div className="hidden lg:flex items-center space-x-2 lg:space-x-3 ">
                     {/* Language Selector */}
                     <div className="flex flex-col items-center h-full relative text-[0.688rem] xl:text-xs">
-                        <select className="border border-[#0B1E2A] text-[rgba(11,30,42,0.9)] font-medium tracking-normal rounded-full lg:px-2 xl:px-3 py-1  focus:outline-none focus:ring-2 focus:ring-blue-400 font-redhat"  >
-                            <option>Language</option>
-                            <option>English</option>
-                            <option>French</option>
-                            <option>Spanish</option>
-                        </select>
+                        <div className="relative inline-block ">
+                            <select className="border border-[#0B1E2A] text-[rgba(11,30,42,0.9)] font-medium tracking-normal rounded-full lg:px-2 xl:px-3 xl:pr-5 py-1  focus:outline-none focus:ring-2 focus:ring-blue-400 font-redhat appearance-none"  >
+                                <option>Language</option>
+                                <option>English</option>
+                                <option>French</option>
+                                <option>Spanish</option>
+                            </select>
+                            <ChevronDown className="absolute right-1 -top-[0.05rem] translate-y-1/2 w-3.5 h-3.5 text-gray-700 pointer-events-none " />
+                        </div>
                         <span className=" text-[#838383] mt-1 absolute top-full whitespace-nowrap">
                             Powered by{" "}
                             <span className="font-bold  " style={{ fontFamily: "Product Sans, Arial, sans-serif" }}>
@@ -130,14 +133,14 @@ const Header = () => {
                             className="border-none w-15 xl:w-22 px-1 py-1  outline-none placeholder:text-[#838383]"
                         />
                         <span className=" ">
-                            <img src={SpeakerIcon} alt="speaker"   />
+                            <img src={SpeakerIcon} alt="speaker" />
                         </span>
                     </div>
 
                     {/* Login Button */}
-                    
+
                     <button className="  bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white px-4 xl:px-6 py-1 xl:py-[0.313rem] rounded-full  transition drop-shadow-lg hover:shadow-lg/20 text-[0.688rem] xl:text-[0.813rem] " style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
-                                {isAuthenticated ? (<NavLink to={'/dashboard'}>Dashboard</NavLink>):(<NavLink to={'/login'}>Login</NavLink>)}
+                        {isAuthenticated ? (<NavLink to={'/dashboard'}>Dashboard</NavLink>) : (<NavLink to={'/login'}>Login</NavLink>)}
                     </button>
                 </div>
 

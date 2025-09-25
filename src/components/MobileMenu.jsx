@@ -1,6 +1,6 @@
 
 import React from "react";
-import { X } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import { NavLink } from "react-router";
 import { useAuth } from "../Context/AuthContext";
 
@@ -8,12 +8,12 @@ const MobileMenu = ({ isOpen, onClose }) => {
     const { isAuthenticated, logout } = useAuth();
     const navItems = [
         { name: "Home", path: "/" },
-        { name: "About us", path: "/about" },
+        { name: "About Us", path: "/about" },
         { name: "FAQs", path: "/faqs" },
         { name: "Team", path: "/team" },
         { name: "Know your Risk", path: "/risk" },
         { name: "Blog", path: "/blog" },
-        { name: "Contact us", path: "/contact" },
+        { name: "Contact Us", path: "/contact" },
     ];
 
     return (
@@ -52,7 +52,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                             onClick={onClose} // auto-close menu after click
                             className="block w-[106px] h-[35px] border border-[#566AFF] bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full font-medium hover:opacity-90 transition text-center leading-[35px]"
                         >
-                            {isAuthenticated ? (<NavLink to={'/dashboard'}>Dashboard</NavLink>):(<NavLink to={'/login'}>Login</NavLink>)}
+                            {isAuthenticated ? (<NavLink to={'/dashboard'}>Dashboard</NavLink>) : (<NavLink to={'/login'}>Login</NavLink>)}
                         </div>
                     </div>
 
@@ -77,12 +77,15 @@ const MobileMenu = ({ isOpen, onClose }) => {
 
                     {/* Language Selector */}
                     <div className="border-t pt-4 pb-4 mt-[8rem]">
-                        <select className="border border-gray-300 text-gray-700 rounded-full px-5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400">
-                            <option>Language</option>
-                            <option>English</option>
-                            <option>French</option>
-                            <option>Spanish</option>
-                        </select>
+                        <div className="relative  inline-block">
+                            <select className="border border-gray-300 text-gray-700 rounded-full px-2 pr-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none ">
+                                <option>Language</option>
+                                <option>English</option>
+                                <option>French</option>
+                                <option>Spanish</option>
+                            </select>
+                            <ChevronDown className="absolute right-1.5 top-0 translate-y-1/3 w-4 h-4 text-gray-700 pointer-events-none " />
+                        </div>
                         <span className="text-xs text-gray-500 mt-1 block">
                             Powered by{" "}
                             <span
