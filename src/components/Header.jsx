@@ -103,7 +103,7 @@ const Header = () => {
                     {/* Language Selector */}
                     <div className="flex flex-col items-center h-full relative text-[0.688rem] xl:text-xs">
                         <div className="relative inline-block ">
-                            <select className="border border-[#0B1E2A] text-[rgba(11,30,42,0.9)] font-medium tracking-normal rounded-full lg:px-2 xl:px-3 xl:pr-5 py-1  focus:outline-none focus:ring-2 focus:ring-blue-400 font-redhat appearance-none"  >
+                            <select className="border border-[#0B1E2A] text-[rgba(11,30,42,0.9)] font-medium tracking-normal rounded-full lg:px-2 lg:pr-5 xl:pr-5 xl:px-3 py-1  focus:outline-none focus:ring-2 focus:ring-blue-400 font-redhat appearance-none"  >
                                 <option>Language</option>
                                 <option>English</option>
                                 <option>French</option>
