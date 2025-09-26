@@ -7,11 +7,12 @@ import MeterIcon from '../assets/Extra/Meter.png'
 import BaseIcon from '../assets/Extra/Base.png'
 import NeedleIcon from '../assets/Extra/Vector.png'
 import { useNavigate } from 'react-router'
+import { VnData } from '../libs/vnData'
 
 
 
 const AssementResult = () => {
-    const navigate = useNavigate();    
+    const navigate = useNavigate();
     const [riskValue, setRiskValue] = useState(85)
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
@@ -63,7 +64,7 @@ const AssementResult = () => {
                         </div>
                     </div>
                 </div>
-                
+
                 {/* Virtual Navigator */}
                 <div className='space-y-10 mt-14 xl:mt-18'>
                     <div>
@@ -84,16 +85,15 @@ const AssementResult = () => {
             "
                     >
                         {/* Replace with dynamic mapping over your data */}
-                        <NavigatorCard />
-                        <NavigatorCard />
-                        <NavigatorCard />
-                        <NavigatorCard />
-                        <NavigatorCard />
-                        <NavigatorCard />
-                        <NavigatorCard />
-                        <NavigatorCard />
-                        <NavigatorCard />
-                        <NavigatorCard />
+                        {VnData.map((vn) => (
+                            <NavigatorCard
+                                key={vn.VnID}
+                                VnImage={vn.VnImage}
+                                VnName={vn.VnName}
+                                VnState={vn.VnState}
+                                VnMobile={vn.VnMobile}
+                            />
+                        ))}
                     </div>
                 </div>
             </main>
