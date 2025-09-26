@@ -2,39 +2,7 @@ import React from 'react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 import { CircleArrowLeft } from 'lucide-react';
 const Notification = ({setSelectedView}) => {
-    // const mockNotifications = [
 
-    //     {
-    //         id: 1,
-    //         date: "24/01/25",
-    //         time: "5-6pm",
-    //         message: "Republic Day Special with Dance Event",
-    //     },
-    //     {
-    //         id: 2,
-    //         date: "24/01/25",
-    //         time: "4-10pm",
-    //         message: "“Gulabi Mela” Event",
-    //     },
-    //     {
-    //         id: 3,
-    //         date: "24/01/25",
-    //         time: "5-6pm",
-    //         message: "Republic Day Special with Dance Event",
-    //     },
-    //     {
-    //         id: 4,
-    //         date: "24/01/25",
-    //         time: "5-6pm",
-    //         message: "A New Service Provider Is Added",
-    //     },
-    //     {
-    //         id: 5,
-    //         date: "24/01/25",
-    //         time: "5-6pm",
-    //         message: "Tomorrow Is National Holiday",
-    //     },
-    // ];
     const mockNotifications = [
         {
             id: 1,
@@ -118,13 +86,13 @@ const Notification = ({setSelectedView}) => {
     ];
 
     return (
-        <div className='rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
+        <div className='rounded-4xl lg:rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between gap-4'>
                 <div className='flex items-center gap-3'>
                     <CircleArrowLeft className='text-gray-700 cursor-pointer '
                         onClick={() => setSelectedView("Home")}
                     />
-                    <p className='text-[#0063B9] text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Notifications</p>
+                    <p className='text-black text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Notifications</p>
                 </div>
                 <div className='relative' onClick={() => setActive("Notifications")}>
                     <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
