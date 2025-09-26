@@ -7,7 +7,7 @@ import Base from "../../assets/Dashboard/base.png";
 
 const RiskMeter = () => {
     // risk percentage state (later update from backend)
-    const [riskPercent, setRiskPercent] = useState(75); // Example default: 40%
+    const [riskPercent, setRiskPercent] = useState(55); // Example default: 40%
 
     // map 0–100 → -90 to +90 degrees
     const angle = (riskPercent / 100) * 180 - 90;
@@ -82,11 +82,11 @@ const RiskMeter = () => {
                     </g> */}
                 </svg>
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center " style={{ transform: `rotate(${angle}deg)` }}>
-                    <img src={Base} alt="baseicon" className="w-[40px] xl:w-[34px] origin-bottom z-10 "  />
+                    <img src={Base} alt="baseicon" className="w-[35px] md:w-[30px] lg:w-[25px] xl:w-[34px] origin-bottom z-10 "  />
                     <img
                         src={Needle}
                         alt="Needleicon"
-                        className="w-[11px] md:w-[9px] lg:w-[20px]  absolute bottom-[25px] left-[3px]  origin-bottom -z-10"
+                        className="w-[30px] md:w-[23px] lg:w-[13px] xl:w-[20px]  absolute bottom-[15px] lg:bottom-[20px] xl:bottom-[25px] -left-[2px] md:left-0 lg:left-[3px]  origin-bottom -z-10"
                     />
                 </div>
                 <p className="text-[#E82D48]" style={{ fontFamily: "Sofia Pro", fontWeight: 700, paddingBottom: "5px" }}>High/ <span className="text-[#3FD14A]">Low</span></p>

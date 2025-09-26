@@ -204,7 +204,7 @@ const UserProfile = ({ setSelectedView }) => {
         }
     };
     return (
-        <div className='md:rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
+        <div className='rounded-4xl lg:rounded-none lg:rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between '>
                 {/* 👇 Add click handler */}
                 <div className='flex items-center gap-2 md:gap-4'>
@@ -212,7 +212,7 @@ const UserProfile = ({ setSelectedView }) => {
                     <CircleArrowLeft className='text-gray-700 cursor-pointer'
                         onClick={() => setSelectedView('Home')}
                     />
-                    <p className='text-[#0063B9]  text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Profile</p>
+                    <p className='text-black  text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Profile</p>
                 </div>
                 <div className='relative' onClick={() => setSelectedView("Notifications")}>
                     <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
@@ -252,9 +252,9 @@ const UserProfile = ({ setSelectedView }) => {
                             </div>
 
                             {/* <!-- Third Row --> */}
-                            <div className="flex md: gap-4">
-                                <input type="text" placeholder="Blood Group" name="blood_group" value={profile.blood_group} onChange={handleChange} className="w-full md:w-1/2 border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none bg-[#F4F4F4] placeholder-[#A9A9A9]" />
-                                <div className='relative w-full md:w-1/2'>
+                            <div className="flex gap-4">
+                                <input type="text" placeholder="Blood Group" name="blood_group" value={profile.blood_group} onChange={handleChange} className="w-[50%] md:w-1/2 border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none bg-[#F4F4F4] placeholder-[#A9A9A9]" />
+                                <div className='relative w-[50%] md:w-1/2'>
                                     <select name="gender" value={profile.gender} onChange={handleChange} className="w-full bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 outline-none appearance-none">
                                         <option value=""  >Gender</option>
                                         <option>Male</option>
@@ -270,8 +270,8 @@ const UserProfile = ({ setSelectedView }) => {
                             {/* <!-- Fourth Row --> */}
                             <div className="flex flex-col md:flex-row gap-4 justify-between">
                                 {/* Left side: State + District */}
-                                <div className="flex lg:w-[48%]  xl:w-[48.5%] gap-4 md:gap-5 ">
-                                    <div className='relative md:w-1/2 xl:flex-1'>
+                                <div className="flex w-full md:w-[50%] lg:w-[48%]  xl:w-[48.5%] gap-4 lg:gap-5 ">
+                                    <div className='relative w-[51%]  md:w-1/2 xl:flex-1'>
 
                                         <select name="state" value={profile.state} onChange={handleChange} className="w-full bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-1 xl:px-4 py-0.5 outline-none appearance-none">
                                             <option  > State</option>
@@ -286,7 +286,7 @@ const UserProfile = ({ setSelectedView }) => {
                                             className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2"
                                         />
                                     </div>
-                                    <div className='relative md:w-1/2 xl:flex-1'>
+                                    <div className='relative w-1/2 xl:flex-1'>
 
                                         <select name="district" value={profile.district} disabled={!profile.state || districtLoading} onChange={handleChange} className="w-full bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-1 py-0.5 outline-none appearance-none ">
                                             <option  > District</option>
@@ -302,7 +302,7 @@ const UserProfile = ({ setSelectedView }) => {
                                 </div>
 
                                 {/* Right side: Preferred Language */}
-                                <div className='relative flex-1'>
+                                <div className='relative md:w-1/2 lg:flex-1'>
 
                                     <select name="language" value={profile.language} onChange={handleChange} className="w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none appearance-none">
                                         <option  > Preferred language</option>

@@ -101,9 +101,9 @@ const TestingCenters = ({ setActive }) => {
     };
 
     return (
-        <div className='rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-4 xl:pt-8 xl:px-10'>
+        <div className='rounded-4xl lg:rounded-none lg:rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-4 xl:pt-8 xl:px-10'>
             <div className='flex items-center justify-between gap-4'>
-                <p className='text-[#0063B9]  text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Testing Centres</p>
+                <p className='text-black  text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Testing Centres</p>
                 <div className='relative' onClick={() => setActive("Notifications")}>
                     <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
                     <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
