@@ -12,6 +12,7 @@ import PastConsultation from '../components/Dashboard/PastConsultation';
 import Health from '../components/Dashboard/Health';
 import AppointmentDetail from '../components/Dashboard/AppointmentDetail';
 import Notification from '../components/Dashboard/Notification';
+import UpperMenu from '../components/Dashboard/UpperMenu';
 
 
 const Dashboard = () => {
@@ -66,11 +67,14 @@ const Dashboard = () => {
         ">
             <main className="container max-w-[1200px]  min-h-[calc(100vh-64px-100px)]  flex  lg:max-w-[950px] 
             xl:max-w-[1250px]  justify-between">
-
+                 
                 {/* Center Section with Left and Middle */}
-                <div className='w-full  xl:w-[85%] rounded-4xl flex'>
+                <div className='w-full  xl:w-[85%] rounded-4xl flex flex-col lg:flex-row'>
 
                     {/* Left Panel */}
+                   <div className='lg:hidden mb-6  w-full overflow-x-auto'>
+                        <UpperMenu  setSelectedView={setSelectedView}/>
+                    </div>
                     <div className='hidden bg-[#DAE9F0] rounded-l-4xl w-[30%]  lg:flex flex-col gap-4 '>
 
                         <Sidebar active={selectedView} setActive={setSelectedView} />
