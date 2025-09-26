@@ -86,7 +86,7 @@ const Notification = ({setSelectedView}) => {
     ];
 
     return (
-        <div className='rounded-4xl lg:rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
+        <div className='rounded-4xl lg:rounded-none lg:rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between gap-4'>
                 <div className='flex items-center gap-3'>
                     <CircleArrowLeft className='text-gray-700 cursor-pointer '

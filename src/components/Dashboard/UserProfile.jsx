@@ -204,7 +204,7 @@ const UserProfile = ({ setSelectedView }) => {
         }
     };
     return (
-        <div className='md:rounded-4xl lg:rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
+        <div className='rounded-4xl lg:rounded-none lg:rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
             <div className='flex  items-center justify-between '>
                 {/* 👇 Add click handler */}
                 <div className='flex items-center gap-2 md:gap-4'>
