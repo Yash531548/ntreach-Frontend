@@ -57,6 +57,32 @@ const MobileMenu = ({ isOpen, onClose }) => {
                         </button>
                     </div> */}
                     <div className="border-b pb-4">
+                        <div className="mb-2">
+                            <div className="relative  inline-block">
+                                <select className="border border-gray-300 text-gray-700 rounded-full px-2 pr-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none ">
+                                    <option>Language</option>
+                                    <option>English</option>
+                                    <option>French</option>
+                                    <option>Spanish</option>
+                                </select>
+                                <ChevronDown className="absolute right-1.5 top-0 translate-y-1/3 w-4 h-4 text-gray-700 pointer-events-none " />
+                            </div>
+                            <span className="text-xs text-gray-500 mt-1 block">
+                                Powered by{" "}
+                                <span
+                                    className="font-bold text-xs"
+                                    style={{ fontFamily: "Product Sans, Arial, sans-serif" }}
+                                >
+                                    <span style={{ color: "#4285F4" }}>G</span>
+                                    <span style={{ color: "#EA4335" }}>o</span>
+                                    <span style={{ color: "#FBBC05" }}>o</span>
+                                    <span style={{ color: "#4285F4" }}>g</span>
+                                    <span style={{ color: "#34A853" }}>l</span>
+                                    <span style={{ color: "#EA4335" }}>e</span>
+                                </span>
+                                <span className="font-semibold text-xs"> Translate</span>
+                            </span>
+                        </div>
                         <div
                             onClick={onClose} // auto-close menu after click
                             className="block w-[106px] h-[35px] border border-[#566AFF] bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full font-medium hover:opacity-90 transition text-center leading-[35px]"
@@ -83,16 +109,16 @@ const MobileMenu = ({ isOpen, onClose }) => {
                             </li>
                         ))}
                     </ul>
-                    
-                    
+
+
                     <div
                         onClick={handleLogout}
-                        className={` w-[106px] h-[35px] border border-[#566AFF] bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full font-medium hover:opacity-90 transition text-center leading-[35px] ${isAuthenticated ? "block" : "hidden" }`}
+                        className={` w-[106px] h-[35px] border border-[#566AFF] bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full font-medium hover:opacity-90 transition text-center leading-[35px] ${isAuthenticated ? "block" : "hidden"}`}
                     >
                         Logout
                     </div>
                     {/* Language Selector */}
-                    <div className="border-t pt-4 pb-4 mt-[2rem]">
+                    {/* <div className="border-t pt-4 pb-4 mt-[2rem]">
                         <div className="relative  inline-block">
                             <select className="border border-gray-300 text-gray-700 rounded-full px-2 pr-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none ">
                                 <option>Language</option>
@@ -117,7 +143,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
                             </span>
                             <span className="font-semibold text-xs"> Translate</span>
                         </span>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>
