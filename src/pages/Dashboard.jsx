@@ -13,6 +13,7 @@ import Health from '../components/Dashboard/Health';
 import AppointmentDetail from '../components/Dashboard/AppointmentDetail';
 import Notification from '../components/Dashboard/Notification';
 import UpperMenu from '../components/Dashboard/UpperMenu';
+import DashMenu from '../components/Dashboard/DashMenu';
 
 
 const Dashboard = () => {
@@ -92,6 +93,7 @@ const Dashboard = () => {
                     <RightTab active={selectedView} setActive={setSelectedView} />
                 </div>
             </main>
+            <DashMenu selected={selectedView} setSelected={setSelectedView} />
         </div>
     );
 };

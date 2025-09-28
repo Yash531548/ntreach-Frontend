@@ -76,7 +76,7 @@
 //                     </div>
 //                 </div>
 
-                
+
 
 //             </div>
 //         </footer>
@@ -93,9 +93,14 @@ import help from '../assets/help.png'
 import { SocialIcon } from 'react-social-icons';
 import alliance_india1 from '../assets/alliance_india1.png';
 import Newhumsafarlogo from '../assets/Newhumsafarlogo.png'
+import { useLocation } from 'react-router';
 const Footer = () => {
+    const { pathname } = useLocation();
+    const isDashboard = pathname === '/dashboard'; // Adjust to match your dashboard route
+    // console.log("pathname", pathname);
+    // console.log("isdashboard", isDashboard)
     return (
-        <footer className="bg-[#DAF4FF] pb-[1rem] pt-[1rem] md:pb-[2rem] md:pt-[2rem] lg:pt-[1.5rem] lg:pb-[1.5rem] px-1  mt-[3rem] ">
+        <footer className={`bg-[#DAF4FF] ${isDashboard ? "pb-[5rem]" : "pb-[1rem]" }  pt-[1rem] md:pb-[2rem] md:pt-[2rem] lg:pt-[1.5rem] lg:pb-[1.5rem] px-1  mt-[3rem] `}>
 
             {/* Desktop Layout */}
             <div className="hidden lg:flex flex-col gap-12 items-center justify-center text-sm">
@@ -104,12 +109,12 @@ const Footer = () => {
                     <div className="flex flex-row gap-4">
                         {/* <img src={humsafarlogo} alt="humsafarLogo" width={85}/> */}
                         <img src={Newhumsafarlogo} alt="humsafarLogo" width={100} />
-                        <img src={alliance_india1} alt="AllianceIndia" className='object-contain w-[85px]'/>
+                        <img src={alliance_india1} alt="AllianceIndia" className='object-contain w-[85px]' />
                     </div>
                     <p className='text-lg text-[#0B1E2A] '>Powered by The Humsafar Trust ❤️</p>
                     {/* Helpline */}
                     <div className="flex  flex-row gap-2 text-xs items-center">
-                        <img src={help} alt="helpLineNumber" className='w-14 h-9 object-cover'/>
+                        <img src={help} alt="helpLineNumber" className='w-14 h-9 object-cover' />
                         <p className='text-[11px] text-[#0B1E2A] font-light'>For AIDS Helpline <br />Phone no: <span className='underline'>1097</span></p>
                     </div>
                 </div>
@@ -117,8 +122,8 @@ const Footer = () => {
                 <div className="container max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between">
                     {/* Disclaimer */}
                     <div className=" flex-1/3">
-                        <p className="pb-2 text-sm"><span style={{fontFamily:"Sofia Pro" , fontWeight:600}}>Disclaimer:</span></p>
-                        <p className="text-[13px]" style={{fontFamily:"Sofia Pro", fontWeight:200}}>By proceeding further on the NETREACH Website, you agree to provide requested details such as personal information, location, etc. to help connect you with the service you are looking for. The data collected will be kept confidential.</p>
+                        <p className="pb-2 text-sm"><span style={{ fontFamily: "Sofia Pro", fontWeight: 600 }}>Disclaimer:</span></p>
+                        <p className="text-[13px]" style={{ fontFamily: "Sofia Pro", fontWeight: 200 }}>By proceeding further on the NETREACH Website, you agree to provide requested details such as personal information, location, etc. to help connect you with the service you are looking for. The data collected will be kept confidential.</p>
                     </div>
                     {/* Social Icons */}
                     <div className="flex-1 text-right flex flex-row justify-end gap-2 mt-6">
@@ -164,7 +169,7 @@ const Footer = () => {
                     </div>
                 </div>
 
-                
+
 
             </div>
         </footer>
