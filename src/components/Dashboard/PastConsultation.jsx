@@ -141,7 +141,7 @@ const PastConsultation = ({ setSubView }) => {
                     <thead>
                         <tr className="text-[#626262] text-xs" >
                             <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Date</th>
-                            <th className="py-3  xl:px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Start Time</th>
+                            <th className="py-3  xl:px-4 whitespace-nowrap " style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Start Time</th>
                             <th className="py-3  px-4 whitespace-nowrap " style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Type of Service</th>
                             <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Duration</th>
                             <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>Recommendations</th>
