@@ -1,5 +1,5 @@
 // components/Dashboard/DashMenu.jsx
-import { Home, Calendar, Book, FilePlus2, User2, User, FileText, TestTubeDiagonal } from 'lucide-react';
+
 import { useNavigate } from 'react-router';
 import HomeIcon from '../../assets/Dashboard/Mobile/Home.svg'
 import ActiveHome from '../../assets/Dashboard/Mobile/HomeActive.svg'
@@ -9,13 +9,7 @@ import TestingCenter from '../../assets/Dashboard/Mobile/TestingCenter.svg'
 import ActiveTesting from '../../assets/Dashboard/Mobile/TestingActive.svg'
 import Teleconsultation from '../../assets/Dashboard/Mobile/Teleconsulation.svg'
 import ActiveTeleconsultation from '../../assets/Dashboard/Mobile/TeleconsulationActive.svg'
-// const menuItems = [
-//     { key: 'Home', label: 'Dashboard Page', icon: <Home size={22} /> },
-//     { key: 'teleconsultation', label: 'Book a Teleconsultation', icon: <Calendar size={22} /> },
-//     { key: 'Book an Appointment', label: 'Book an Appointment', icon: <Book size={22} />, to: '/bookappointment' },
-//     { key: 'PrEP Consultation', label: 'PrEP Consultation', icon: <FileText size={22} />, to: '/prepconsultation' },
-//     { key: 'Testing Centers', label: 'Testing Centres', icon: <User size={22} /> },
-// ];
+
 const menuItems = [
     { key: 'Home', label: 'Dashboard Page', icon: HomeIcon, active: ActiveHome },
     { key: 'teleconsultation', label: 'Book a Teleconsultation',  icon: Teleconsultation, active: ActiveTeleconsultation},
