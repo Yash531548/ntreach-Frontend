@@ -73,14 +73,14 @@ const Dashboard = () => {
                 <div className='w-full  xl:w-[85%] rounded-4xl flex flex-col lg:flex-row'>
 
                     {/* Left Panel */}
-                    <div className='lg:hidden mb-6  w-full overflow-x-auto'>
+                    
                         {/* <UpperMenu  selected={selectedView} setSelectedView={setSelectedView}/> */}
                         {!['Testing Centers', 'teleconsultation'].includes(selectedView) && (
                             <div className='lg:hidden mb-6  w-full overflow-x-auto'>
                                 <UpperMenu selected={selectedView} setSelectedView={setSelectedView} />
                             </div>
                         )}
-                    </div>
+
                     <div className='hidden bg-[#DAE9F0] rounded-l-4xl w-[30%]  lg:flex flex-col gap-4 '>
 
                         <Sidebar active={selectedView} setActive={setSelectedView} />

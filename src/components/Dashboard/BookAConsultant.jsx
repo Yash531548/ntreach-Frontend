@@ -16,7 +16,7 @@ const BookAConsultant = ({ setSubView, setSelectedView }) => {
                     onClick={() => { setSubView('Past Consultation') }}
                     className='text-[13px] xl:text-sm text-[#323FF7] underline cursor-pointer'>View past Consultation</p>
             </div>
-            <div className='w-full rounded-2xl shadow-sm md:h-[53%] mt-[2rem] mb-[1rem] px-3 py-4 md:pt-3 md:p-8 ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
+            <div className='w-full rounded-2xl lg:shadow-sm md:h-[53%] mt-[2rem] mb-[1rem] px-3 py-4 md:pt-3 md:p-8 ' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
                 <div className="grid  grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl text-sm mt-6">
                     {/* Row 1 */}
 
@@ -68,9 +68,8 @@ const BookAConsultant = ({ setSubView, setSelectedView }) => {
 
                     </div>
                 </div>
-
             </div>
-            <div className='mt-[1.7rem]'>
+            <div className='mt-[1.7rem]  px-0 md:px-7 md:mt-[3rem] lg:mt-[1.7rem]'>
                 <button
                     onClick={() => {
                         setSelectedView("Home");
@@ -79,7 +78,7 @@ const BookAConsultant = ({ setSubView, setSelectedView }) => {
                     style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                     className="text-sm relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] 
                                 bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
-                                text-white rounded-full cursor-pointer gap-8"
+                                text-white rounded-full cursor-pointer gap-8 "
                 >
                     Book consultation
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg  ">
