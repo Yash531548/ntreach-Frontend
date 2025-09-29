@@ -19,7 +19,7 @@ import DashMenu from '../components/Dashboard/DashMenu';
 const Dashboard = () => {
     const [selectedView, setSelectedView] = useState('Home');
     const [subView, setSubView] = useState(null); // for inside pages like Reschedule
-    
+
     const renderContent = () => {
         switch (selectedView) {
             case 'Home':
@@ -68,13 +68,18 @@ const Dashboard = () => {
         ">
             <main className="container max-w-[1200px]  min-h-[calc(100vh-64px-100px)]  flex  lg:max-w-[950px] 
             xl:max-w-[1250px]  justify-between">
-                 
+
                 {/* Center Section with Left and Middle */}
                 <div className='w-full  xl:w-[85%] rounded-4xl flex flex-col lg:flex-row'>
 
                     {/* Left Panel */}
-                   <div className='lg:hidden mb-6  w-full overflow-x-auto'>
-                        <UpperMenu  selected={selectedView} setSelectedView={setSelectedView}/>
+                    <div className='lg:hidden mb-6  w-full overflow-x-auto'>
+                        {/* <UpperMenu  selected={selectedView} setSelectedView={setSelectedView}/> */}
+                        {!['Testing Centers', 'teleconsultation'].includes(selectedView) && (
+                            <div className='lg:hidden mb-6  w-full overflow-x-auto'>
+                                <UpperMenu selected={selectedView} setSelectedView={setSelectedView} />
+                            </div>
+                        )}
                     </div>
                     <div className='hidden bg-[#DAE9F0] rounded-l-4xl w-[30%]  lg:flex flex-col gap-4 '>
 
