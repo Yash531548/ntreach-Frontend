@@ -108,15 +108,21 @@ const ScheduleAppointment = () => {
             alert('Please complete all fields.')
             return
         }
+        const stateObj = states.find(s => String(s.id) === String(selectedState));
+        const state_code = stateObj ? stateObj.state_code : '';
+        if (!state_code) {
+            alert('Invalid state selected.');
+            return;
+        }
         setLoadingSubmit(true)
-        const serviceToSend = incomingServices[0] // Send first service only for now
 
         const data = {
-            service: String(serviceToSend),
-            state: String(selectedState),
-            district: String(selectedDistrict),
-            testing_center: String(selectedCenter),
+            service: incomingServices,
+            state: Number(state_code),
+            district: Number(selectedDistrict),
+            testing_center: Number(selectedCenter),
             appointment_date: formatDateForAPI(appointmentDate),
+            type: "Upcoming"
         };
 
         console.log("data to send on book an appointment", data);
@@ -124,7 +130,7 @@ const ScheduleAppointment = () => {
             const response = await bookAppointment(data)
             if (response.data.status) {
                 const uniqueId = response.data.unique_id
-                navigate('/appointmentconfirmed', { state: { uniqueId } })
+                navigate('/appointmentconfirmed', { state: response.data })
             } else {
                 alert('Failed to book appointment: ' + response.data.message)
             }
@@ -168,7 +174,7 @@ const ScheduleAppointment = () => {
                             <label htmlFor="State" className='text-[#11688F] text-lg'>State</label>
                             <select
 
-                                className="w-full appearance-none bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 mt-1 text-[#A9A9A9] outline-none text-sm"
+                                className={`w-full appearance-none bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 mt-1 outline-none text-sm ${!selectedState && 'text-[#A9A9A9]'}`}
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 id='State'
                                 name="state"
@@ -187,7 +193,7 @@ const ScheduleAppointment = () => {
                             <label htmlFor="District" className='text-[#11688F] text-lg'>District</label>
                             <select
 
-                                className="w-full appearance-none bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 mt-1 text-[#A9A9A9] outline-none text-sm"
+                                className={`w-full appearance-none bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 mt-1 outline-none text-sm ${!selectedDistrict && 'text-[#A9A9A9]'}`}
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 id='District'
                                 value={selectedDistrict}
@@ -209,7 +215,7 @@ const ScheduleAppointment = () => {
                             <label htmlFor="Testing centre" className='text-[#11688F] text-lg'>Testing Centre</label>
                             <select
 
-                                className="w-full appearance-none bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 mt-1 text-[#A9A9A9] outline-none text-sm"
+                                className={`w-full appearance-none bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 mt-1 outline-none text-sm ${!selectedCenter && 'text-[#A9A9A9]'}`}
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 id='Testing centre'
                                 value={selectedCenter}
@@ -231,7 +237,7 @@ const ScheduleAppointment = () => {
                             <label htmlFor="Appointment Date" className='text-[#11688F] text-lg '>Appointment Date</label>
                             <input
                                 type="date"
-                                className="w-full bg-[#F4F4F4] border border-[#92C2D7] rounded-full pl-4 pr-3 py-0.5 text-[#A9A9A9] outline-none text-sm mt-1"
+                                className={`w-full bg-[#F4F4F4] border border-[#92C2D7] rounded-full pl-4 pr-3 py-0.5  outline-none text-sm mt-1 ${!appointmentDate && 'text-[#A9A9A9]'}`}
                                 id='Appointment Date'
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 value={appointmentDate}

@@ -1,11 +1,37 @@
-import React from 'react'
+import { useRef, useEffect } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { useAuth } from '../../Context/AuthContext';
 import logoBac from "../../assets/logo-bac.png";
 import ReceiptImage from "../../assets/Dashboard/Receipt.png";
 // import humsafarLogo from '../../assets/humsafar_logo.png'
 import humsafarLogo from '../../assets/HumsafarLogo1.png'
-const Receipt = () => {
+const Receipt = ({ appointment }) => {
+    const componentRef = useRef();
+    const handleDownload = async () => {
+        const element = componentRef.current;
+        const canvas = await html2canvas(element, { scale: 2 }); // higher scale = better quality
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        // Calculate width & height for A4
+        const pdfWidth = 210;
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save("Appointment.pdf");
+    };
+
+    // Run download automatically when component mounts
+    useEffect(() => {
+        handleDownload();
+    }, []);
+
+    const { user } = useAuth();
+    console.log(appointment)
+
     return (
-        <div style={{fontFamily:"Sofia Pro" , fontWeight:400}} >
+        <div ref={componentRef} style={{fontFamily:"Sofia Pro" , fontWeight:400}} >
             {/* Top Logos and Headers */}
             <div className="pt-6 px-6 ">
                 <div className="flex items-center justify-between">
@@ -34,12 +60,12 @@ const Receipt = () => {
             <div className="flex justify-between items-center mt-5 px-6">
                 <div>
                     <span className="font-semibold">Client Name</span>
-                    <div className="text-sm">Yukti Aggarwal</div>
+                    <div className="text-sm">{user.user?.name}</div>
                 </div>
                 <div className="text-right">
-                    <div><span className="font-semibold">Date:</span> 2025-08-19</div>
+                    <div><span className="font-semibold">Date:</span> {new Date().toISOString().split('T')[0]}</div>
                     <div className="text-sm mt-1">
-                        <span className="font-semibold">Netreach UID:</span> NETREACH/HR/SELF/7464
+                        <span className="font-semibold">Netreach UID:</span> {appointment?.unique_id || 'N/A'}
                     </div>
                 </div>
             </div>
@@ -48,11 +74,11 @@ const Receipt = () => {
             <div className="mt-5 mx-6 rounded overflow-hidden">
                 <div className="flex bg-[#F2F2F2] px-4 py-2 font-semibold text-sm">
                     <div className="flex-1">Service Provider Name/Address</div>
-                    <div className="flex-1 text-center">Government Dispensary Sec 4</div>
+                    <div className="flex-1 text-center">{appointment?.center_name} <br /> {appointment?.address}</div>
                 </div>
                 <div className="flex px-4 py-2  text-sm">
                     <div className="flex-1 font-medium">Appointment Date</div>
-                    <div className="flex-1 text-center">2025-08-20</div>
+                    <div className="flex-1 text-center">{appointment?.appointment_data?.appoint_date}</div>
                 </div>
             </div>
 
@@ -62,23 +88,23 @@ const Receipt = () => {
                     Type of services selected
                 </div>
                 <ul className="px-7 py-3 text-sm list-disc space-y-1">
-                    <li>HIV Test</li>
-                    <li>STI Services</li>
-                    <li>PEP</li>
+                    {appointment?.serviceNames?.map((service) => (
+                        <li>{service}</li>
+                    ))}
                 </ul>
             </div>
 
             {/* Contact & Slip Info */}
             <div className="flex justify-between items-center mt-2 px-6 text-sm">
                 <div>
-                    <span className="">VN Name:</span> Manoj
+                    <span className="">VN Name:</span> {appointment?.vn_details?.name || 'N/A'}
                 </div>
                 <div>
-                    <span className="">VN Mobile:</span> 9876543210
+                    <span className="">VN Mobile:</span> {appointment?.vn_details?.mobile_number || 'N/A'}
                 </div>
             </div>
             <div className="mt-2 px-6 text-sm">
-                <span className="">E-Referral Slip No.:</span> 190073027017301
+                <span className="">E-Referral Slip No.:</span> {appointment?.appointment_data?.e_referral_no || 'N/A'}
             </div>
 
             {/* Bottom Image and Info */}

@@ -19,12 +19,13 @@ import DashMenu from '../components/Dashboard/DashMenu';
 const Dashboard = () => {
     const [selectedView, setSelectedView] = useState('Home');
     const [subView, setSubView] = useState(null); // for inside pages like Reschedule
+    const [data, setData] = useState(null)
 
     const renderContent = () => {
         switch (selectedView) {
             case 'Home':
                 if (subView === "Appointment Detail") {
-                    return < AppointmentDetail setSubView={setSubView} setSelectedView={setSelectedView} />
+                    return < AppointmentDetail setSubView={setSubView} setSelectedView={setSelectedView} data={data} />
                 }
                 return < Health setSubView={setSubView} setActive={setSelectedView} />;
             case 'Upcoming Appointments':
@@ -36,7 +37,7 @@ const Dashboard = () => {
                 if (subView === 'Past Consultation') {
                     return < PastConsultation setSubView={setSubView} />
                 }
-                return < BookAConsultant setSubView={setSubView} setSelectedView={setSelectedView} />;
+                return < BookAConsultant setSubView={setSubView} setSelectedView={setSelectedView} setData={setData} />;
             case 'My Results/Past Data':
                 return < ResultData setSubView={setSubView} setSelectedView={setSelectedView} />;
             case "userProfile":

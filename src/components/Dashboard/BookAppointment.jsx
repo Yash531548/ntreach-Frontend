@@ -3,7 +3,10 @@ import GetTested from '../../assets/Dashboard/GetTested.png'
 import ChatBot from '../ChatBot';
 import { NavLink, useNavigate } from 'react-router';
 import { fetchServiceTypes } from '../../Api/fetchServiceTypes';
+import { useAuth } from '../../Context/AuthContext';
+
 const BookAppointment = () => {
+    const { user } = useAuth();
     const [UserName, setUserName] = useState("");
     const [services, setServices] = useState([]);
     const [selectedServices, setSelectedServices] = useState(new Set());
@@ -19,6 +22,14 @@ const BookAppointment = () => {
         8: "Referral to TI services",
         7: "ART Linkages"
     };
+
+    // Auto-fill
+    useEffect(() => {
+      if (user) {
+        setUserName(user.user?.name || "")
+      }
+    }, [user])
+
     useEffect(() => {
         async function getServices() {
             const allServices = await fetchServiceTypes();
@@ -44,6 +55,12 @@ const BookAppointment = () => {
     const handleLetsGo = () => {
         // Convert Set to Array, or send as preferred
         console.log("selected service " , selectedServices)
+
+        if (selectedServices.size === 0) {
+            alert("Please select at least one service before continuing.");
+            return;
+        }
+
         navigate('/schedulesppointment', { state: { selectedServices: Array.from(selectedServices) } });
     };
 
@@ -66,7 +83,7 @@ const BookAppointment = () => {
                     <div className='flex flex-col gap-8'>
                         <div className='flex flex-col gap-2'>
                             <label htmlFor="Name" className='text-[#11688F] text-lg'>Provide Your Name</label>
-                            <input type="text" name="Name" id="Name" placeholder='Enter Your Name' value={UserName} onChange={(e) => setUserName(e.target.value)} className='outline-none text-sm bg-[#F4F4F4] rounded-4xl py-1 px-4' />
+                            <input type="text" name="Name" id="Name" placeholder='Enter Your Name' value={UserName} onChange={(e) => setUserName(e.target.value)} required className='outline-none text-sm bg-[#F4F4F4] rounded-4xl py-1 px-4' />
                         </div>
                         <div>
                             {/* Select service required */}

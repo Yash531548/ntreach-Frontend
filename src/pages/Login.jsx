@@ -1,15 +1,16 @@
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import WHO from '../assets/login/WHO.jpg'
 import Who from '../assets/login/Who.png'
 import { useNavigate } from 'react-router';
 import { ChevronDown } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
 import { sendOtp, verifyOtp } from '../Api/Authentication/auth';
+import { updateUserProfile } from '../Api/user/updateUserProfile';
 
 
 const Login = () => {
-    const { login } = useAuth();
+    const { user, login } = useAuth();
     const [step, setStep] = useState(1); // track form step
     const [phoneNumber, setPhoneNumber] = useState("");
     const [otp, setOtp] = useState("");
@@ -22,9 +23,31 @@ const Login = () => {
         state: "",
         district: "",
         email: "",
-        language: ""
+        preferd_language: ""
     });
     const navigate = useNavigate();  // ✅ initialize
+
+    useEffect(() => {
+        if (user) {
+            // If user has complete profile, redirect to dashboard
+            if (user.user?.name && user.user?.gender && user.user?.state) {
+                navigate("/dashboard");
+            } else {
+                // Auto-fill profile form
+                setProfile({
+                    name: user.user?.name || "",
+                    age: user.user?.age || "",
+                    gender: user.user?.gender || "",
+                    state: user.user?.state || "",
+                    district: user.user?.district || "",
+                    email: user.user?.email || "",
+                    preferd_language: user.user?.preferd_language || "",
+                });
+                setStep(3); // Move to profile step
+            }
+        }
+    }, [user, navigate]);
+
     const handlePhoneSubmit = async () => {
         console.log("Phone Number Submitted:", phoneNumber);
         // call API to send OTP here
@@ -64,13 +87,31 @@ const Login = () => {
         }
     };
 
-    const handleProfileSubmit = () => {
+    const handleProfileSubmit = async (e) => {
+        e.preventDefault()
+
         console.log("Profile Data:", profile);
-        // final API call to save profile
-        // const userData = { token: 'xyz', profile };
-        // login(userData);
-        // ✅ redirect to dashboard
-        navigate("/dashboard");
+        setLoading(true);
+        setError("");
+
+        try {
+            const response = await updateUserProfile(profile);
+
+            if (response.data?.status === "success") {
+                // Update auth context with latest user info
+                login({ token: localStorage.getItem("userToken"), user: response.data.user });
+
+                // Redirect to dashboard
+                navigate("/dashboard");
+            } else {
+                setError(response.data?.message || "Profile update failed.");
+            }
+        } catch (err) {
+            console.error(err);
+            setError("Something went wrong while updating profile.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -153,12 +194,13 @@ const Login = () => {
                                 <h1 className='hidden lg:block md:mt-2 md:mr-0'>Profile</h1>
                             </div>
 
-                            <div className="flex flex-col items-start mt-6 gap-3" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+                            <form onSubmit={handleProfileSubmit} className="flex flex-col items-start mt-6 gap-3" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                                 {/* Row 1: Name */}
                                 <input
                                     type="text"
                                     value={profile.name}
                                     onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                                    required
                                     placeholder="Name*"
                                     className="outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full lg:w-[80%] py-3 placeholder:text-[#A9A9A9]"
                                 />
@@ -176,6 +218,7 @@ const Login = () => {
                                         type="text"
                                         value={profile.gender}
                                         onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
+                                        required
                                         placeholder="Gender*"
                                         className="outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-1/2 py-3 placeholder:text-[#A9A9A9]"
                                     />
@@ -188,9 +231,10 @@ const Login = () => {
                                         <select
                                             value={profile.state || ""}
                                             onChange={(e) => setProfile({ ...profile, state: e.target.value })}
-                                            className="outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full  py-3 text-[#A9A9A9] appearance-none "
+                                            required
+                                            className={`outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full py-3 appearance-none ${!profile.state && 'text-[#A9A9A9]'}`}
                                         >
-                                            <option value="">State</option>
+                                            <option value="">State*</option>
                                             <option value="Delhi">Delhi</option>
                                             <option value="Maharashtra">Maharashtra</option>
                                             <option value="Karnataka">Karnataka</option>
@@ -218,8 +262,8 @@ const Login = () => {
                                 {/* Row 5: Preferred Language */}
                                 <input
                                     type="text"
-                                    value={profile.language || ""}
-                                    onChange={(e) => setProfile({ ...profile, language: e.target.value })}
+                                    value={profile.preferd_language || ""}
+                                    onChange={(e) => setProfile({ ...profile, preferd_language: e.target.value })}
                                     placeholder="Preferred language"
                                     className="outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full lg:w-[80%] py-3 placeholder:text-[#A9A9A9]"
                                 />
@@ -227,12 +271,11 @@ const Login = () => {
                                 {/* Submit */}
 
                                 <button
-                                    onClick={handleProfileSubmit}
                                     className="w-[40%] lg:w-[26%] xl:w-[22%] ml-[4px] mt-2 py-[6px] bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-4xl text-[13px]  cursor-pointer  shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040] "
                                 >
                                     Login
                                 </button>
-                            </div>
+                            </form>
                         </>
                     )}
                 </div>

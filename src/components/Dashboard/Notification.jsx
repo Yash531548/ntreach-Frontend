@@ -1,135 +1,113 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
+import { CircleArrowLeft } from 'lucide-react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
-import { CircleArrowLeft } from 'lucide-react';
-const Notification = ({setSelectedView}) => {
+import { getNotifications } from '../../Api/getNotifications' // your helper
 
-    const mockNotifications = [
-        {
-            id: 1,
-            date: "24/01/25",
-            time: "5–6pm",
-            title: "Republic Day Special with Dance Event",
-        },
-        {
-            id: 2,
-            date: "24/01/25",
-            time: "4–10pm",
-            title: "“Gulabi Mela” Event",
-        },
-        {
-            id: 3,
-            date: "24/01/25",
-            time: "5–6pm",
-            title: "Republic Day Special with Dance Event",
-        },
-        {
-            id: 4,
-            date: "24/01/25",
-            time: "5–6pm",
-            title: "A New Service Provider Is Added",
-        },
-        {
-            id: 5,
-            date: "24/01/25",
-            time: "5–6pm",
-            title: "Tomorrow Is National Holiday",
-        },
-        // More mock notifications
-        {
-            id: 6,
-            date: "25/01/25",
-            time: "6–8pm",
-            title: "Annual Cultural Fest Begins Today",
-        },
-        {
-            id: 7,
-            date: "25/01/25",
-            time: "3–4pm",
-            title: "System Maintenance Scheduled",
-        },
-        {
-            id: 8,
-            date: "26/01/25",
-            time: "All Day",
-            title: "Republic Day Parade – Don’t Miss It",
-        },
-        {
-            id: 9,
-            date: "27/01/25",
-            time: "1–2pm",
-            title: "New Health Checkup Camp Launched",
-        },
-        {
-            id: 10,
-            date: "27/01/25",
-            time: "10–11am",
-            title: "Important: Policy Update Notification",
-        },
-        {
-            id: 11,
-            date: "28/01/25",
-            time: "9–10am",
-            title: "Weekly Staff Meeting Reminder",
-        },
-        {
-            id: 12,
-            date: "28/01/25",
-            time: "5–7pm",
-            title: "Yoga & Wellness Workshop",
-        },
-        {
-            id: 13,
-            date: "29/01/25",
-            time: "All Day",
-            title: "Office Closed – Public Holiday",
-        },
-    ];
+const Notification = ({ setSelectedView }) => {
+  const [notifications, setNotifications] = useState([])
+  const [loading, setLoading] = useState(true)
 
-    return (
-        <div className='rounded-4xl lg:rounded-none lg:rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
-            <div className='flex  items-center justify-between gap-4'>
-                <div className='flex items-center gap-3'>
-                    <CircleArrowLeft className='text-gray-700 cursor-pointer '
-                        onClick={() => setSelectedView("Home")}
-                    />
-                    <p className='text-black text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Notifications</p>
-                </div>
-                <div className='relative' onClick={() => setActive("Notifications")}>
-                    <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
-                    <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
-                </div>
-            </div>
-            {/* if need to set fixed height add around h-[65vh] */}
-            <div className="w-full max-h-[85vh] md:h-[50vh] overflow-y-auto overflow-x-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
-                {mockNotifications.map((notification, index) => (
-                    <div
-                        key={notification.id}
-                        className="flex items-center gap-4 py-3 border-b border-gray-200 last:border-b-0"
-                    >
-                        {/* Left: Date + Time */}
-                        {/* <div className="flex flex-col items-center bg-[#FAFAFA] px-3 py-1 rounded-2xl text-[#166DB6] text-xs font-medium min-w-[80px]">
-                            <span>{notification.date}</span>
-                            <span >({notification.time})</span>
-                        </div> */}
-                        <div
-                            style={{ fontFamily: "Sofia Pro", fontWeight: 500 }}
-                            className="flex flex-col items-center bg-[#FAFAFA] px-3 py-1 rounded-xl text-[10px] font-medium min-w-[80px]"
-                        >
-                            <div className="bg-gradient-to-r from-[#323FF7] to-[#33AEE5] bg-clip-text text-transparent text-center">
-                                <span>{notification.date}</span>
-                                <br />
-                                <span>({notification.time})</span>
-                            </div>
-                        </div>
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      setLoading(true)
+      try {
+        const response = await getNotifications()
+        if (response.data.status === true) {
+          const formatted = Array.isArray(response.data.data)
+            ? response.data.data.map((item) => {
+                const createdDate = new Date(item.created_at)
+                return {
+                  id: item.id,
+                  date: createdDate.toLocaleDateString('en-IN'), // e.g. 30/09/2025
+                  time: createdDate.toLocaleTimeString('en-IN', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  }),
+                  title: item.data,
+                  read: !!item.read_at
+                }
+              })
+            : []
+          setNotifications(formatted)
+        } else {
+          console.error('Error fetching notifications:', response.data.message)
+          alert(`Error fetching notifications: ${response.data.message}`)
+        }
+      } catch (error) {
+        console.error('Error fetching notifications:', error.message)
+        alert(`Error fetching notifications: ${error.message}`)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-                        {/* Right: Message */}
-                        {/* <p className="text-black text-base ">{notification.message}</p> */}
-                        <p className="text-black text-base ">{notification.title}</p>
-                    </div>
-                ))}
-            </div>
+    fetchNotifications()
+  }, [])
+
+  return (
+    <div className="rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10">
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <CircleArrowLeft
+            className="text-gray-700 cursor-pointer"
+            onClick={() => setSelectedView('Home')}
+          />
+          <p
+            className="text-[#0063B9] text-[25px] md:text-[28px] xl:text-3xl"
+            style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
+          >
+            Notifications
+          </p>
         </div>
-    )
+        <div className="relative">
+          <img src={NotificationMobileIcon} alt="Notification icon" className="lg:hidden" />
+          {notifications.some((n) => !n.read) && (
+            <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+          )}
+        </div>
+      </div>
+
+      {/* Notifications List */}
+      <div
+        className="w-full max-h-[85vh] md:h-[50vh] overflow-y-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4"
+        style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}
+      >
+        {loading ? (
+          <p className="text-center text-gray-500">Loading notifications...</p>
+        ) : notifications.length === 0 ? (
+          <p className="text-center text-gray-500">No notifications found</p>
+        ) : (
+          notifications.map((notification) => (
+            <div
+              key={notification.id}
+              className="flex items-center gap-4 py-3 border-b border-gray-200 last:border-b-0"
+            >
+              {/* Left: Date + Time */}
+              <div
+                style={{ fontFamily: 'Sofia Pro', fontWeight: 500 }}
+                className="flex flex-col items-center bg-[#FAFAFA] px-3 py-1 rounded-xl text-[10px] font-medium min-w-[80px]"
+              >
+                <div className="bg-gradient-to-r from-[#323FF7] to-[#33AEE5] bg-clip-text text-transparent text-center">
+                  <span>{notification.date}</span>
+                  <br />
+                  <span>({notification.time})</span>
+                </div>
+              </div>
+
+              {/* Right: Message */}
+              <p
+                className={`text-base ${
+                  notification.read ? 'text-gray-500' : 'text-black font-semibold'
+                }`}
+              >
+                {notification.title}
+              </p>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  )
 }
 
 export default Notification

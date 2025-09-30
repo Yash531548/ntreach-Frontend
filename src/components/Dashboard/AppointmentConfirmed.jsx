@@ -43,7 +43,7 @@ const AppointmentConfirmed = () => {
                         <p className="mt-2 text-base md:text-xl ">
                             Your NETREACH Unique ID is:
                         </p>
-                        <p className='text-xl md:text-2xl lg:text-2xl xl:text-3xl text-[#1475A1] break-all'>{appointmentData?.uniqueId}</p>
+                        <p className='text-xl md:text-2xl lg:text-2xl xl:text-3xl text-[#1475A1] break-all'>{appointmentData?.unique_id}</p>
                     </div>
                     <button
                         onClick={() => handleClick()}
@@ -71,7 +71,7 @@ const AppointmentConfirmed = () => {
                     onClick={() => setShowModal(false)}
                 >
                     <div onClick={(e) => e.stopPropagation()} className="bg-white shadow-lg w-full max-w-lg min-h-[95%]">
-                        <Receipt />
+                        <Receipt appointment={appointmentData} />
                     </div>
                 </div>
             )}

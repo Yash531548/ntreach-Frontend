@@ -1,14 +1,14 @@
 import { ArrowRight, CircleArrowLeft } from 'lucide-react'
 import React from 'react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
-const AppointmentDetail = ({ setSubView, setSelectedView }) => {
+const AppointmentDetail = ({ setSubView, setSelectedView, data }) => {
     const appointment = {
-        appointmentType: "Audio Teleconsultation",
-        serviceType: "HIV Test",
-        date: "24/01/25",
-        time: "10:00 AM",
-        location: "Online",
-        joiningInfo: "Team Link",
+        appointmentType: data.data.type,
+        serviceType: data.data.service,
+        date: data.data.date,
+        time: data.data.time,
+        language: data.data.language,
+        joiningInfo: data.meet_link,
     };
     return (
         <div className='rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
@@ -74,15 +74,15 @@ const AppointmentDetail = ({ setSubView, setSelectedView }) => {
                     </div>
                     {/* Location always in own col */}
                     <div className='hidden md:block'>
-                        <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Location</p>
-                        <p className="mt-1">{appointment.location}</p>
+                        <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Language</p>
+                        <p className="mt-1">{appointment.language}</p>
                     </div>
 
                     {/* Row 3 (Joining Info + Location together on mobile, split desktop) */}
                     <div className="flex flex-row gap-13 w-full md:flex-col md:gap-0 col-span-1">
                         <div className="flex-1">
                             <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Joining Info</p>
-                            <p className="mt-1">{appointment.joiningInfo}</p>
+                            <a href={appointment.joiningInfo} className="whitespace-nowrap mt-1">{appointment.joiningInfo}</a>
                         </div>
                         <div className="flex-1 md:hidden">
                             <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Location</p>
