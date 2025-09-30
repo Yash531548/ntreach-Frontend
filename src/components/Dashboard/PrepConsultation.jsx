@@ -3,7 +3,10 @@ import ChatBot from '../ChatBot';
 import stopAid from '../../assets/Dashboard/stopAid.png'
 import { NavLink, useNavigate } from 'react-router';
 import { fetchServiceTypes } from '../../Api/fetchServiceTypes';
+import { useAuth } from '../../Context/AuthContext';
+
 const PrepConsultation = () => {
+    const { user } = useAuth();
     const [UserName, setUserName] = useState("");
     const [services, setServices] = useState([]);
     const [selectedServices, setSelectedServices] = useState(new Set());
@@ -12,6 +15,13 @@ const PrepConsultation = () => {
     const serviceNameMap = {
         3: "Pre-Exposure Prophylaxis (PrEP)"
     };
+
+    // Auto-fill
+    useEffect(() => {
+        if (user) {
+        setUserName(user.user?.name || "")
+        }
+    }, [user])
 
     useEffect(() => {
         const getServices = async () => {
