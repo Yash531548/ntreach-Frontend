@@ -3,12 +3,12 @@ import React from 'react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 const AppointmentDetail = ({ setSubView, setSelectedView, data }) => {
     const appointment = {
-        appointmentType: data.data.type,
-        serviceType: data.data.service,
-        date: data.data.date,
-        time: data.data.time,
-        language: data.data.language,
-        joiningInfo: data.meet_link,
+        appointmentType: data?.data?.type || '-',
+        serviceType: data?.data?.service || '-',
+        date: data?.data?.date || '-',
+        time: data?.data?.time || '-',
+        language: data?.data?.language || '-',
+        joiningInfo: data?.meet_link || '-',
     };
     return (
         <div className='rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>

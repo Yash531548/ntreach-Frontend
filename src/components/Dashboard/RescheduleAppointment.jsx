@@ -4,13 +4,13 @@ import { bookAppointment } from '../../Api/bookAppointment' // API import
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 import './reschedule.css'
 
-const RescheduleAppointment = ({ setSubView, setSelectedView, data, setData }) => {
-  const [service, setService] = useState(data.service_ids.length ? data.service_ids : [1, 2]) // data.service_ids
-  const [state, setState] = useState(data.state_id)
-  const [district, setDistrict] = useState(data.district_id)
-  const [testingCenter, setTestingCenter] = useState(data.center_ids)
+const RescheduleAppointment = ({ setSubView, setSelectedView, data }) => {
+  const [service, setService] = useState(data?.service_ids.length ? data?.service_ids : [1, 2]) // data.service_ids
+  const [state, setState] = useState(data?.state_id)
+  const [district, setDistrict] = useState(data?.district_id)
+  const [testingCenter, setTestingCenter] = useState(data?.center_ids)
   const [appointmentDate, setAppointmentDate] = useState()
-  const [appointmentId, setAppointmentId] = useState(data.id)
+  const [appointmentId, setAppointmentId] = useState(data?.id)
   const [loading, setLoading] = useState(false)
 
   // Convert YYYY-MM-DD -> DD-MM-YYYY
