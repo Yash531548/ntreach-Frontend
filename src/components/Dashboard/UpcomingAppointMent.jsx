@@ -1,67 +1,97 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
+import { getBookingAppoinment } from '../../Api/getBookingAppoinment'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
-const UpcomingAppointMent = ({ setSubView }) => {
-    // Mock data (replace later with API response)
+const UpcomingAppointMent = ({ setSubView, setData }) => {
+  const [appointments, setAppointments] = useState([])
 
-    const appointments = [
-        { id: 1, date: "24/01/25", testType: "HIV Test", type: "Upcoming", centre: "Location" },
-        { id: 2, date: "24/01/25", testType: "HIV Test", type: "Follow-up", centre: "Location" },
-        { id: 3, date: "28/01/25", testType: "Blood Test", type: "Upcoming", centre: "Health Centre A" },
-        { id: 4, date: "30/01/25", testType: "X-Ray", type: "Upcoming", centre: "City Hospital" },
-        { id: 5, date: "02/02/25", testType: "COVID-19 Test", type: "Follow-up", centre: "Clinic B" },
-        { id: 6, date: "05/02/25", testType: "HIV Test", type: "Upcoming", centre: "Health Centre A" },
-        { id: 7, date: "07/02/25", testType: "MRI Scan", type: "Upcoming", centre: "Diagnostic Lab" },
-        { id: 8, date: "10/02/25", testType: "Blood Test", type: "Follow-up", centre: "Clinic C" },
-        { id: 9, date: "12/02/25", testType: "HIV Test", type: "Upcoming", centre: "Location" },
-        { id: 10, date: "15/02/25", testType: "Ultrasound", type: "Upcoming", centre: "City Hospital" },
-    ];
-    return (
-        <div className='rounded-4xl lg:rounded-none lg:rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 dm:shadow-sm pt-5 md:px-4 xl:pt-8 xl:px-10'>
-            <div className='flex  items-center justify-between '>
-                <p className='text-black text-[24px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Upcoming Appointments</p>
-                <div className='relative' onClick={() => setSelectedView("Notifications")}>
-                    <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
-                    <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
-                </div>
-            </div>
-            <div className="w-full max-h-[53vh] overflow-y-auto overflow-x-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
-                <table className="w-full text-left border-collapse whitespace-nowrap">
-                    {/* Table Header */}
-                    <thead>
-                        <tr className="text-[#626262] text-xs" >
-                            <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Test Date</th>
-                            <th className="py-3 px-2 xl:px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Type of Test</th>
-                            <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Type</th>
-                            <th className="py-3 px-4" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Centre</th>
-                            <th className="py-3 px-4"></th>
-                        </tr>
-                    </thead>
+  useEffect(() => {
+    const fetchBookingAppoinment = async () => {
+      try {
+        const response = await getBookingAppoinment()
+        if (response.data.status === 'success') {
+          setAppointments(response.data.user) // update state with API data
+        } else {
+          console.error('Error fetching slots:', response.data.message)
+          alert(`Error fetching slots: ${response.data.message}`)
+        }
+      } catch (error) {
+        console.error('Error fetching slots:', error.response?.data?.message || error.message)
+        alert(`Error fetching slots: ${error.response?.data?.message || error.message}`)
+      }
+    }
+    fetchBookingAppoinment()
+  }, [])
 
-                    {/* Table Body */}
-                    <tbody>
-                        {appointments.map((item, index) => (
-                            <tr
-                                key={item.id}
-                                className={`text-xs text-left hover:bg-[#E9F8FF] hover:border-0 border-b border-b-[#DEDEDE]  `}
-                            >
-                                <td className="py-3 px-4 rounded-l-full">{item.date}</td>
-                                <td className="py-3 px-4">{item.testType}</td>
-                                <td className="py-3 px-4">{item.type}</td>
-                                <td className="py-3 px-4">{item.centre}</td>
-                                <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
-                                    <button
-                                        onClick={() => { setSubView('Reschedule') }}
-                                        className="text-[#323FF7] hover:underline cursor-pointer">
-                                        Reschedule
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+  return (
+    <div className="rounded-4xl lg:rounded-none lg:rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 dm:shadow-sm pt-5 md:px-4 xl:pt-8 xl:px-10">
+      <div className="flex  items-center justify-between ">
+        <p
+          className="text-black text-[24px] md:text-[28px] xl:text-3xl"
+          style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
+        >
+          Upcoming Appointments
+        </p>
+        <div className="relative" onClick={() => setSelectedView('Notifications')}>
+          <img src={NotificationMobileIcon} alt="Notification icon" className="lg:hidden  " />
+          <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
         </div>
-    )
+      </div>
+      <div
+        className="w-full max-h-[53vh] overflow-y-auto overflow-x-auto rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4"
+        style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}
+      >
+        <table className="w-full text-left border-collapse whitespace-nowrap">
+          {/* Table Header */}
+          <thead>
+            <tr className="text-[#626262] text-xs">
+              <th className="py-3 px-4" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
+                Test Date
+              </th>
+              <th
+                className="py-3 px-2 xl:px-4"
+                style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
+              >
+                Type of Test
+              </th>
+              <th className="py-3 px-4" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
+                Type
+              </th>
+              <th className="py-3 px-4" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
+                Centre
+              </th>
+              <th className="py-3 px-4"></th>
+            </tr>
+          </thead>
+
+          {/* Table Body */}
+          <tbody>
+            {appointments.map((appointment) => (
+              <tr
+                key={appointment.id}
+                className={`text-xs text-left hover:bg-[#E9F8FF] hover:border-0 border-b border-b-[#DEDEDE]  `}
+              >
+                <td className="py-3 px-4 rounded-l-full">{appointment.appointment_date}</td>
+                <td className="py-3 px-4">{appointment.service_names.join(', ')}</td>
+                <td className="py-3 px-4">{appointment.booking_status}</td>
+                <td className="py-3 px-4">{appointment.center_name}</td>
+                <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
+                  <button
+                    onClick={() => {
+                      setSubView('Reschedule')
+                      setData(appointment)
+                    }}
+                    className="text-[#323FF7] hover:underline cursor-pointer"
+                  >
+                    Reschedule
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
 }
 
 export default UpcomingAppointMent
