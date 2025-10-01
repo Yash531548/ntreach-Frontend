@@ -1,26 +1,14 @@
 import { useEffect, useState } from 'react'
 import { getNotifications } from '../../Api/getNotifications'
+import { getBookTeleconsultation } from '../../Api/getBookTeleconsultation'
 import RiskMeter from './RiskMeter'
 import Announcement from './Announcement'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 
-// 
-const formatDate = timestamp =>
-  timestamp
-    ? new Date(timestamp).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' })
-    : '-';
-const formatTime = timestamp =>
-  timestamp
-    ? new Date(timestamp).toLocaleTimeString('en-US', {
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-        timeZone: 'Asia/Kolkata'
-      })
-    : '-';
-
-const Health = ({ setSubView, setActive }) => {
+const Health = ({ setSubView, setActive, setData }) => {
   const [notifications, setNotifications] = useState([])
+  const [appointments, setAppointments] = useState([])
+  const [mergedData, setMergedData] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -28,21 +16,54 @@ const Health = ({ setSubView, setActive }) => {
       try {
         const response = await getNotifications()
         if (response.data.status) {
-          setNotifications(response.data.data || [])
+          const notifications = response.data.data
+            .filter((n) => n.type === 'Teleconsultation')
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+          setNotifications(notifications)
         } else {
           console.error('Error fetching notifications:', response.data.message)
-          alert(`Error fetching notifications: ${response.data.message}`)
         }
       } catch (error) {
         console.error('Error fetching notifications:', error.message)
-        alert(`Error fetching notifications: ${error.message}`)
       } finally {
         setLoading(false)
       }
     }
-
     fetchNotifications()
   }, [])
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await getBookTeleconsultation()
+        if (response.data.status === true) {
+          const appointments = response.data.data.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          )
+          setAppointments(appointments)
+        } else {
+          console.error('Error fetching slots:', response.data.message)
+        }
+      } catch (error) {
+        console.error('Error fetching slots:', error.response?.data?.message || error.message)
+      }
+    }
+    fetchAppointments()
+  }, [])
+
+  // Merge notifications + appointments
+  useEffect(() => {
+    if (notifications.length && appointments.length) {
+      const merged = notifications.map((n) => {
+        const matchedAppointment = appointments.find((a) => String(a.id) === String(n.booking_id))
+        return {
+          ...n,
+          appointment: matchedAppointment || null
+        }
+      })
+      setMergedData(merged)
+    }
+  }, [notifications, appointments])
 
   return (
     <div className="rounded-4xl lg:rounded-none lg:rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm py-5 md:px-5 xl:pt-8 xl:px-10 font-sofia">
@@ -71,18 +92,33 @@ const Health = ({ setSubView, setActive }) => {
             </tr>
           </thead>
           <tbody>
-            {notifications.map((n) => (
+            {mergedData.map((item) => (
               <tr
-                key={n.id}
+                key={item.id}
                 className="text-xs text-left hover:bg-[#E9F8FF] border-b border-[#DEDEDE]"
               >
-                <td className="py-3 px-4">{formatDate(n.created_at)}</td>
-                <td className="py-3 px-4">{n.type}</td>
-                <td className="py-3 px-4">{formatTime(n.created_at)}</td>
-                <td className="py-3 px-4">{n.location}</td>
+                <td className="py-3 px-4">
+                  {new Date(item.appointment?.date).toLocaleDateString('en-GB')}
+                </td>
+                <td className="py-3 px-4 capitalize">
+                  {item.appointment?.service?.replace(/_/g, ' ') || item.type}
+                </td>
+                <td className="py-3 px-4">
+                  {item.appointment?.time
+                    ? new Date(`1970-01-01T${item.appointment.time}`).toLocaleTimeString([], {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                      })
+                    : '--'}
+                </td>
+                <td className="py-3 px-4">{item.appointment?.meeting_link}</td>
                 <td className="py-3 px-4 text-[#0078D4]">
                   <button
-                    onClick={() => setSubView('Appointment Detail')}
+                    onClick={() => {
+                      setSubView('Appointment Detail')
+                      setData(item.appointment)
+                    }}
                     className="text-[#323FF7] cursor-pointer hover:underline whitespace-nowrap"
                   >
                     View Details

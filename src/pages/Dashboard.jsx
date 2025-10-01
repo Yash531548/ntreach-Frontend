@@ -27,7 +27,7 @@ const Dashboard = () => {
                 if (subView === "Appointment Detail") {
                     return < AppointmentDetail setSubView={setSubView} setSelectedView={setSelectedView} data={data} setData={setData} />
                 }
-                return < Health setSubView={setSubView} setActive={setSelectedView} />;
+                return < Health setSubView={setSubView} setActive={setSelectedView} setData={setData} />;
             case 'Upcoming Appointments':
                 if (subView === 'Reschedule') {
                     return < RescheduleAppointment setSubView={setSubView} setSelectedView={setSelectedView} data={data} setData={setData} />
