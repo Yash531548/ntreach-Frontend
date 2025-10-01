@@ -5,6 +5,7 @@ import { ChevronDown, Menu, Search } from "lucide-react"; // icons
 import { NavLink } from "react-router";
 import MobileMenu from "./MobileMenu";
 import { useAuth } from "../Context/AuthContext";
+import LanguageSelector from './LanguageSelector'
 import '../App.css'
 
 const Header = () => {
@@ -102,15 +103,7 @@ const Header = () => {
                 <div className="hidden lg:flex items-center space-x-2 lg:space-x-3 ">
                     {/* Language Selector */}
                     <div className="flex flex-col items-center h-full relative text-[0.688rem] xl:text-xs">
-                        <div className="relative inline-block ">
-                            <select className="border border-[#0B1E2A] text-[rgba(11,30,42,0.9)] font-medium tracking-normal rounded-full lg:px-2 lg:pr-5 xl:pr-5 xl:px-3 py-1  focus:outline-none focus:ring-2 focus:ring-blue-400 font-redhat appearance-none"  >
-                                <option>Language</option>
-                                <option>English</option>
-                                <option>French</option>
-                                <option>Spanish</option>
-                            </select>
-                            <ChevronDown className="absolute right-1 -top-[0.05rem] translate-y-1/2 w-3.5 h-3.5 text-gray-700 pointer-events-none " />
-                        </div>
+                        <LanguageSelector />
                         <span className=" text-[#838383] mt-1 absolute top-full whitespace-nowrap">
                             Powered by{" "}
                             <span className="font-bold  " style={{ fontFamily: "Product Sans, Arial, sans-serif" }}>
