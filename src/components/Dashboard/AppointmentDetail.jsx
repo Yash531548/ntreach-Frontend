@@ -1,7 +1,7 @@
 import { ArrowRight, CircleArrowLeft } from 'lucide-react'
 import React from 'react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
-const AppointmentDetail = ({ setSubView, setSelectedView, data }) => {
+const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
     const appointment = {
         appointmentType: data?.data?.type || '-',
         serviceType: data?.data?.service || '-',
@@ -100,6 +100,7 @@ const AppointmentDetail = ({ setSubView, setSelectedView, data }) => {
                     onClick={() => {
                         setSelectedView("Upcoming Appointments")
                         setSubView("Reschedule")
+                        setData(data)
                     }}
                     style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                     className="text-sm relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] 

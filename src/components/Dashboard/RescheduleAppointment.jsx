@@ -1,23 +1,102 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowRight, CircleArrowLeft } from 'lucide-react'
-import { bookAppointment } from '../../Api/bookAppointment' // API import
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
+import { bookTeleconsultation } from '../../Api/bookTeleconsultation'
+import { getServiceType } from '../../Api/getServiceType' // API import
+import { getTimeSlot } from '../../Api/getTimeSlot' // API import
 import './reschedule.css'
 
-const RescheduleAppointment = ({ setSubView, setSelectedView, data }) => {
-  const [service, setService] = useState(data?.service_ids?.length ? data?.service_ids : [1, 2]) // data.service_ids
-  const [state, setState] = useState(data?.state_id)
-  const [district, setDistrict] = useState(data?.district_id)
-  const [testingCenter, setTestingCenter] = useState(data?.center_ids)
-  const [appointmentDate, setAppointmentDate] = useState()
-  const [appointmentId, setAppointmentId] = useState(data?.id)
+const RescheduleAppointment = ({ setSubView, setSelectedView, data, setData }) => {
+  const [id, setId] = useState(data?.id)
+  const [type, setType] = useState(data?.type || '')
+  const [service, setService] = useState()
+  const [date, setDate] = useState()
+  const [time, setTime] = useState('')
+  const [availabilityId, setAvailabilityId] = useState(null)
+  const [language, setLanguage] = useState(data?.language)
   const [loading, setLoading] = useState(false)
+  const [services, setServices] = useState([]) // store API services
+  const [slots, setSlots] = useState([]) // store API slots
+  const [availableTimes, setAvailableTimes] = useState([]) // filtered times for chosen date
+  console.log(id)
 
-  // Convert YYYY-MM-DD -> DD-MM-YYYY
-  const formatDateForApi = (dateString) => {
-    if (!dateString) return ''
-    const [year, month, day] = dateString.split('-')
-    return `${day}-${month}-${year}`
+  // Fetch services on mount
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await getServiceType()
+        if (response.data.status === 'success') {
+          setServices(response.data.data) // ✅ store services list
+          console.log(response.data.data)
+        } else {
+          console.error('Error fetching services:', response.data.message)
+          alert(`Error fetching services: ${response.data.message}`)
+        }
+      } catch (error) {
+        if (error.response?.data?.message) {
+          console.error('Error fetching services:', error.response.data.message)
+          alert(`Error fetching services: ${error.response.data.message}`)
+        } else {
+          console.error('Error fetching services:', error.message)
+          alert(`Error fetching services: ${error.message}`)
+        }
+      }
+    }
+    fetchServices()
+  }, [])
+
+  // Fetch slots on mount
+  useEffect(() => {
+    const fetchSlots = async () => {
+      try {
+        const response = await getTimeSlot()
+        if (response.data.status === 'success') {
+          setSlots(response.data.data)
+        } else {
+          console.error('Error fetching slots:', response.data.message)
+          alert(`Error fetching slots: ${response.data.message}`)
+        }
+      } catch (error) {
+        if (error.response && error.response.data && error.response.data.message) {
+          console.error('Error fetching slots:', error.response.data.message)
+          alert(`Error fetching slots: ${error.response.data.message}`)
+        } else {
+          console.error('Error fetching slots:', error.message)
+          alert(`Error fetching slots: ${error.message}`)
+        }
+      }
+    }
+    fetchSlots()
+  }, [])
+
+  // Update available times when date changes
+  useEffect(() => {
+    if (date) {
+      const selected = slots.find((slot) => slot.date === date)
+      if (selected) {
+        // only keep unbooked slots
+        setAvailableTimes(selected.time_slots.filter((t) => !t.is_booked))
+      } else {
+        setAvailableTimes([])
+      }
+      setTime('')
+      setAvailabilityId(null)
+    }
+  }, [date, slots])
+
+  // Helper to format time for display (09:00:00 -> 09:00 AM)
+  const formatTimeDisplay = (timeString) => {
+    const [hour, minute] = timeString.split(':')
+    const h = parseInt(hour, 10)
+    const suffix = h >= 12 ? 'PM' : 'AM'
+    const formattedHour = ((h + 11) % 12) + 1
+    return `${formattedHour}:${minute} ${suffix}`
+  }
+
+  // Format date (2025-10-06 -> 06 Oct 2025)
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: 'short', year: 'numeric' }
+    return new Date(dateString).toLocaleDateString('en-GB', options)
   }
 
   // Handle submit
@@ -26,22 +105,22 @@ const RescheduleAppointment = ({ setSubView, setSelectedView, data }) => {
     setLoading(true)
 
     const data = {
+      type,
       service,
-      state,
-      district,
-      testing_center: testingCenter,
-      appointment_date: formatDateForApi(appointmentDate), // YYYY-MM-DD
-      appointment_id: appointmentId
+      date, // YYYY-MM-DD
+      time, // HH:mm
+      language,
+      availability_id: availabilityId,
+      id
     }
     console.log(data)
 
     try {
-      const response = await bookAppointment(data)
+      const response = await bookTeleconsultation(data)
       if (response.data.status === true) {
-        alert('Rescheduled successfully!')
-        // setSelectedView('Home')
-        // setSubView('Appointment Detail')
-        // setData(response.data)
+        setSelectedView('Home')
+        setSubView('Appointment Detail')
+        setData(response.data)
       } else {
         console.error('Booking failed:', response.data.message)
         alert(`Booking failed: ${response.data.message}`)
@@ -89,12 +168,12 @@ const RescheduleAppointment = ({ setSubView, setSelectedView, data }) => {
 
       {/* Form Fields */}
       <div
-        className="w-full rounded-2xl shadow-sm md:h-[53%] mt-[2rem] mb-[1rem] px-3 py-6 md:pt-3   md:p-8"
+        className="w-full rounded-2xl shadow-sm md:h-[53%] mt-[2rem] mb-[1rem] px-3 py-4 md:pt-3 md:p-8"
         style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
       >
-        <div className="grid md:grid-cols-2 gap-6 w-full max-w-3xl text-sm mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl text-sm mt-6">
           {/* Row 1 */}
-          {/* <div className="flex flex-col">
+          <div className="flex flex-col">
             <label className="text-[#11688F] mb-2">Type of Consultation*</label>
             <select
               value={type}
@@ -106,12 +185,12 @@ const RescheduleAppointment = ({ setSubView, setSelectedView, data }) => {
               style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}
             >
               <option value="">Select Type of Consultation</option>
-              <option value="video">Online (Video)</option>
-              <option value="offline">Offline</option>
+              <option value="audio">Audio</option>
+              <option value="video">Video</option>
             </select>
-          </div> */}
+          </div>
 
-          {/* <div className="flex flex-col">
+          <div className="flex flex-col">
             <label className="text-[#11688F] mb-2">Select Service*</label>
             <select
               value={service}
@@ -123,26 +202,40 @@ const RescheduleAppointment = ({ setSubView, setSelectedView, data }) => {
               }`}
             >
               <option value="">Select Service</option>
-              <option value="general_checkup">General Checkup</option>
-              <option value="specialist">Specialist</option>
+              {services.map((s) => (
+                <option key={s.service_type_id} value={s.service_type_slug}>
+                  {s.service_type}
+                </option>
+              ))}
             </select>
-          </div> */}
+          </div>
 
+          {/* Row 2 */}
           <div className="flex gap-4 md:block">
             <div className="flex flex-col w-1/2 md:w-full ">
               <label className="text-[#11688F] mb-2">Select Date*</label>
-              <input
-                type="date"
-                value={appointmentDate}
-                onChange={(e) => setAppointmentDate(e.target.value)}
+              <select
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
                 style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}
-                className={`w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-1 pl-4 py-0.5 outline-none ${
-                  !appointmentDate && 'text-[#A9A9A9]'
+                className={`w-full border border-[#92C2D7] bg-[#F4F4F4] rounded-full px-4 py-0.5 outline-none ${
+                  !date && 'text-[#A9A9A9]'
                 }`}
-              />
+              >
+                <option value="">Select Date</option>
+                {slots
+                  // only show dates that have at least one unbooked slot
+                  .filter((slot) => slot.time_slots.some((t) => !t.is_booked))
+                  .map((slot) => (
+                    <option key={slot.date} value={slot.date}>
+                      {formatDate(slot.date)}
+                    </option>
+                  ))}
+              </select>
             </div>
 
-            {/* <div className="flex flex-col w-1/2 md:w-full md:mt-6">
+            <div className="flex flex-col w-1/2 md:w-full md:mt-6">
               <label className="text-[#11688F] mb-2">Select Language*</label>
               <select
                 value={language}
@@ -158,11 +251,11 @@ const RescheduleAppointment = ({ setSubView, setSelectedView, data }) => {
                 <option value="Hindi">Hindi</option>
                 <option value="Other">Other</option>
               </select>
-            </div> */}
+            </div>
           </div>
 
           {/* Row 3 */}
-          {/* <div className="flex flex-col">
+          <div className="flex flex-col">
             <label className="text-[#11688F] mb-2">Select Time*</label>
             <select
               value={time}
@@ -186,22 +279,25 @@ const RescheduleAppointment = ({ setSubView, setSelectedView, data }) => {
                 </option>
               ))}
             </select>
-          </div> */}
+          </div>
         </div>
       </div>
 
       {/* Submit */}
       <div className="mt-[1.7rem]">
         <button
+          type="submit"
           disabled={loading}
           style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}
-          className={`text-sm relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer gap-3 ${
-            loading && 'opacity-70 cursor-not-allowed'
-          }`}
+          className={`text-sm relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF] 
+                        bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
+                        text-white rounded-full cursor-pointer gap-8 ${
+                          loading && 'opacity-70 cursor-not-allowed'
+                        }`}
         >
           {loading ? 'Updating...' : 'Update Appointment'}
           {!loading && (
-            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg  ">
+            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg">
               <ArrowRight width={17} />
             </span>
           )}

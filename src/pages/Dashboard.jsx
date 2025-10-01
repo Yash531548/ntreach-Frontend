@@ -25,12 +25,12 @@ const Dashboard = () => {
         switch (selectedView) {
             case 'Home':
                 if (subView === "Appointment Detail") {
-                    return < AppointmentDetail setSubView={setSubView} setSelectedView={setSelectedView} data={data} />
+                    return < AppointmentDetail setSubView={setSubView} setSelectedView={setSelectedView} data={data} setData={setData} />
                 }
                 return < Health setSubView={setSubView} setActive={setSelectedView} />;
             case 'Upcoming Appointments':
                 if (subView === 'Reschedule') {
-                    return < RescheduleAppointment setSubView={setSubView} setSelectedView={setSelectedView} data={data} />
+                    return < RescheduleAppointment setSubView={setSubView} setSelectedView={setSelectedView} data={data} setData={setData} />
                 }
                 return < UpcomingAppointMent setSubView={setSubView} setData={setData} />;
             case 'teleconsultation':

@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
-import { getBookingAppoinment } from '../../Api/getBookingAppoinment'
+import { getBookTeleconsultation } from '../../Api/getBookTeleconsultation'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 const UpcomingAppointMent = ({ setSubView, setData }) => {
   const [appointments, setAppointments] = useState([])
 
   useEffect(() => {
-    const fetchBookingAppoinment = async () => {
+    const fetchAppoinments = async () => {
       try {
-        const response = await getBookingAppoinment()
-        if (response.data.status === 'success') {
-          setAppointments(response.data.user) // update state with API data
-          console.log(response);
+        const response = await getBookTeleconsultation()
+        if (response.data.status === true) {
+          const sortedAppointments = response.data.data.sort(
+            (a, b) => new Date(b.date) - new Date(a.date) // descending
+          )
+          setAppointments(sortedAppointments) // update state with API data
         } else {
           console.error('Error fetching slots:', response.data.message)
           alert(`Error fetching slots: ${response.data.message}`)
@@ -20,7 +22,7 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
         alert(`Error fetching slots: ${error.response?.data?.message || error.message}`)
       }
     }
-    fetchBookingAppoinment()
+    fetchAppoinments()
   }, [])
 
   return (
@@ -71,10 +73,12 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
                 key={appointment.id}
                 className={`text-xs text-left hover:bg-[#E9F8FF] hover:border-0 border-b border-b-[#DEDEDE]  `}
               >
-                <td className="py-3 px-4 rounded-l-full">{appointment.appointment_date}</td>
-                <td className="py-3 px-4">{appointment.service_names.join(', ')}</td>
-                <td className="py-3 px-4">{appointment.booking_status}</td>
-                <td className="py-3 px-4">{appointment.center_name}</td>
+                <td className="py-3 px-4 rounded-l-full">
+                  {new Date(appointment.date).toLocaleDateString('en-GB')}
+                </td>
+                <td className="py-3 px-4 capitalize">{appointment.service?.replace(/_/g, ' ')}</td>
+                <td className="py-3 px-4 capitalize">{appointment.type}</td>
+                <td className="py-3 px-4">{appointment.meeting_link}</td>
                 <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
                   <button
                     onClick={() => {
