@@ -26,6 +26,15 @@ const Login = () => {
         preferd_language: ""
     });
     const navigate = useNavigate();  // ✅ initialize
+    useEffect(() => {
+        if (error) {
+            const timer = setTimeout(() => {
+                setError("");
+            }, 3000); // 3 seconds
+
+            return () => clearTimeout(timer); // cleanup on unmount / re-run
+        }
+    }, [error]);
 
     useEffect(() => {
         if (user) {
@@ -49,17 +58,30 @@ const Login = () => {
     }, [user, navigate]);
 
     const handlePhoneSubmit = async () => {
-        console.log("Phone Number Submitted:", phoneNumber);
+        if (!phoneNumber.trim()) {
+            setError("Please enter your mobile number.");
+            return;
+        }
+        if (!/^\d{10}$/.test(phoneNumber)) {
+            setError("Enter a valid 10-digit mobile number.");
+            return;
+        }
         // call API to send OTP here
         // setStep(2);
         setLoading(true);
         setError("");
         try {
-            await sendOtp(phoneNumber); // Even if error, proceed to next step
-            setStep(2);
+            const response = await sendOtp(phoneNumber);
+            console.log("Full Response:", response);
+            // response.data will contain your backend payload
+            if (response.data?.status === "success") {
+                console.log("Phone Number Submitted:", phoneNumber);
+                // ✅ Only set step if we are not already in step 2
+                if (step !== 2) setStep(2);
+            }
         } catch (err) {
             setError('OTP failed, try again later.');
-            setStep(2); // still move forward
+            // setStep(2); // still move forward
         } finally {
             setLoading(false);
         }
@@ -68,6 +90,15 @@ const Login = () => {
     const handleOtpSubmit = async () => {
         console.log("OTP Submitted:", otp);
         console.log("Phone Submitted:", phoneNumber);
+        // ✅ validation before calling API
+        if (!otp) {
+            setError("Please enter the OTP.");
+            return;
+        }
+        if (!/^\d{4}$/.test(otp)) {
+            setError("Enter a valid 4-digit code.");
+            return;
+        }
         // call API to verify OTP here
         setLoading(true);
         setError("");
@@ -136,14 +167,21 @@ const Login = () => {
                                     placeholder="Enter mobile number"
                                     className="outline-none bg-gray-100 px-6 rounded-[30px] w-full lg:w-[80%] py-3 placeholder:text-[#878787]"
                                 />
+                                {/* Show error here */}
+                                {error && (
+                                    <div className="mt-2 text-sm text-red-700 transition-opacity duration-500 ease-in-out">
+                                        {error}
+                                    </div>
+                                )}
                                 <button
+                                    disabled={loading}
                                     onClick={handlePhoneSubmit}
                                     //             className="w-[60%] md:w-[65%] lg:w-[45%] xl:w-[30%] py-2 md:py-1   bg-gradient-to-b from-[#323FF7] via-[#323FF7] to-[#33AEE5] 
                                     //  text-white rounded-4xl text-sm md:text-[14px]  cursor-pointer hover:shadow-lg/30"
-                                    className="w-[50%] md:w-[65%] lg:w-[45%] xl:w-[30%] py-2 md:py-1.5 ml-[6px]  border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)] 
-                         text-white rounded-4xl text-sm md:text-[13px]  cursor-pointer  shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040] "
+                                    className={`w-[50%] md:w-[65%] lg:w-[45%] xl:w-[30%] py-2 md:py-1.5 ml-[6px]  border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)] 
+                            text-white rounded-4xl text-sm md:text-[13px]  cursor-pointer  shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040] ${loading ? "opacity-70 cursor-not-allowed" : ""} `}
                                 >
-                                    Send Login Code
+                                    {loading ? "Sending OTP..." : "Send Login Code"}
                                 </button>
                             </div>
                         </>
@@ -171,15 +209,25 @@ const Login = () => {
                                     placeholder="Enter login code"
                                     className="outline-none bg-gray-100 px-6 rounded-[30px] w-full lg:w-[80%] py-3 placeholder:text-[#878787]"
                                 />
+                                {/* Error message */}
+                                {error && (
+                                    <div className="mt-2 text-sm text-red-700 transition-opacity duration-500 ease-in-out">
+                                        {error}
+                                    </div>
+                                )}
+
                                 <div className="w-full lg:w-[80%] flex justify-between mt-2 ">
                                     <button
+                                        disabled={loading}
                                         onClick={handleOtpSubmit}
-                                        className="w-[35%] lg:w-[28%]  ml-[6px] py-1.5 border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)]  text-white rounded-3xl text-[13px]  cursor-pointer shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040]"
+                                        className={`w-[35%] lg:w-[28%]  ml-[6px] py-1.5 border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)]  text-white rounded-3xl text-[13px]  cursor-pointer shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040] ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
                                     >
-                                        Next
+                                        {loading ? "Verifying OTP..." : "Next"}
                                     </button>
-                                    <button className="cursor-pointer text-[#5B5B5B] underline text-sm  md:text-[13px]">
-                                        Resend Login Code
+                                    <button onClick={handlePhoneSubmit} // ✅ reuse same function
+                                        disabled={loading}
+                                        className={`cursor-pointer text-[#5B5B5B] underline text-sm  md:text-[13px] ${loading ? "opacity-50 cursor-not-allowed" : ""}`}>
+                                        {loading ? "Resending..." : "Resend Login Code"}
                                     </button>
                                 </div>
 
