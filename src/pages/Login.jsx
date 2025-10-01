@@ -214,14 +214,20 @@ const Login = () => {
                                         placeholder="Age"
                                         className="outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-1/2 py-3 placeholder:text-[#A9A9A9]"
                                     />
-                                    <input
-                                        type="text"
-                                        value={profile.gender}
-                                        onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
-                                        required
-                                        placeholder="Gender*"
-                                        className="outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-1/2 py-3 placeholder:text-[#A9A9A9]"
-                                    />
+                                    <div className='relative w-1/2'>
+                                        <select
+                                            value={profile.gender}
+                                            onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
+                                            required
+                                            className={`outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full py-3 appearance-none ${!profile.gender && 'text-[#A9A9A9]'}`}
+                                        >
+                                            <option value="" disabled>Gender*</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                        <ChevronDown className="absolute bottom-0 right-3 -translate-y-3 text-black pointer-events-none" width={15} />
+                                    </div>
                                 </div>
 
                                 {/* Row 3: State + District */}
