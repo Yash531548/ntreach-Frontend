@@ -16,12 +16,12 @@ const NavButton = ({ label, icon, isActive, onClick }) => {
 
     return (
         <button
-            style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
+            style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
             onClick={onClick}
-            className={`flex items-center gap-2 xl:gap-3 px-1 py-1.5 text-xs xl:text-sm rounded-4xl font-medium transition-all duration-200 cursor-pointer
+            className={`flex items-center gap-2 xl:gap-3 px-1 py-1.5 text-xs xl:text-sm rounded-4xl  transition-all duration-200 cursor-pointer
         ${isActive
                     ? "bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white shadow-md/20"
-                    : " hover:bg-blue-100 text-gray-700"
+                    : " hover:bg-blue-100 text-black"
                 }
         `}
         >
