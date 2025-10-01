@@ -28,9 +28,9 @@ const NavigatorCard = ({ VnImage, VnName, VnState, VnMobile }) => (
         <div className="text-lg sm:text-xl md:text-2xl font-semibold text-black text-center ">
             {VnName}
         </div>
-        <div className="flex items-start mt-1 text-xs sm:text-sm w-full  justify-center  ">
+        <div className="flex items-center mt-1 text-xs sm:text-sm w-full justify-center grow">
             <MapPin className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mr-1 text-[#FF5593]" />
-            <div className="max-w-[110px] sm:max-w-[150px]  text-start  ">
+            <div className="max-w-[110px] sm:max-w-[150px] text-center truncate" title={VnState}>
                 {VnState}
                 {/* Karnataka, Kerala, Tamil Nadu, Puducherry */}
             </div>
