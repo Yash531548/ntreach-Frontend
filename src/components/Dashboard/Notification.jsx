@@ -18,6 +18,7 @@ const Notification = ({ setSelectedView }) => {
                 const createdDate = new Date(item.created_at)
                 return {
                   id: item.id,
+                  createdAt: createdDate.getTime(), // keep raw timestamp for sorting
                   date: createdDate.toLocaleDateString('en-IN'), // e.g. 30/09/2025
                   time: createdDate.toLocaleTimeString('en-IN', {
                     hour: '2-digit',
@@ -27,6 +28,7 @@ const Notification = ({ setSelectedView }) => {
                   read: !!item.read_at
                 }
               })
+              .sort((a, b) => b.createdAt - a.createdAt) // 🔥 sort descending by date
             : []
           setNotifications(formatted)
         } else {
@@ -95,13 +97,7 @@ const Notification = ({ setSelectedView }) => {
               </div>
 
               {/* Right: Message */}
-              <p
-                className={`text-base ${
-                  notification.read ? 'text-gray-500' : 'text-black font-semibold'
-                }`}
-              >
-                {notification.title}
-              </p>
+              <p className="text-xs text-black">{notification.title}</p>
             </div>
           ))
         )}

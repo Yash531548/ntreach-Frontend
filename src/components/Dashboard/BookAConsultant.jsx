@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { ArrowRight } from 'lucide-react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 import { bookTeleconsultation } from '../../Api/bookTeleconsultation'
+import { getServiceType } from '../../Api/getServiceType' // API import
 import { getTimeSlot } from '../../Api/getTimeSlot' // API import
 
 const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
@@ -12,8 +13,34 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
   const [availabilityId, setAvailabilityId] = useState(null)
   const [language, setLanguage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [services, setServices] = useState([]) // store API services
   const [slots, setSlots] = useState([]) // store API slots
   const [availableTimes, setAvailableTimes] = useState([]) // filtered times for chosen date
+
+  // Fetch services on mount
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await getServiceType()
+        if (response.data.status === 'success') {
+          setServices(response.data.data) // ✅ store services list
+          console.log(response.data.data)
+        } else {
+          console.error('Error fetching services:', response.data.message)
+          alert(`Error fetching services: ${response.data.message}`)
+        }
+      } catch (error) {
+        if (error.response?.data?.message) {
+          console.error('Error fetching services:', error.response.data.message)
+          alert(`Error fetching services: ${error.response.data.message}`)
+        } else {
+          console.error('Error fetching services:', error.message)
+          alert(`Error fetching services: ${error.message}`)
+        }
+      }
+    }
+    fetchServices()
+  }, [])
 
   // Fetch slots on mount
   useEffect(() => {
@@ -44,7 +71,8 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
     if (date) {
       const selected = slots.find((slot) => slot.date === date)
       if (selected) {
-        setAvailableTimes(selected.time_slots)
+        // only keep unbooked slots
+        setAvailableTimes(selected.time_slots.filter((t) => !t.is_booked))
       } else {
         setAvailableTimes([])
       }
@@ -152,8 +180,8 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
               style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}
             >
               <option value="">Select Type of Consultation</option>
-              <option value="video">Online (Video)</option>
-              <option value="offline">Offline</option>
+              <option value="audio">Audio</option>
+              <option value="video">Video</option>
             </select>
           </div>
 
@@ -169,8 +197,11 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
               }`}
             >
               <option value="">Select Service</option>
-              <option value="general_checkup">General Checkup</option>
-              <option value="specialist">Specialist</option>
+              {services.map((s) => (
+                <option key={s.service_type_id} value={s.service_type_slug}>
+                  {s.service_type}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -188,11 +219,14 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
                 }`}
               >
                 <option value="">Select Date</option>
-                {slots.map((slot) => (
-                  <option key={slot.date} value={slot.date}>
-                    {formatDate(slot.date)}
-                  </option>
-                ))}
+                {slots
+                  // only show dates that have at least one unbooked slot
+                  .filter((slot) => slot.time_slots.some((t) => !t.is_booked))
+                  .map((slot) => (
+                    <option key={slot.date} value={slot.date}>
+                      {formatDate(slot.date)}
+                    </option>
+                  ))}
               </select>
             </div>
 
