@@ -30,7 +30,8 @@ const UserProfile = ({ setSelectedView }) => {
     const [profile, setProfile] = useState(initialProfile);
     const [avatarUrl, setAvatarUrl] = useState(ManAvatar);
     const [loading, setLoading] = useState(false)
-    const [message, setMessage] = useState('')
+    // const [message, setMessage] = useState('')
+    const [message, setMessage] = useState({ text: '', type: '' });
     const [states, setStates] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [districtLoading, setDistrictLoading] = useState(false);
@@ -71,7 +72,8 @@ const UserProfile = ({ setSelectedView }) => {
 
                 }
             } catch (error) {
-                setMessage('Failed to load profile');
+                // setMessage('Failed to load profile');
+                setMessage({ text: "Failed to load profile", type: "error" });
             }
             setLoading(false);
         };
@@ -89,12 +91,18 @@ const UserProfile = ({ setSelectedView }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        setMessage('');
+        // setMessage('');
+        setMessage({ text: '', type: '' });
         try {
             console.log("profile data", profile)
             const response = await updateUserProfile(profile);
             console.log("API response:", response);
-            setMessage(response.data.message || 'Profile updated!');
+            // setMessage(response.data.message || 'Profile updated!');
+            setMessage({
+                text: response.data.message || 'Profile updated!',
+                type: 'success'
+            });
+
             // Update profile context immediately
             setProfileContext(prev => ({
                 ...prev,
@@ -107,15 +115,29 @@ const UserProfile = ({ setSelectedView }) => {
             if (error.response) {
                 // Server responded with a status code outside 2xx
                 console.error("API error response data:", error.response.data);
-                setMessage(`Update failed: ${error.response.data.message || 'Server error'}`);
+                // setMessage(`Update failed: ${error.response.data.message || 'Server error'}`);
+                setMessage({
+                    text: `Update failed: ${error.response.data.message || 'Server error'}`,
+                    type: 'error'
+                });
+
             } else if (error.request) {
                 // Request made but no response received
                 console.error("No response from API, request was:", error.request);
-                setMessage('Update failed: No response from server.');
+                // setMessage('Update failed: No response from server.');
+                setMessage({
+                    text: 'Update failed: No response from server.',
+                    type: 'error'
+                });
+
             } else {
                 // Something else happened while setting up request
                 console.error("Error setting up request:", error.message);
-                setMessage('Update failed: Request error.');
+                // setMessage('Update failed: Request error.');
+                setMessage({
+                    text: 'Update failed: Request error.',
+                    type: 'error'
+                });
             }
         }
         setLoading(false);
@@ -182,18 +204,31 @@ const UserProfile = ({ setSelectedView }) => {
         const file = e.target.files[0];
         if (!file) return;
         if (file.size > MAX_FILE_SIZE_BYTES) {
-            setMessage(`Image size should be lower than ${MAX_FILE_SIZE_MB}MB.`);
+            // setMessage(`Image size should be lower than ${MAX_FILE_SIZE_MB}MB.`);
+            setMessage({
+                    text: `Image size should be lower than ${MAX_FILE_SIZE_MB}MB.`,
+                    type: 'error'
+                });
             return;
         }
 
         setLoading(true);
-        setMessage('');
+        // setMessage('');
+        setMessage({text:'' , type:""})
         try {
             const response = await updateProfilePhoto(file);
-            setMessage(response.data.message || 'Profile photo updated!');
+            // setMessage(response.data.message || 'Profile photo updated!');
+            setMessage({
+                text: response.data.message || 'Profile photo updated!',
+                type: "success"
+            })
             await loadProfilePhoto();
         } catch {
-            setMessage('Upload failed');
+            // setMessage('Upload failed');
+            setMessage({
+                type: "Upload Failed",
+                type: "error"
+            })
         }
         setLoading(false);
     };
@@ -340,7 +375,12 @@ const UserProfile = ({ setSelectedView }) => {
                             <ArrowRight width={17} />
                         </span>
                     </button>
-                    {message && <div className="mt-2 text-sm text-red-700">{message}</div>}
+                    {/* {message && <div className="mt-2 text-sm text-red-700">{message}</div>} */}
+                    {message.text && (
+                        <div className={`mt-2 text-sm ${message.type === 'success' ? 'text-green-600' : 'text-red-700'}`}>
+                            {message.text}
+                        </div>
+                    )}
                 </div>
             </form>
         </div>
