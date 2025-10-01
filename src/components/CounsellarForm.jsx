@@ -1,14 +1,39 @@
 import { ChevronDown } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import CounsellarFormImage from "../assets/Static/CounsellarForm.png"
+import { fetchStates } from "../Api/getState"; // ✅ API call
 
 const CounsellarForm = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [states, setStates] = useState([]);
+    const [name, setName] = useState("");
+    const [selectedState, setSelectedState] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [message, setMessage] = useState("");
+
+    // ✅ Fetch states on mount
+    useEffect(() => {
+        const loadStates = async () => {
+        try {
+            const data = await fetchStates();
+            setStates(data);
+        } catch (err) {
+            console.error("Error fetching states:", err);
+        }
+        };
+        loadStates();
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-            setIsSubmitted(true);
+        setIsSubmitted(true);
 
+        console.log("Form submitted:", {
+        name,
+        selectedState,
+        mobile,
+        message,
+        });
     };
 
     const fontStack = `"Sofia Pro", "Helvetica Neue", Helvetica, Arial, sans-serif`;
@@ -42,35 +67,52 @@ const CounsellarForm = () => {
                                     type="text"
                                     placeholder="Name"
                                     id="Name"
-                                    className="w-full appearance-none bg-[#F4F4F4] rounded-full px-4 py-0.5 pr-10 mt-1 text-[#7E7E7E] outline-none text-sm"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required
+                                    className={`w-full appearance-none bg-[#F4F4F4] rounded-full px-4 py-0.5 pr-10 mt-1 outline-none text-sm ${!name && 'text-[#7E7E7E]'}`}
                                     style={{ fontFamily: fontStack, fontWeight: 300 }}
                                 />
                             </div>
+
                             <div className="relative">
                                 <label htmlFor="Counsellor" className="text-[#11688F] text-base">Select Counsellor</label>
                                 <select
                                     id="Counsellor"
-                                    defaultValue="Select Counsellor"
-                                    className="w-full appearance-none bg-[#F4F4F4] rounded-full px-4 py-0.5 pr-10 mt-1 text-[#A9A9A9] outline-none text-sm"
+                                    value={selectedState}
+                                    onChange={(e) => setSelectedState(e.target.value)}
+                                    required
+                                    className={`w-full appearance-none bg-[#F4F4F4] rounded-full px-4 py-0.5 pr-10 mt-1 outline-none text-sm ${!selectedState && 'text-[#A9A9A9]'}`}
                                     style={{ fontFamily: fontStack, fontWeight: 300 }}
                                 >
-                                    <option disabled>Select Counsellor</option>
-                                    <option>Pune</option>
-                                    <option>Mumbai</option>
-                                    <option>Bengaluru</option>
+                                    <option value="">
+                                        Select State
+                                    </option>
+                                    {states.map((state) => (
+                                        <option key={state.id} value={state.state_name}>
+                                        {state.state_name}
+                                        </option>
+                                    ))}
                                 </select>
                                 <ChevronDown className="absolute right-2 top-3/4 -translate-y-[10px] text-gray-500 pointer-events-none" />
                             </div>
+
                             <div className="relative">
                                 <label htmlFor="Mobile" className="text-[#11688F] text-base">Mobile Number</label>
                                 <input
-                                    type="text"
+                                    type="number"
                                     placeholder="Mobile Number"
                                     id="Mobile"
-                                    className="w-full appearance-none bg-[#F4F4F4] rounded-full px-4 py-0.5 pr-10 mt-1 text-[#7E7E7E] outline-none text-sm"
+                                    min="1000000000"
+                                    max="9999999999"
+                                    value={mobile}
+                                    onChange={(e) => setMobile(e.target.value)}
+                                    required
+                                    className={`w-full appearance-none bg-[#F4F4F4] rounded-full px-4 py-0.5 pr-10 mt-1 outline-none text-sm ${!mobile && 'text-[#7E7E7E]'}`}
                                     style={{ fontFamily: fontStack, fontWeight: 300 }}
                                 />
                             </div>
+
                             <div>
                                 <label htmlFor="Message" className="text-[#11688F] text-base">Message/Query</label>
                                 <textarea
@@ -78,10 +120,14 @@ const CounsellarForm = () => {
                                     name="Message"
                                     placeholder="Write your message here..."
                                     rows={4}
-                                    className="w-full bg-[#F4F4F4] rounded-2xl pl-4 pr-3 py-2 text-[#A9A9A9] outline-none text-sm mt-1"
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
+                                    required
+                                    className={`w-full bg-[#F4F4F4] rounded-2xl pl-4 pr-3 py-2 outline-none text-sm mt-1 ${!message && 'text-[#A9A9A9]'}`}
                                     style={{ fontFamily: fontStack, fontWeight: 300 }}
                                 />
                             </div>
+
                             <button className="w-full cursor-pointer py-2 rounded-full text-white font-medium bg-gradient-to-b from-[#323FF7] to-[#33AEE5] shadow-lg">
                                 Submit
                             </button>
@@ -93,6 +139,7 @@ const CounsellarForm = () => {
                         </div>
                     )}
                 </div>
+
                 <div className="container md:flex justify-center items-center hidden ">
                     <img src={CounsellarFormImage} alt="CounsellarForm" className="w-full h-[330px] object-contain" />
                 </div>
