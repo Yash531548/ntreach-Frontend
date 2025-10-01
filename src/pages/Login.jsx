@@ -8,6 +8,8 @@ import { useAuth } from '../Context/AuthContext';
 import { sendOtp, verifyOtp } from '../Api/Authentication/auth';
 import { updateUserProfile } from '../Api/user/updateUserProfile';
 
+import { fetchStates } from '../Api/getState';
+import { fetchDistrictsApi } from '../Api/fetchDistrictsApi';
 
 const Login = () => {
     const { user, login } = useAuth();
@@ -25,6 +27,13 @@ const Login = () => {
         email: "",
         preferd_language: ""
     });
+    const [states, setStates] = useState([]);
+    const [districts, setDistricts] = useState([]);
+
+    const selectedStateId = React.useMemo(() => {
+        return states.find(s => s.state_name === profile.state)?.id || "";
+    }, [states, profile.state]);
+
     const navigate = useNavigate();  // ✅ initialize
 
     useEffect(() => {
@@ -47,6 +56,39 @@ const Login = () => {
             }
         }
     }, [user, navigate]);
+
+    useEffect(() => {
+        const loadStates = async () => {
+            try {
+                const data = await fetchStates(); // fetch from API
+                setStates(data); // store in state
+            } catch (err) {
+                console.error("Failed to fetch states", err);
+            }
+        };
+
+        loadStates();
+    }, []);
+
+    useEffect(() => {
+        const loadDistricts = async () => {
+            if (!profile.state) {
+                setDistricts([]);
+                return;
+            }
+            const stateId = states.find(s => s.state_name === profile.state)?.id;
+            if (!stateId) return;
+
+            try {
+                const data = await fetchDistrictsApi(stateId);
+                setDistricts(data);
+            } catch (err) {
+                console.error("Failed to fetch districts", err);
+                setDistricts([]);
+            }
+        };
+        loadDistricts();
+    }, [profile.state, states]);
 
     const handlePhoneSubmit = async () => {
         console.log("Phone Number Submitted:", phoneNumber);
@@ -232,28 +274,44 @@ const Login = () => {
 
                                 {/* Row 3: State + District */}
                                 <div className="flex gap-4 w-full lg:w-[80%]">
-                                    <div className='relative  w-1/2'>
-
+                                    {/* State Dropdown */}
+                                    <div className='relative w-1/2'>
                                         <select
-                                            value={profile.state || ""}
-                                            onChange={(e) => setProfile({ ...profile, state: e.target.value })}
+                                            value={selectedStateId} // use ID here
+                                            onChange={(e) => {
+                                                const stateId = e.target.value;
+                                                const stateName = states.find(s => s.id === parseInt(stateId))?.state_name || "";
+                                                setProfile({ ...profile, state: stateName, district: "" }); // store name, not id
+                                            }}
                                             required
                                             className={`outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full py-3 appearance-none ${!profile.state && 'text-[#A9A9A9]'}`}
-                                        >
+                                            >
                                             <option value="">State*</option>
-                                            <option value="Delhi">Delhi</option>
-                                            <option value="Maharashtra">Maharashtra</option>
-                                            <option value="Karnataka">Karnataka</option>
+                                            {states.map((state) => (
+                                                <option key={state.id} value={state.id}>
+                                                {state.state_name}
+                                                </option>
+                                            ))}
                                         </select>
                                         <ChevronDown className="absolute bottom-0 right-3 -translate-y-3 text-black pointer-events-none" width={15} />
                                     </div>
-                                    <input
-                                        type="text"
+
+                                    {/* District Dropdown */}
+                                    <div className='relative w-1/2'>
+                                        <select
                                         value={profile.district || ""}
                                         onChange={(e) => setProfile({ ...profile, district: e.target.value })}
-                                        placeholder="District"
-                                        className="outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-1/2 py-3 placeholder:text-[#A9A9A9]"
-                                    />
+                                        className={`outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full py-3 appearance-none ${!profile.district && 'text-[#A9A9A9]'}`}
+                                        >
+                                        <option value="">District</option>
+                                        {districts.map((district) => (
+                                            <option key={district.id} value={district.district_name}>
+                                            {district.district_name}
+                                            </option>
+                                        ))}
+                                        </select>
+                                        <ChevronDown className="absolute bottom-0 right-3 -translate-y-3 text-black pointer-events-none" width={15} />
+                                    </div>
                                 </div>
 
                                 {/* Row 4: Email */}
