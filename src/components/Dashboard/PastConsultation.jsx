@@ -129,7 +129,7 @@ const PastConsultation = ({ setSubView }) => {
                 <CircleArrowLeft className='text-gray-700 cursor-pointer'
                     onClick={() => setSubView(null)}
                 />
-                <p className='text-[#1475A1] text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Past Consultation</p>
+                <p className='text-black text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>My Past Consultation</p>
                 <div className='relative' onClick={() => setSelectedView("Notifications")}>
                     <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
                     <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>

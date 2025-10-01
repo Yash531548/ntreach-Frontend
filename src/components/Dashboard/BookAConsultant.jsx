@@ -143,7 +143,7 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
       <div className="flex flex-col md:flex-row gap-4 md:justify-between md:items-center">
         <div className="flex items-center justify-between">
           <p
-            className="text-[#0063B9] text-[25px] md:text-[28px] xl:text-3xl"
+            className="text-black text-[25px] md:text-[28px] xl:text-3xl"
             style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
           >
             Book a Teleconsultation

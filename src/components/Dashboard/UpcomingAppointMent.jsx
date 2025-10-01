@@ -10,6 +10,7 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
         const response = await getBookingAppoinment()
         if (response.data.status === 'success') {
           setAppointments(response.data.user) // update state with API data
+          console.log(response);
         } else {
           console.error('Error fetching slots:', response.data.message)
           alert(`Error fetching slots: ${response.data.message}`)
