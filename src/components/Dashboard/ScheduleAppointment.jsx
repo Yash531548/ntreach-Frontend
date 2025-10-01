@@ -7,6 +7,7 @@ import { fetchStates } from '../../Api/getState'
 import { fetchDistrictsApi } from '../../Api/fetchDistrictsApi'
 import { fetchTestingCentersApi } from '../../Api/fetchTestingCentersApi'
 import { bookAppointment } from '../../Api/bookAppointment'
+import DynamicMap from './DynamicMap'
 
 const ScheduleAppointment = () => {
     const location = useLocation();
@@ -17,6 +18,7 @@ const ScheduleAppointment = () => {
     const [selectedState, setSelectedState] = useState(''); // selected state id
     const [districts, setDistricts] = useState([]);
     const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [selectedName, setSelectedName] = useState('');
     const [districtLoading, setDistrictLoading] = useState(false);
     const [centers, setCenters] = useState([]);
     const [selectedCenter, setSelectedCenter] = useState('');
@@ -179,7 +181,11 @@ const ScheduleAppointment = () => {
                                 id='State'
                                 name="state"
                                 value={selectedState}
-                                onChange={e => setSelectedState(e.target.value)}
+                                onChange={e => {
+                                    const state = states.find((s) => s.id == e.target.value)
+                                    setSelectedState(e.target.value)
+                                    setSelectedName(state ? state.state_name : '')
+                                }}
                             >
                                 <option >Select State</option>
                                 {states.map(state => (
@@ -197,7 +203,11 @@ const ScheduleAppointment = () => {
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 id='District'
                                 value={selectedDistrict}
-                                onChange={e => setSelectedDistrict(e.target.value)}
+                                onChange={e => {
+                                    const district = districts.find((d) => d.id == e.target.value)
+                                    setSelectedDistrict(e.target.value)
+                                    setSelectedName(district ? district.district_name : '')
+                                }}
                                 disabled={!selectedState || districtLoading}
                             >
                                 <option >Select District</option>
@@ -219,7 +229,11 @@ const ScheduleAppointment = () => {
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 id='Testing centre'
                                 value={selectedCenter}
-                                onChange={(e) => setSelectedCenter(e.target.value)}
+                                onChange={(e) => {
+                                    const center = centers.find((c) => c.id == e.target.value)
+                                    setSelectedCenter(e.target.value)
+                                    setSelectedName(center ? center.name : '')
+                                }}
                                 disabled={!selectedDistrict || centerLoading}
 
                             >
@@ -255,8 +269,10 @@ const ScheduleAppointment = () => {
                         </button>
                     </div>
                 </div>
-                <div className='container max-w-[500px] w-[400px]  xl:w-[500px]  flex justify-center items-center'>
-                    <iframe
+                <div className='container max-w-[500px] w-[400px] xl:w-[500px] flex flex-col justify-center'>
+                    <DynamicMap selected={selectedName} />
+                    
+                    {/* <iframe
                         title="Google Map"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14015.545715902042!2d77.06889685!3d28.4956846!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d193f7e6f7e57%3A0xab1dd7c234b63b8c!2sDLF%20CyberPark!5e0!3m2!1sen!2sin!4v1693212345678"
                         width="100%"
@@ -266,7 +282,7 @@ const ScheduleAppointment = () => {
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
                         className='lg:h-[480px] lg:w-[500px]'
-                    ></iframe>
+                    ></iframe> */}
                 </div>
                 <div className="hidden lg:block xl:block">
                     <ChatBot />
