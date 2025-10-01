@@ -14,7 +14,10 @@ const ResultData = ({ setSubView, setSelectedView }) => {
     try {
       const response = await getBookingAppoinment()
       if (response.data.status === 'success') {
-        setAppointments(response.data.user)
+        const sortedAppointments = response.data.user.sort(
+          (a, b) => new Date(b.appointment_date) - new Date(a.appointment_date) // descending
+        )
+        setAppointments(sortedAppointments) // update state with API data
       } else {
         alert(`Error fetching slots: ${response.data.message}`)
       }
@@ -93,7 +96,9 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                 key={appointment.id}
                 className="text-xs text-left hover:bg-[#E9F8FF] hover:border-0 border-b border-b-[#DEDEDE] whitespace-nowrap"
               >
-                <td className="px-4 py-3 rounded-l-4xl">{appointment.appointment_date}</td>
+                <td className="px-4 py-3 rounded-l-4xl">
+                  {new Date(appointment.appointment_date).toLocaleDateString('en-GB')}
+                </td>
                 <td className="px-4 py-3">{appointment.service_names.join(', ')}</td>
                 <td className="px-4 py-3 text-center">{appointment.status}</td>
                 <td className="px-4 py-3 rounded-r-4xl text-[#323FF7]">
