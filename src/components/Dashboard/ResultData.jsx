@@ -122,7 +122,7 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                   )}
                   {appointment.report_file && (
                     <a
-                      href={appointment.report_file}
+                      href={`/storage/${appointment.report_file}`}
                       target="_blank"
                       className="cursor-pointer hover:underline ml-2"
                     >
