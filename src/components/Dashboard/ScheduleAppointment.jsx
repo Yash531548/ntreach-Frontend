@@ -240,6 +240,7 @@ const ScheduleAppointment = () => {
                                 className={`w-full bg-[#F4F4F4] border border-[#92C2D7] rounded-full pl-4 pr-3 py-0.5  outline-none text-sm mt-1 ${!appointmentDate && 'text-[#A9A9A9]'}`}
                                 id='Appointment Date'
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
+                                min={new Date().toISOString().split("T")[0]}   // ✅ prevents past dates
                                 value={appointmentDate}
                                 onChange={(e) => setAppointmentDate(e.target.value)}
                             />
