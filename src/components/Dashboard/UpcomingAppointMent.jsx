@@ -79,7 +79,7 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
                 <td className="py-3 px-4 capitalize">{appointment.service?.replace(/_/g, ' ')}</td>
                 <td className="py-3 px-4 capitalize">{appointment.type}</td>
                 <td className="py-3 px-4">{appointment.meeting_link}</td>
-                <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
+                {/* <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
                   <button
                     onClick={() => {
                       setSubView('Reschedule')
@@ -89,7 +89,7 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
                   >
                     Reschedule
                   </button>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>
