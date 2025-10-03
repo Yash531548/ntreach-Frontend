@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import logoBac from "../assets/logo-bac.png";
 import SpeakerIcon from "../assets/SpeakerIcon.png";
 import { ChevronDown, Menu, Search } from "lucide-react"; // icons
@@ -9,6 +10,8 @@ import LanguageSelector from './LanguageSelector'
 import '../App.css'
 
 const Header = () => {
+    const navigate = useNavigate()
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { isAuthenticated, logout } = useAuth();
 
@@ -121,8 +124,11 @@ const Header = () => {
                     {/* Search Box */}
                     <div className=" flex justify-center px-2   rounded-full items-center border border-[#0B1E2A] text-[0.688rem] xl:text-xs">
                         <input
-                            type="text"
                             placeholder="Search"
+                            onKeyDown={(e) => (
+                                e.key === "Enter" &&
+                                navigate(`/search?q=${encodeURIComponent(e.target.value)}`)
+                            )}
                             className="border-none w-15 xl:w-22 px-1 py-1  outline-none placeholder:text-[#838383]"
                         />
                         <span className=" ">

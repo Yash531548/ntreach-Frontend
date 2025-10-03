@@ -21,6 +21,8 @@ import Blogs from './pages/Blogs'
 import CounsellarForm from './components/CounsellarForm'
 import AssementResult from './components/AssementResult'
 import ProtectedRoute from './Utility/ProtectedRoute'
+import Search from './pages/Search'
+
 function App() {
   return (
     <>
@@ -62,6 +64,7 @@ function App() {
             <Route path='/counsellorform' element={<CounsellarForm />} />
             <Route path='/appointmentconfirmed' element={<AppointmentConfirmed />} />
 
+            <Route path="/search" element={<Search />} />
           </Route>
         </Routes>
       </div>
