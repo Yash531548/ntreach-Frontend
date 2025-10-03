@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react'
+const BASE_URL = import.meta.env.VITE_API_URL
 
 function Blog({ post }) {
   return (
@@ -8,7 +9,7 @@ function Blog({ post }) {
         <div className="flex-shrink-0 w-[230px] rounded-2xl">
           {post.image && (
             <img
-              src={`/storage/blog/${post.image}`}
+              src={`${BASE_URL}/storage/blog/${post.image}`}
               alt=""
               className="w-full h-full object-contain rounded-2xl"
             />

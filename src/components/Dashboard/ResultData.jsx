@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getBookingAppoinment } from '../../Api/getBookingAppoinment'
 import { uploadReport } from '../../Api/uploadReport'
+const BASE_URL = import.meta.env.VITE_API_URL
 import UploadReportModal from './UploadReportModal'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 
@@ -122,7 +123,7 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                   )}
                   {appointment.report_file && (
                     <a
-                      href={`/storage/${appointment.report_file}`}
+                      href={`${BASE_URL}/storage/${appointment.report_file}`}
                       target="_blank"
                       className="cursor-pointer hover:underline ml-2"
                     >
