@@ -7,6 +7,7 @@ import { NavLink } from "react-router";
 import MobileMenu from "./MobileMenu";
 import { useAuth } from "../Context/AuthContext";
 import LanguageSelector from './LanguageSelector'
+import SpeechToText from "./SpeechToText"
 import '../App.css'
 
 const Header = () => {
@@ -14,6 +15,7 @@ const Header = () => {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { isAuthenticated, logout } = useAuth();
+    const [search, setSearch] = useState('')
 
     return (
         <>
@@ -125,15 +127,15 @@ const Header = () => {
                     <div className=" flex justify-center px-2   rounded-full items-center border border-[#0B1E2A] text-[0.688rem] xl:text-xs">
                         <input
                             placeholder="Search"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
                             onKeyDown={(e) => (
                                 e.key === "Enter" &&
                                 navigate(`/search?q=${encodeURIComponent(e.target.value)}`)
                             )}
                             className="border-none w-15 xl:w-22 px-1 py-1  outline-none placeholder:text-[#838383]"
                         />
-                        <span className=" ">
-                            <img src={SpeakerIcon} alt="speaker" />
-                        </span>
+                        <SpeechToText src={SpeakerIcon} onResult={(text) => setSearch(text)} />
                     </div>
 
                     {/* Login Button */}
