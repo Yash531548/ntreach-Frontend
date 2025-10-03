@@ -41,6 +41,9 @@ function LanguageSelector() {
     const domain = window.location.hostname
     const cookieValue = newLang === 'en' ? '/en/en' : '/en/' + newLang
 
+    console.log(domain)
+    console.log(cookieValue)
+
     // Set Google Translate cookies
     // for current host (works on localhost)
     document.cookie = `googtrans=${cookieValue}; path=/`
