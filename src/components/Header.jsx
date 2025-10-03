@@ -107,7 +107,7 @@ const Header = () => {
                     {/* Language Selector */}
                     <div className="flex flex-col items-center h-full relative text-[0.688rem] xl:text-xs">
                         <LanguageSelector />
-                        <span className=" text-[#838383] mt-1 absolute top-full whitespace-nowrap">
+                        {/* <span className=" text-[#838383] mt-1 absolute top-full whitespace-nowrap">
                             Powered by{" "}
                             <span className="font-bold  " style={{ fontFamily: "Product Sans, Arial, sans-serif" }}>
                                 <span style={{ color: "#4285F4" }}>G</span>
@@ -118,7 +118,7 @@ const Header = () => {
                                 <span style={{ color: "#EA4335" }}>e</span>
                             </span>
                             <span className="font-semibold "> Translate</span>
-                        </span>
+                        </span> */}
                     </div>
 
                     {/* Search Box */}
