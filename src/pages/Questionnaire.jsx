@@ -1,6 +1,6 @@
 import { useFooter } from "../Context/FooterContext.jsx";
 // import { steps } from "../libs/StepConfig";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import tell1 from "../assets/question/tell1.png";
 import chatbot from "../assets/chatbot.png";
 import { ArrowLeft, ArrowRight, Mic, SearchIcon } from "lucide-react";
@@ -34,6 +34,14 @@ export default function Questionnaire() {
     const [currentStep, setCurrentStep] = useState(0);
     const [selectedRisk, setSelectedRisk] = useState(null);
     const [answers, setAnswers] = useState({});       // Answers keyed by question_id
+    const scrollContainerRef = useRef(null);
+    // Inside your Questionnaire component (after currentStep is declared)
+    useEffect(() => {
+        if(scrollContainerRef.current){
+            scrollContainerRef.current.scrollTo({top : 0 , behavior:"smooth"}) // Internal scroll only!
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
+    }, [currentStep]);
     useEffect(() => {
         async function getStates() {
             try {
@@ -239,7 +247,7 @@ export default function Questionnaire() {
                                     Loading Question....
                                 </div>
                             ) : (
-                                <div className="space-y-6 max-h-[350px] overflow-y-auto pr-2 h-[350px] pb-3">
+                                <div className="space-y-6 max-h-[350px] overflow-y-auto pr-2 h-[350px] pb-3" ref={scrollContainerRef}>
                                     {currentStep === 1 ? (
                                         <RiskOptionsStep
                                             selected={selectedRisk}
@@ -438,7 +446,7 @@ export default function Questionnaire() {
 
                     {/* ------------------ MOBILE + TABLET (No image, auto height) ------------------ */}
 
-                    <div className="block lg:hidden w-full bg-white shadow-md rounded-2xl p-4 mt-4 ">
+                    <div className="block lg:hidden w-full bg-white shadow-md rounded-2xl p-4 mt-4 " ref={scrollContainerRef}>
                         {!steps.length ? (
                             <div className="flex justify-center py-10 text-3xl">
                                 {/* <ClipLoader color="#323FF7" size={50} /> */}
@@ -468,7 +476,7 @@ export default function Questionnaire() {
                                                             key={opt.answer_id}
                                                             className="flex items-center gap-2 border rounded-2xl px-1.5 border-[#A9A9A9] bg-[#F4F4F4] pr-2.5   md:whitespace-nowrap"
                                                         >
-                                                            <input type="radio" name={`q${q.question_id}`} /> {opt.answer}
+                                                            <input type="radio" name={`q${q.question_id}`}   /> {opt.answer}
                                                         </label>
                                                     ))}
                                                 </div>
@@ -580,11 +588,14 @@ export default function Questionnaire() {
                                 )}
                                 {currentStep < steps.length && currentStep < 4 ? (
                                     <button
+                                    disabled={currentStep === 0 && !isStep1Complete}
                                         onClick={() =>
                                             setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
                                         }
-                                        className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
-               bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
+                                        className={`relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
+                text-white rounded-full cursor-pointer ${currentStep === 0 && !isStep1Complete
+                                                    ? 'bg-gray-400 cursor-not-allowed opacity-70 ' // Disabled styles
+                                                    : 'bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white'}`}
                                     >
                                         Next
                                         <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">
