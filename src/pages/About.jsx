@@ -63,15 +63,15 @@ const About = () => {
                 </main>
             </div>
             {/* Section 2  */}
-            <main className='w-full bg-[#1475A1] container  mx-auto flex items-center text-white mt-10'>
+            {/* <main className=' w-full bg-[#1475A1] container  mx-auto flex items-center text-white mt-10'>
                 <div className="w-full bg-[#1475A1] py-10">
                     <div className="container mx-auto px-4 lg:max-w-[850px] xl:max-w-[1100px]">
                         <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-x md:divide-y-0 divide-white/60 text-white text-center">
-                            {/* Column 1 */}
+                         
                             <div className="flex flex-col items-center px-6 pb-6 md:pb-0">
-                                {/* Replace below with your own SVG/Lucide/Asset */}
+                              
                                 <div className="mb-4 bg-white rounded-full p-2">
-                                    {/* <YourIconComponent className="w-12 h-12" /> */}
+                                   
                                     <img src={NetworkAbout} alt="Network icon" className="mx-auto w-8" />
                                 </div>
                                 <h3 className="font-semibold text-lg mb-2">Nationwide Network</h3>
@@ -80,7 +80,7 @@ const About = () => {
                                 </p>
                             </div>
 
-                            {/* Column 2 */}
+                           
                             <div className="flex flex-col items-center px-6 py-6 md:py-0">
                                 <div className="mb-4 bg-white rounded-full p-2">
                                     <img src={HandshakeAbout} alt="Partnership icon" className="mx-auto w-8" />
@@ -92,7 +92,7 @@ const About = () => {
                                 </p>
                             </div>
 
-                            {/* Column 3 */}
+                          
                             <div className="flex flex-col items-center px-6 pt-6 md:pt-0">
                                 <div className="mb-4 bg-white rounded-full p-2">
                                     <img src={GovernmentAbout} alt="Support icon" className="mx-auto w-8" />
@@ -108,7 +108,7 @@ const About = () => {
 
             </main>
             <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9  ' >
-                {/* Section 3 */}
+              
                 <main className='container max-w-[1200px] flex flex-col items-center mx-auto lg:max-w-[850px] xl:max-w-[1100px] gap-8 md:px-8 md:mt-8  '>
                     <header className='text-3xl lg:text-4xl xl:text-[2.625rem] '>
                         <h2 className="text-[#323FF7] font-semibold">
@@ -120,7 +120,7 @@ const About = () => {
                         <p className='text-[#1475A1] font-medium lg:w-[93%] mx-auto'>Ensuring everyone has access to knowledge and support needed to make informed decisions about their sexual health.</p>
                     </div>
                 </main>
-            </div>
+            </div> */}
         </div>
     )
 }
