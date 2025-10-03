@@ -25,6 +25,7 @@ const Search = () => {
       setLoading(true)
       const response = await getBlog()
       if (response.data.status === 'success') {
+        console.log(response.data)
         setPosts(response.data.data)
         setFilteredPosts(response.data.data)
       }
