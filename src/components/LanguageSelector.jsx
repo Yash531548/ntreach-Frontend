@@ -41,13 +41,15 @@ function LanguageSelector() {
     const domain = window.location.hostname
     const cookieValue = newLang === 'en' ? '/en/en' : '/en/' + newLang
 
-    // clear old googtrans cookies
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}`;
+    // Clear old googtrans cookies for specific domain and subdomain
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=frontend.72.60.83.68.nip.io`;
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.nip.io`;
     document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
 
-    // Set Google Translate cookies
-    document.cookie = `googtrans=${cookieValue}; path=/; domain=${domain}`
-    document.cookie = `googtrans=${cookieValue}; path=/`
+    // Set new googtrans cookies for specific domain and subdomain
+    document.cookie = `googtrans=${cookieValue}; path=/; domain=frontend.72.60.83.68.nip.io`;
+    document.cookie = `googtrans=${cookieValue}; path=/; domain=.nip.io`;
+    document.cookie = `googtrans=${cookieValue}; path=/`;
 
     // Only reload if language is changing
     window.location.href = window.location.href.split('#')[0]
