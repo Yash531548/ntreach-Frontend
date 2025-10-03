@@ -42,8 +42,12 @@ function LanguageSelector() {
     const cookieValue = newLang === 'en' ? '/en/en' : '/en/' + newLang
 
     // Set Google Translate cookies
-    document.cookie = `googtrans=${cookieValue}; path=/; domain=${domain}`
+    // for current host (works on localhost)
     document.cookie = `googtrans=${cookieValue}; path=/`
+    // for exact subdomain (frontend.72...)
+    document.cookie = `googtrans=${cookieValue}; path=/; domain=${domain}`
+    // for parent domain (all subdomains under .72.60.83.68.nip.io)
+    document.cookie = `googtrans=${cookieValue}; path=/; domain=.72.60.83.68.nip.io`
 
     // Only reload if language is changing
     window.location.href = window.location.href.split('#')[0]
