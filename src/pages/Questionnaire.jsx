@@ -14,6 +14,7 @@ import { useNavigate } from "react-router";
 import { fetchQuestionSteps } from "../Api/Questionnaire/getQuestions.js";
 import { fetchStates } from "../Api/getState.js";
 import { useProfile } from "../Context/ProfileContext.jsx";
+import QuestionsSection from "../components/QuestionsSection.jsx";
 
 
 
@@ -37,8 +38,8 @@ export default function Questionnaire() {
     const scrollContainerRef = useRef(null);
     // Inside your Questionnaire component (after currentStep is declared)
     useEffect(() => {
-        if(scrollContainerRef.current){
-            scrollContainerRef.current.scrollTo({top : 0 , behavior:"smooth"}) // Internal scroll only!
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTo({ top: 0, behavior: "smooth" }) // Internal scroll only!
         }
         window.scrollTo({ top: 0, behavior: "smooth" }); // Smooth scroll to top
     }, [currentStep]);
@@ -164,15 +165,18 @@ export default function Questionnaire() {
 
             <div className="relative">
                 {/* ------------------ MOBILE + TABLET HEADER ------------------ */}
-                <div className="block lg:hidden text-center mb-4">
+                <div className="block md:hidden text-center mb-4">
                     <h2
                         className="text-[28px] md:text-3xl text-black font-normal"
                         style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
                     >
                         Tell Us About Yourself
                     </h2>
-                    <p className="text-sm text-[#3285EC] font-medium mb-2 text-left pt-6 ">
+                    <p className="text-sm text-[#3285EC] font-medium mb-2 text-left pt-6  ">
                         Step {currentStep + 1}
+                        {questions.length > 0 && (
+                            <> (Q{offset + 1}–Q{offset + questions.length})</>
+                        )}
                     </p>
                     {/* Progress bar */}
                     <div className="flex  gap-2 mt-2 ">
@@ -200,9 +204,10 @@ export default function Questionnaire() {
 
                 <div className="flex">
                     {/* ------------------ LAPTOP VIEW (with image + shadow + scroll) ------------------ */}
-                    <div className="hidden lg:grid grid-cols-12 gap-6 rounded-[2rem] shadow-[0px_0px_7.6px_-2px_#0000000F]  p-0 pr-8 lg:pr-2 xl:pr-8 mr-4 lg:w-[78%] xl:w-[80%]">
+                    {/* <div className="hidden lg:grid grid-cols-12 gap-6 rounded-[2rem] shadow-[0px_0px_7.6px_-2px_#0000000F]  p-0 pr-8 lg:pr-2 xl:pr-8 mr-4 lg:w-[78%] xl:w-[80%]"> */}
+                    <div className="flex lg:grid grid-cols-12 gap-6 md:rounded-[2rem] md:shadow-[0px_0px_7.6px_-2px_#0000000F] p-0 md:pr-8 lg:pr-2 xl:pr-8 md:mr-4 w-full lg:w-[78%] xl:w-[80%]">
                         {/* Left Section */}
-                        <div className="lg:col-span-5 xl:col-span-4 flex flex-col items-start justify-start gap-16 bg-[#FCFCFC] h-full rounded-l-[2rem] pt-8">
+                        <div className="hidden  lg:col-span-5 xl:col-span-4 md:flex flex-col items-start justify-start gap-16 bg-[#FCFCFC] h-full rounded-l-[2rem] pt-8">
                             <h2
                                 className="text-4xl leading-tight text-black font-normal mx-auto lg:text-center "
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
@@ -218,17 +223,17 @@ export default function Questionnaire() {
 
                         {/* Right Section */}
                         <div
-                            className="lg:col-span-7 xl:col-span-8 pt-10 xl:pl-8 xl:pr-8 pb-8"
+                            className="lg:col-span-7 xl:col-span-8 md:pt-10 xl:pl-8 xl:pr-8 md:pb-8 w-full"
                             style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                         >
-                            <p className="text-sm text-[#3285EC] font-medium mb-2">
+                            <p className="hidden md:block text-sm text-[#3285EC] font-medium mb-2">
                                 Step {currentStep + 1}
                                 {questions.length > 0 && (
                                     <> (Q{offset + 1}–Q{offset + questions.length})</>
                                 )}
                             </p>
                             {/* Progress Bar */}
-                            <div className="mb-6">
+                            <div className="hidden md:block mb-6">
                                 <div className="flex gap-4">
 
                                     {stepImages.map((stepGroup, index) => (
@@ -251,7 +256,7 @@ export default function Questionnaire() {
                                     Loading Question....
                                 </div>
                             ) : (
-                                <div className="space-y-6 max-h-[350px] overflow-y-auto pr-2 h-[350px] pb-3" ref={scrollContainerRef}>
+                                <div className="space-y-6 md:max-h-[350px] md:h-[350px] md:overflow-y-auto md:pr-2  md:pb-3" ref={scrollContainerRef}>
                                     {currentStep === 1 ? (
                                         <RiskOptionsStep
                                             selected={selectedRisk}
@@ -259,105 +264,114 @@ export default function Questionnaire() {
                                         />
                                     ) : (
                                         // step.questions.map((q) => (
-                                        questions.map((q, index) => (
-                                            <div key={index} className="text-sm">
-                                                <p className="font-medium mb-2 text-[#11688F]">
-                                                    {/* {q.question_id}. {q.question} */}
-                                                    {offset + index + 1}. {q.question}
-                                                </p>
+                                        // questions.map((q, index) => (
+                                        //     <div key={index} className="text-sm">
+                                        //         <p className="font-medium mb-2 text-[#11688F]">
+                                        //             {/* {q.question_id}. {q.question} */}
+                                        //             {offset + index + 1}. {q.question}
+                                        //         </p>
 
-                                                {/* Radio */}
-                                                {q.answer_input_type === "radio" && (
-                                                    <div className="flex gap-6 lg:flex-wrap lg:gap-3 xl:flex-nowrap">
-                                                        {/* {q.options.map((opt) => ( */}
-                                                        {q.options.map((opt) => (
-                                                            <label
-                                                                key={opt.answer_id}
-                                                                className="flex items-center gap-2 border rounded-2xl px-1.5 border-[#A9A9A9] bg-[#F4F4F4] pr-2.5  xl:whitespace-nowrap"
-                                                            >
-                                                                {/* <input type="radio" name={`q${q.id}`} /> {opt} */}
-                                                                <input
-                                                                    type="radio"
-                                                                    name={`q${q.question_id}`}
-                                                                    value={opt.answer_id}
-                                                                    checked={answers[q.question_id] === opt.answer_id}
-                                                                    onChange={() => handleInputChange(q, opt.answer_id)}
-                                                                /> {opt.answer}
-                                                            </label>
-                                                        ))}
-                                                    </div>
-                                                )}
+                                        //         {/* Radio */}
+                                        //         {q.answer_input_type === "radio" && (
+                                        //             <div className="flex gap-6 lg:flex-wrap lg:gap-3 xl:flex-nowrap">
+                                        //                 {/* {q.options.map((opt) => ( */}
+                                        //                 {q.options.map((opt) => (
+                                        //                     <label
+                                        //                         key={opt.answer_id}
+                                        //                         className="flex items-center gap-2 border rounded-2xl px-1.5 border-[#A9A9A9] bg-[#F4F4F4] pr-2.5  xl:whitespace-nowrap"
+                                        //                     >
+                                        //                         {/* <input type="radio" name={`q${q.id}`} /> {opt} */}
+                                        //                         <input
+                                        //                             type="radio"
+                                        //                             name={`q${q.question_id}`}
+                                        //                             value={opt.answer_id}
+                                        //                             checked={answers[q.question_id] === opt.answer_id}
+                                        //                             onChange={() => handleInputChange(q, opt.answer_id)}
+                                        //                         /> {opt.answer}
+                                        //                     </label>
+                                        //                 ))}
+                                        //             </div>
+                                        //         )}
 
-                                                {/* Text */}
-                                                {q.answer_input_type === "text" && q.question_id === 1 ? (
-                                                    <input
-                                                        type="text"
-                                                        value={profileContext.mobile || ""}
-                                                        readOnly
-                                                        className="p-1 max-w-60 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4] outline-none"
-                                                    />
-                                                ) : q.answer_input_type === "text" ? (
-                                                    <input
-                                                        type="text"
-                                                        value={answers[q.question_id] || ""}
-                                                        onChange={e => handleInputChange(q, e.target.value)}
-                                                        className="p-1 max-w-60 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4] outline-none"
-                                                    />
-                                                ) : null}
+                                        //         {/* Text */}
+                                        //         {q.answer_input_type === "text" && q.question_id === 1 ? (
+                                        //             <input
+                                        //                 type="text"
+                                        //                 value={profileContext.mobile || ""}
+                                        //                 readOnly
+                                        //                 className="p-1 max-w-60 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4] outline-none"
+                                        //             />
+                                        //         ) : q.answer_input_type === "text" ? (
+                                        //             <input
+                                        //                 type="text"
+                                        //                 value={answers[q.question_id] || ""}
+                                        //                 onChange={e => handleInputChange(q, e.target.value)}
+                                        //                 className="p-1 max-w-60 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4] outline-none"
+                                        //             />
+                                        //         ) : null}
 
-                                                {/* Select */}
-                                                {q.answer_input_type === "select" && (
-                                                    <select
-                                                        value={answers[q.question_id] || ""}
-                                                        onChange={e => handleInputChange(q, e.target.value)}
-                                                        className="border outline-none lg:min-w-[250px] xl:min-w-[300px]  py-1 text-[13px] rounded-full px-3 border-[#A9A9A9] bg-[#F4F4F4]">
-                                                        <option value="">Select</option>
-                                                        {/* If this is the state question, render states from API */}
-                                                        {q.question === "State" && states.length > 0 ?
-                                                            states.map(state => (
-                                                                <option key={state.id} value={state.id}>
-                                                                    {state.state_name}
-                                                                </option>
-                                                            ))
-                                                            :
-                                                            (
-                                                                q.options.map(opt =>
-                                                                    <option key={opt.answer_id} value={opt.answer_id} >{opt.answer}</option>
-                                                                )
-                                                            )
-                                                        }
-                                                        {/* {q.options.map(opt =>
-                                                        <option key={opt.answer_id} value={opt.answer_id}>{opt.answer}</option>
-                                                    )} */}
-                                                    </select>
-                                                )}
+                                        //         {/* Select */}
+                                        //         {q.answer_input_type === "select" && (
+                                        //             <select
+                                        //                 value={answers[q.question_id] || ""}
+                                        //                 onChange={e => handleInputChange(q, e.target.value)}
+                                        //                 className="border outline-none lg:min-w-[250px] xl:min-w-[300px]  py-1 text-[13px] rounded-full px-3 border-[#A9A9A9] bg-[#F4F4F4]">
+                                        //                 <option value="">Select</option>
+                                        //                 {/* If this is the state question, render states from API */}
+                                        //                 {q.question === "State" && states.length > 0 ?
+                                        //                     states.map(state => (
+                                        //                         <option key={state.id} value={state.id}>
+                                        //                             {state.state_name}
+                                        //                         </option>
+                                        //                     ))
+                                        //                     :
+                                        //                     (
+                                        //                         q.options.map(opt =>
+                                        //                             <option key={opt.answer_id} value={opt.answer_id} >{opt.answer}</option>
+                                        //                         )
+                                        //                     )
+                                        //                 }
+                                        //                 {/* {q.options.map(opt =>
+                                        //                 <option key={opt.answer_id} value={opt.answer_id}>{opt.answer}</option>
+                                        //             )} */}
+                                        //             </select>
+                                        //         )}
 
-                                                {/* Checkbox */}
-                                                {q.answer_input_type === "checkbox" && (
-                                                    <div className="flex flex-col gap-3">
-                                                        {q.options.map((opt) => (
-                                                            <label
-                                                                key={opt.answer_id}
-                                                                className="flex items-center gap-2 text-[13px] border rounded-full px-1.5 border-[#A9A9A9] bg-[#F4F4F4] py-0.5"
-                                                            >
-                                                                <input
-                                                                    type="checkbox"
-                                                                    value={opt.answer_id}
-                                                                    checked={Array.isArray(answers[q.question_id]) && answers[q.question_id].includes(opt.answer_id)}
-                                                                    onChange={() => handleCheckboxChange(q, opt.answer_id)} /> {opt.answer}
-                                                            </label>
-                                                        ))}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ))
+                                        //         {/* Checkbox */}
+                                        //         {q.answer_input_type === "checkbox" && (
+                                        //             <div className="flex flex-col gap-3">
+                                        //                 {q.options.map((opt) => (
+                                        //                     <label
+                                        //                         key={opt.answer_id}
+                                        //                         className="flex items-center gap-2 text-[13px] border rounded-full px-1.5 border-[#A9A9A9] bg-[#F4F4F4] py-0.5"
+                                        //                     >
+                                        //                         <input
+                                        //                             type="checkbox"
+                                        //                             value={opt.answer_id}
+                                        //                             checked={Array.isArray(answers[q.question_id]) && answers[q.question_id].includes(opt.answer_id)}
+                                        //                             onChange={() => handleCheckboxChange(q, opt.answer_id)} /> {opt.answer}
+                                        //                     </label>
+                                        //                 ))}
+                                        //             </div>
+                                        //         )}
+                                        //     </div>
+                                        // ))
+                                        <QuestionsSection
+                                            questions={questions}
+                                            answers={answers}
+                                            handleInputChange={handleInputChange}
+                                            handleCheckboxChange={handleCheckboxChange}
+                                            profileContext={profileContext}
+                                            states={states}
+                                            offset={offset}
+                                        />
                                     )}
                                 </div>
                             )}
 
 
                             {/* Navigation */}
-                            <div className="flex justify-between mt-6 w-full">
+                            <div className="flex flex-col-reverse gap-3 md:gap-0 md:flex-row   justify-between mt-6 w-full">
                                 {/* Left Side */}
                                 <div className="flex flex-col text-sm ">
                                     {currentStep >= 2 || selectedRisk === 1 ? (
@@ -373,13 +387,13 @@ export default function Questionnaire() {
                                             </span>
                                         </button>
                                     ) : (
-                                        <div className="w-[160px]" />
+                                        <div className="hidden md:w-[160px]" />
                                     )}
                                 </div>
 
                                 {/* Right Side */}
-                                <div className="flex lg:gap-2 xl:gap-4">
-                                    {currentStep > 0 && (
+                                <div className="flex justify-between lg:gap-2 xl:gap-4">
+                                    {currentStep > 0 ? (
                                         <div
                                             onClick={() => setCurrentStep((s) => s - 1)}
                                             className="flex flex-row justify-between items-center text-sm shadow-xl hover:shadow-lg/30 pr-3 pt-1 pb-1 
@@ -393,6 +407,8 @@ export default function Questionnaire() {
                                             </span>
                                             <button className="cursor-pointer">Previous</button>
                                         </div>
+                                    ): (
+                                        <div className="w-[160px]"></div>
                                     )}
                                     {currentStep < steps.length && currentStep < 4 ? (
                                         <button
@@ -450,14 +466,15 @@ export default function Questionnaire() {
 
                     {/* ------------------ MOBILE + TABLET (No image, auto height) ------------------ */}
 
-                    <div className="block lg:hidden w-full bg-white shadow-md rounded-2xl p-4 mt-4 " ref={scrollContainerRef}>
+                    {/* <div className="block lg:hidden w-full bg-white shadow-md rounded-2xl p-4 mt-4 " ref={scrollContainerRef}> */}
+                    <div className="hidden w-full bg-white shadow-md rounded-2xl p-4 mt-4 " ref={scrollContainerRef}>
                         {!steps.length ? (
                             <div className="flex justify-center py-10 text-3xl">
                                 {/* <ClipLoader color="#323FF7" size={50} /> */}
                                 Loading Question...
                             </div>
                         ) : (
-                            <div className="space-y-3 h-auto overflow-visible">
+                            <div className=" space-y-3 h-auto overflow-visible">
                                 {currentStep === 1 ? (
                                     <RiskOptionsStep
                                         selected={selectedRisk}
@@ -480,7 +497,7 @@ export default function Questionnaire() {
                                                             key={opt.answer_id}
                                                             className="flex items-center gap-2 border rounded-2xl px-1.5 border-[#A9A9A9] bg-[#F4F4F4] pr-2.5   md:whitespace-nowrap"
                                                         >
-                                                            <input type="radio" name={`q${q.question_id}`}   /> {opt.answer}
+                                                            <input type="radio" name={`q${q.question_id}`} /> {opt.answer}
                                                         </label>
                                                     ))}
                                                 </div>
@@ -547,6 +564,14 @@ export default function Questionnaire() {
                                             )}
                                         </div>
                                     ))
+                                    // <QuestionsSection
+                                    //     questions={questions}
+                                    //     answers={answers}
+                                    //     handleInputChange={handleInputChange}
+                                    //     handleCheckboxChange={handleCheckboxChange}
+                                    //     profileContext={profileContext}
+                                    //     states={states}
+                                    // />
                                 )}
                             </div>
                         )}
@@ -592,14 +617,14 @@ export default function Questionnaire() {
                                 )}
                                 {currentStep < steps.length && currentStep < 4 ? (
                                     <button
-                                    disabled={currentStep === 0 && !isStep1Complete}
+                                        disabled={currentStep === 0 && !isStep1Complete}
                                         onClick={() =>
                                             setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
                                         }
                                         className={`relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
                 text-white rounded-full cursor-pointer ${currentStep === 0 && !isStep1Complete
-                                                    ? 'bg-gray-400 cursor-not-allowed opacity-70 ' // Disabled styles
-                                                    : 'bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white'}`}
+                                                ? 'bg-gray-400 cursor-not-allowed opacity-70 ' // Disabled styles
+                                                : 'bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white'}`}
                                     >
                                         Next
                                         <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg ml-3">

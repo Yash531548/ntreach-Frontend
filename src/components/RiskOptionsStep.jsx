@@ -59,7 +59,7 @@ const riskOptions = [
 
 export default function RiskOptionsStep({ selected, setSelected }) {
     return (
-        <div className="flex flex-col items-center w-full px-4 md:px-6 pt-6 overflow-y-auto">
+        <div className="flex flex-col items-center w-full  md:px-6 md:pt-6 overflow-y-auto">
             {/* Title */}
             <h2
                 className="text-[#1475A1] text-lg sm:text-xl md:text-2xl xl:text-3xl text-center mb-6"
@@ -69,12 +69,12 @@ export default function RiskOptionsStep({ selected, setSelected }) {
             </h2>
 
             {/* Options */}
-            <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center w-full">
+            <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center w-full ">
                 {riskOptions.map((opt) => (
                     <label
                         key={opt.id}
                         className={`flex flex-col items-center justify-between p-4 sm:p-5 md:p-6 
-              w-full max-w-[260px] h-auto sm:h-56 md:h-60 xl:w-48 xl:h-48 
+              w-full max-w-[360px] h-auto sm:h-56 md:h-60 xl:w-48 xl:h-48 
               border rounded-2xl shadow-md cursor-pointer transition
               ${selected === opt.id ? "border-blue-500" : "border-gray-300"}
               hover:border-blue-400`}
