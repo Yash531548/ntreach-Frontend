@@ -143,8 +143,12 @@ export default function Questionnaire() {
         // Call API 
         // await submitAnswers(payload);
         console.log("Submitting answers:", payload); // Remove after testing
+
+        // Save totalWeight
+        localStorage.setItem('totalWeight', totalWeight);
+
         // setAnswers([]) // uncomment later 
-        navigate('/assessmentresult')
+        navigate(`/assessmentresult?totalWeight=${totalWeight}`)
     };
 
 
