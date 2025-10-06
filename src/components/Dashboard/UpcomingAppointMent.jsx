@@ -1,28 +1,31 @@
 import { useState, useEffect } from 'react'
-import { getBookTeleconsultation } from '../../Api/getBookTeleconsultation'
+import { getBookingAppoinment as getBookingAppointment } from '../../Api/getBookingAppoinment'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 const UpcomingAppointMent = ({ setSubView, setData }) => {
   const [appointments, setAppointments] = useState([])
 
   useEffect(() => {
-    const fetchAppoinments = async () => {
+    const fetchAppointments = async () => {
       try {
-        const response = await getBookTeleconsultation()
-        if (response.data.status === true) {
-          const sortedAppointments = response.data.data.sort(
-            (a, b) => new Date(b.date) - new Date(a.date) // descending
-          )
+        const response = await getBookingAppointment()
+        if (response.data.status === 'success') {
+          const sortedAppointments = response.data.user
+            .filter((a) => new Date(a.appointment_date) >= new Date())
+            .sort(
+              (a, b) => new Date(b.appointment_date) - new Date(a.appointment_date) // descending
+            )
           setAppointments(sortedAppointments) // update state with API data
         } else {
-          console.error('Error fetching slots:', response.data.message)
-          alert(`Error fetching slots: ${response.data.message}`)
+          console.error('Error fetching appointments:', response.data.message)
         }
       } catch (error) {
-        console.error('Error fetching slots:', error.response?.data?.message || error.message)
-        alert(`Error fetching slots: ${error.response?.data?.message || error.message}`)
+        console.error(
+          'Error fetching appointments:',
+          error.response?.data?.message || error.message
+        )
       }
     }
-    fetchAppoinments()
+    fetchAppointments()
   }, [])
 
   return (
@@ -62,7 +65,7 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
               <th className="py-3 px-4" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
                 Centre
               </th>
-              <th className="py-3 px-4"></th>
+              {/* <th className="py-3 px-4"></th> */}
             </tr>
           </thead>
 
@@ -71,13 +74,13 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
             {appointments.map((appointment) => (
               <tr
                 key={appointment.id}
-                className={`text-xs text-left hover:bg-[#E9F8FF] hover:border-0 border-b border-b-[#DEDEDE]  `}
+                className={`text-xs text-left hover:bg-[#E9F8FF] hover:border-0 border-b border-b-[#DEDEDE] last:border-b-0`}
               >
                 <td className="py-3 px-4 rounded-l-full">
-                  {new Date(appointment.date).toLocaleDateString('en-GB')}
+                  {new Date(appointment.appointment_date).toLocaleDateString('en-GB')}
                 </td>
                 <td className="py-3 px-4 capitalize">{appointment.service?.replace(/_/g, ' ')}</td>
-                <td className="py-3 px-4 capitalize">{appointment.type}</td>
+                <td className="py-3 px-4 capitalize">{appointment.booking_status}</td>
                 <td className="py-3 px-4">{appointment.meeting_link}</td>
                 {/* <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
                   <button
