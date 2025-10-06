@@ -12,6 +12,8 @@ import { useNavigate } from "react-router";
 import { fetchUserProfile } from "../../Api/user/fetchUserProfile";
 import { fetchProfilePhoto } from "../../Api/user/fetchProfilePhoto";
 import { useProfile } from "../../Context/ProfileContext";
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const NavButton = ({ label, icon, isActive, onClick }) => {
 
     return (
@@ -34,20 +36,20 @@ const NavButton = ({ label, icon, isActive, onClick }) => {
 const Sidebar = ({ active, setActive }) => {
 
     const navigate = useNavigate();
-    const { logout } = useAuth();
+    const { user, logout } = useAuth();
     // const [userName, setUserName] = useState("Loading...");
     // const [phone, setPhone] = useState("");
     // const [avatarUrl, setAvatarUrl] = useState(ManAvatar);
     // Use global profile from context
     const { profile } = useProfile();
     console.log("profile",profile)
-    const avatarUrl = profile.avatarUrl || ManAvatar;
-    const userName = profile.name || "Unknown User";
+    const avatarUrl = user.user?.profile_photo ? `${BASE_URL}/storage/${user.user?.profile_photo}` : ManAvatar;
+    const userName = user.user?.name || "Unknown User";
     // const userName = profile.name 
     //     ? `${profile.name}`
     //     : "Unknown User";
 
-    const phone = profile.mobile || "";
+    const phone = user.user?.phone_number || "";
 
     console.log("username on sidebar", userName)
     // useEffect(() => {
