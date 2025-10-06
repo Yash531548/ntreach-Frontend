@@ -1,7 +1,7 @@
 import React from 'react'
 import NavigatorCard from './Teams/NavigatorCard'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowRight } from 'lucide-react'
 import MeterIcon from '../assets/Extra/Meter.png'
 import BaseIcon from '../assets/Extra/Base.png'
@@ -13,7 +13,20 @@ import { VnData } from '../libs/vnData'
 
 const AssementResult = () => {
     const navigate = useNavigate();
-    const [riskValue, setRiskValue] = useState(localStorage.getItem('totalWeight') || 50)
+
+    const totalWeight = parseFloat(localStorage.getItem('totalWeight')) || 50
+    // animated needle value
+    const [riskValue, setRiskValue] = useState(0)
+
+    useEffect(() => {
+        // Trigger animation after mount
+        const timer = setTimeout(() => setRiskValue(totalWeight), 200);
+        return () => clearTimeout(timer);
+    }, [totalWeight]);
+
+    // map 0–100 → -90 to +90 degrees
+    const angle = (riskValue / 100) * 180 - 90;
+
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
             <main
@@ -30,7 +43,10 @@ const AssementResult = () => {
                                 {/* Meter */}
                                 <img src={MeterIcon} alt="Risk Meter" className=' w-full md:max-w-70 lg:max-w-80 xl:w-96' />
 
-                                <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center " style={{ transform: `rotate(${(riskValue / 100) * 180 - 90}deg)` }}>
+                                {/* Needle */}
+                                <div 
+                                    className="absolute -bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center transition-transform duration-[1500ms] ease-out" style={{ transform: `rotate(${angle}deg)`, transformOrigin: "bottom center" }}
+                                >
                                     <img src={BaseIcon} alt="baseicon" className="w-[40px] xl:w-[44px] origin-bottom " />
                                     <img
                                         src={NeedleIcon}
@@ -85,9 +101,9 @@ const AssementResult = () => {
             "
                     >
                         {/* Replace with dynamic mapping over your data */}
-                        {VnData.map((vn) => (
+                        {VnData.map((vn, i) => (
                             <NavigatorCard
-                                key={vn.VnID}
+                                key={i}
                                 VnImage={vn.VnImage}
                                 VnName={vn.VnName}
                                 VnState={vn.VnState}
