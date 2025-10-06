@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import Arrow from "../../assets/Dashboard/objects.svg";
 // import Needle from "../../assets/Dashboard/Vector.png";
 import Needle from '../../assets/Dashboard/Vector.png'
@@ -6,8 +6,15 @@ import Base from "../../assets/Dashboard/base.png";
 
 
 const RiskMeter = () => {
-    // risk percentage state (later update from backend)
-    const [riskPercent, setRiskPercent] = useState(localStorage.getItem('totalWeight') || 0); // Example default: 40%
+    const totalWeight = parseFloat(localStorage.getItem("totalWeight")) || 0;
+    // animated needle value
+    const [riskPercent, setRiskPercent] = useState(0);
+
+    useEffect(() => {
+        // Trigger animation after mount
+        const timer = setTimeout(() => setRiskPercent(totalWeight), 200);
+        return () => clearTimeout(timer);
+    }, [totalWeight]);
 
     // map 0–100 → -90 to +90 degrees
     const angle = (riskPercent / 100) * 180 - 90;
@@ -48,7 +55,10 @@ const RiskMeter = () => {
                 </svg>
 
                 {/* Needle */}
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center " style={{ transform: `rotate(${angle}deg)` }}>
+                <div 
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center transition-transform duration-[1500ms] ease-out" 
+                    style={{ transform: `rotate(${angle}deg)`, transformOrigin: "bottom center" }}
+                >
                     <img src={Base} alt="baseicon" className="w-[35px] md:w-[30px] lg:w-[25px] xl:w-[34px] origin-bottom z-10 "  />
                     <img
                         src={Needle}
