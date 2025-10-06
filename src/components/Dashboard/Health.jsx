@@ -13,6 +13,7 @@ const Health = ({ setSubView, setActive, setData }) => {
 
   useEffect(() => {
     const fetchNotifications = async () => {
+      setLoading(true)
       try {
         const response = await getNotifications()
         if (response.data.status) {
@@ -34,6 +35,7 @@ const Health = ({ setSubView, setActive, setData }) => {
 
   useEffect(() => {
     const fetchAppointments = async () => {
+      setLoading(true)
       try {
         const response = await getBookTeleconsultation()
         if (response.data.status === true) {
@@ -46,6 +48,8 @@ const Health = ({ setSubView, setActive, setData }) => {
         }
       } catch (error) {
         console.error('Error fetching slots:', error.response?.data?.message || error.message)
+      } finally {
+        setLoading(false)
       }
     }
     fetchAppointments()
@@ -98,7 +102,9 @@ const Health = ({ setSubView, setActive, setData }) => {
                 className="text-xs text-left hover:bg-[#E9F8FF] border-b border-[#DEDEDE]"
               >
                 <td className="py-3 px-4">
-                  {new Date(item.appointment?.date).toLocaleDateString('en-GB')}
+                  {item.appointment?.date
+                    ? new Date(item.appointment.date).toLocaleDateString('en-GB')
+                    : '--'}
                 </td>
                 <td className="py-3 px-4 capitalize">
                   {item.appointment?.service?.replace(/_/g, ' ') || item.type}
