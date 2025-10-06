@@ -91,7 +91,7 @@ function LanguageSelector() {
             </option>
           ))}
         </select>
-        <ChevronDown className="absolute right-1 top-0.5 lg:-top-[0.05rem] translate-y-1/2 w-3.5 h-3.5 text-gray-700 pointer-events-none " />
+        <ChevronDown className="absolute right-1 top-0 lg:-top-[0.05rem] translate-y-1/2 w-3.5 h-3.5 text-gray-700 pointer-events-none " />
       </div>
 
       <div id="google_translate_element" className="hidden absolute -z-10"></div>
