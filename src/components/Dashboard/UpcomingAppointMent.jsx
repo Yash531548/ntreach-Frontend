@@ -79,9 +79,9 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
                 <td className="py-3 px-4 rounded-l-full">
                   {new Date(appointment.appointment_date).toLocaleDateString('en-GB')}
                 </td>
-                <td className="py-3 px-4 capitalize">{appointment.service?.replace(/_/g, ' ')}</td>
+                <td className="py-3 px-4 capitalize">{appointment.service_names?.toString()}</td>
                 <td className="py-3 px-4 capitalize">{appointment.booking_status}</td>
-                <td className="py-3 px-4">{appointment.meeting_link}</td>
+                <td className="py-3 px-4">{appointment.center_name?.toString()}</td>
                 {/* <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
                   <button
                     onClick={() => {
