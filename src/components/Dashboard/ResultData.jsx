@@ -15,9 +15,11 @@ const ResultData = ({ setSubView, setSelectedView }) => {
     try {
       const response = await getBookingAppoinment()
       if (response.data.status === 'success') {
-        const sortedAppointments = response.data.user.sort(
-          (a, b) => new Date(b.appointment_date) - new Date(a.appointment_date) // descending
-        )
+        const sortedAppointments = response.data.user
+          .filter((a) => new Date(a.appointment_date) <= new Date())
+          .sort(
+            (a, b) => new Date(b.appointment_date) - new Date(a.appointment_date) // descending
+          )
         setAppointments(sortedAppointments) // update state with API data
       } else {
         alert(`Error fetching slots: ${response.data.message}`)
