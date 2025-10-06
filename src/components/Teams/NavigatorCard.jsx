@@ -11,7 +11,7 @@ const NavigatorCard = ({ VnImage, VnName, VnState, VnMobile }) => (
     bg-[#DAF3FF]
     rounded-3xl
     flex flex-col items-center
-    px-2 py-4 sm:p-4 md:p-5
+    px-2 py-4 sm:p-4 md:p-3
     w-full max-w-[180px]
     sm:max-w-[220px]
     md:max-w-[220px]
@@ -28,10 +28,11 @@ const NavigatorCard = ({ VnImage, VnName, VnState, VnMobile }) => (
         <div className="text-lg sm:text-xl md:text-2xl font-semibold text-black text-center ">
             {VnName}
         </div>
-        <div className="flex items-center mt-1 text-xs sm:text-sm w-full justify-center grow">
+        
+        <div className="flex items-center mt-1 text-xs sm:text-sm w-full justify-center grow ">
             <MapPin className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mr-1 text-[#FF5593]" />
             {/* <div className="max-w-[110px] sm:max-w-[150px] text-center truncate" title={VnState}> */}
-            <div className="max-w-[110px] sm:max-w-[150px] text-center " title={VnState}>
+            <div className="max-w-[110px] sm:max-w-[160px] break-words " title={VnState}>
                 {VnState}
                 {/* Karnataka, Kerala, Tamil Nadu, Puducherry */}
             </div>
