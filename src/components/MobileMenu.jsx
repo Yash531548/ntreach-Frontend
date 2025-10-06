@@ -3,6 +3,7 @@ import React from "react";
 import { ChevronDown, X } from "lucide-react";
 import { NavLink } from "react-router";
 import { useAuth } from "../Context/AuthContext";
+import LanguageSelector from "./LanguageSelector";
 
 const MobileMenu = ({ isOpen, onClose }) => {
     const { isAuthenticated, logout } = useAuth();
@@ -59,13 +60,14 @@ const MobileMenu = ({ isOpen, onClose }) => {
                     <div className="border-b pb-4">
                         <div className="mb-2">
                             <div className="relative  inline-block">
-                                <select className="border border-gray-300 text-gray-700 rounded-full px-2 pr-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none ">
+                                {/* <select className="border border-gray-300 text-gray-700 rounded-full px-2 pr-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-blue-400 appearance-none ">
                                     <option>Language</option>
                                     <option>English</option>
                                     <option>French</option>
                                     <option>Spanish</option>
-                                </select>
-                                <ChevronDown className="absolute right-1.5 top-0 translate-y-1/3 w-4 h-4 text-gray-700 pointer-events-none " />
+                                </select> */}
+                                <LanguageSelector />
+                                {/* <ChevronDown className="absolute right-1.5 top-0 translate-y-1/3 w-4 h-4 text-gray-700 pointer-events-none " /> */}
                             </div>
                             <span className="text-xs text-gray-500 mt-1 block">
                                 Powered by{" "}

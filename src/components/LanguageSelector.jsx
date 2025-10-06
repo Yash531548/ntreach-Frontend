@@ -61,7 +61,7 @@ function LanguageSelector() {
         <select
           value={lang}
           onChange={(e) => changeLanguage(e.target.value)}
-          className="border border-[#0B1E2A] text-[rgba(11,30,42,0.9)] font-medium tracking-normal rounded-full lg:px-2 lg:pr-5 xl:pr-5 xl:px-3 py-1  focus:outline-none focus:ring-2 focus:ring-blue-400 font-redhat appearance-none"
+          className="border border-[#0B1E2A] text-[rgba(11,30,42,0.9)] font-medium tracking-normal rounded-full px-4 lg:px-2 lg:pr-5 xl:pr-5 xl:px-3 py-1  focus:outline-none focus:ring-2 focus:ring-blue-400 font-redhat appearance-none"
         >
           {languages.map((language) => (
             <option key={language.code} value={language.code}>
@@ -69,7 +69,7 @@ function LanguageSelector() {
             </option>
           ))}
         </select>
-        <ChevronDown className="absolute right-1 -top-[0.05rem] translate-y-1/2 w-3.5 h-3.5 text-gray-700 pointer-events-none " />
+        <ChevronDown className="absolute right-1 top-1 lg:-top-[0.05rem] translate-y-1/2 w-3.5 h-3.5 text-gray-700 pointer-events-none " />
       </div>
 
       <div id="google_translate_element" className="hidden absolute -z-10"></div>
