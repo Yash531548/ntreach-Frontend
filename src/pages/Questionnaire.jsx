@@ -13,6 +13,7 @@ import RiskOptionsStep from "../components/RiskOptionsStep";
 import { useNavigate } from "react-router";
 import { fetchQuestionSteps } from "../Api/Questionnaire/getQuestions.js";
 import { fetchStates } from "../Api/getState.js";
+import { useAuth } from '../Context/AuthContext';
 import { useProfile } from "../Context/ProfileContext.jsx";
 import QuestionsSection from "../components/QuestionsSection.jsx";
 
@@ -21,6 +22,7 @@ import QuestionsSection from "../components/QuestionsSection.jsx";
 
 export default function Questionnaire() {
     const navigate = useNavigate();
+    const { user } = useAuth();
     const { profile: profileContext } = useProfile();
     const stepImages = [step1, step2, step3, step4, step5];
     const stepImageClasses = [
@@ -160,6 +162,103 @@ export default function Questionnaire() {
         }
         return ans !== undefined && ans !== null && ans !== '';
     });
+
+// 
+const indiaStateMap = {
+  "IN-AN": "Andaman and Nicobar Islands",
+  "IN-AP": "Andhra Pradesh",
+  "IN-AR": "Arunachal Pradesh",
+  "IN-AS": "Assam",
+  "IN-BR": "Bihar",
+  "IN-CH": "Chandigarh",
+  "IN-CT": "Chhattisgarh",
+  "IN-DN": "Dadra and Nagar Haveli",
+  "IN-DD": "Daman and Diu",
+  "IN-DL": "Delhi",
+  "IN-GA": "Goa",
+  "IN-GJ": "Gujarat",
+  "IN-HR": "Haryana",
+  "IN-HP": "Himachal Pradesh",
+  "IN-JK": "Jammu and Kashmir",
+  "IN-JH": "Jharkhand",
+  "IN-KA": "Karnataka",
+  "IN-KL": "Kerala",
+  "IN-LA": "Ladakh",
+  "IN-LD": "Lakshadweep",
+  "IN-MP": "Madhya Pradesh",
+  "IN-MH": "Maharashtra",
+  "IN-MN": "Manipur",
+  "IN-ML": "Meghalaya",
+  "IN-MZ": "Mizoram",
+  "IN-NL": "Nagaland",
+  "IN-OR": "Odisha",
+  "IN-PY": "Puducherry",
+  "IN-PB": "Punjab",
+  "IN-RJ": "Rajasthan",
+  "IN-SK": "Sikkim",
+  "IN-TN": "Tamil Nadu",
+  "IN-TG": "Telangana",
+  "IN-TR": "Tripura",
+  "IN-UP": "Uttar Pradesh",
+  "IN-UT": "Uttarakhand",
+  "IN-WB": "West Bengal"
+};
+
+// 
+const handleGeolocate = async () => {
+  if (!navigator.geolocation) {
+    alert("Geolocation is not supported by your browser");
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const { latitude, longitude } = position.coords;
+
+      // Reverse geocode to get location name
+      const res = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+      );
+      const data = await res.json();
+      console.log(data)
+
+      const stateName = data.address.state || data.address.city;
+      const districtName = data.address.city_district;
+
+      // Fallback using ISO code mapping if available
+      if (!stateName && data.address["ISO3166-2-lvl4"]) {
+        const isoCode = data.address["ISO3166-2-lvl4"];
+        stateName = indiaStateMap[isoCode] || isoCode.replace("IN-", "");
+      }
+      console.log("User location:", stateName, districtName);
+
+      // Autofill matching state/district if they exist in your dropdowns
+      const matchedState = states.find(
+        (s) => s.state_name.toLowerCase() === stateName.toLowerCase()
+      );
+
+      if (matchedState) {
+        handleInputChange(
+          { question_id: 5, question: "State" },
+          matchedState.id
+        );
+      }
+
+      // If you have district questions too:
+      // if (districtName) {
+      //   handleInputChange(
+      //     { question_id: /* district question id */, question: "District" },
+      //     districtName
+      //   );
+      // }
+    },
+    (error) => {
+      console.error(error);
+      alert("Unable to retrieve your location");
+    }
+  );
+};
+
     return (
         <div className="container relative w-full  lg:w-[95%] xl:max-w-[1300px] mx-auto mt-10 mb-6 px-6 sm:px-6">
 
@@ -361,6 +460,8 @@ export default function Questionnaire() {
                                             answers={answers}
                                             handleInputChange={handleInputChange}
                                             handleCheckboxChange={handleCheckboxChange}
+                                            handleGeolocate={handleGeolocate}
+                                            user={user.user}
                                             profileContext={profileContext}
                                             states={states}
                                             offset={offset}

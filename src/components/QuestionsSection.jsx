@@ -1,6 +1,6 @@
 // QuestionsSection.jsx
 export default function QuestionsSection({
-    questions, answers, handleInputChange, handleCheckboxChange, profileContext, states, offset
+    questions, answers, handleInputChange, handleCheckboxChange, handleGeolocate, user, profileContext, states, offset
 }) {
     return (
         <div className="space-y-6 h-auto">
@@ -34,7 +34,7 @@ export default function QuestionsSection({
                     {q.answer_input_type === "text" && q.question_id === 1 ? (
                         <input
                             type="text"
-                            value={profileContext.mobile || ""}
+                            value={user?.phone_number || ""}
                             readOnly
                             className="p-2 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4]"
                         />
@@ -49,6 +49,7 @@ export default function QuestionsSection({
 
                     {/* Select */}
                     {q.answer_input_type === "select" && (
+                        <>
                         <select
                             value={answers[q.question_id] || ""}
                             onChange={e => handleInputChange(q, e.target.value)}
@@ -66,6 +67,15 @@ export default function QuestionsSection({
                                 )
                             }
                         </select>
+                        <div className="flex justify-end">
+                            <button
+                            onClick={handleGeolocate}
+                            className="text-white bg-[#11688F] font-medium text-xs cursor-pointer px-2 py-1 mt-2 rounded-full"
+                            >
+                            Use Current Location
+                            </button>
+                        </div>
+                        </>
                     )}
 
                     {/* Checkbox */}
