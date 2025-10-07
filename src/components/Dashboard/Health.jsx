@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
 import { getNotifications } from '../../Api/getNotifications'
+import { getBookingAppoinment } from '../../Api/getBookingAppoinment'
 import { getBookTeleconsultation } from '../../Api/getBookTeleconsultation'
 import RiskMeter from './RiskMeter'
 import Announcement from './Announcement'
@@ -7,22 +8,23 @@ import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMo
 
 const Health = ({ setSubView, setActive, setData }) => {
   const [notifications, setNotifications] = useState([])
-  const [appointments, setAppointments] = useState([])
-  const [mergedData, setMergedData] = useState([])
+  const [appointments, setAppointments] = useState([]) // from getBookingAppoinment
+  const [teleconsultations, setTeleconsultations] = useState([]) // from getBookTeleconsultation
+  const [mergedAppointments, setMergedAppointments] = useState([]) // both merged
+  const [mergedData, setMergedData] = useState([]) // notifications + mergedAppointments
   const [loading, setLoading] = useState(true)
 
+  // 🔹 Fetch Notifications
   useEffect(() => {
     const fetchNotifications = async () => {
-      setLoading(true)
       try {
+        setLoading(true)
         const response = await getNotifications()
-        if (response.data.status) {
-          const notifications = response.data.data
-            .filter((n) => n.type === 'Teleconsultation')
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          setNotifications(notifications)
-        } else {
-          console.error('Error fetching notifications:', response.data.message)
+        if (response.data?.status) {
+          const teleconsultNotifs = response.data.data.sort(
+            (a, b) => new Date(b.created_at) - new Date(a.created_at)
+          )
+          setNotifications(teleconsultNotifs)
         }
       } catch (error) {
         console.error('Error fetching notifications:', error.message)
@@ -33,21 +35,27 @@ const Health = ({ setSubView, setActive, setData }) => {
     fetchNotifications()
   }, [])
 
+  // 🔹 Fetch Appointments (clinic bookings)
   useEffect(() => {
     const fetchAppointments = async () => {
-      setLoading(true)
       try {
-        const response = await getBookTeleconsultation()
-        if (response.data.status === true) {
-          const appointments = response.data.data.sort(
-            (a, b) => new Date(b.date) - new Date(a.date)
-          )
-          setAppointments(appointments)
-        } else {
-          console.error('Error fetching slots:', response.data.message)
+        setLoading(true)
+        const response = await getBookingAppoinment()
+        if (response.data?.status === 'success') {
+          const sorted = response.data.user
+            .map((item) => ({
+              ...item,
+              type: 'Appointment',
+              unified_date: item.appointment_date
+            }))
+            .sort((a, b) => new Date(b.unified_date) - new Date(a.unified_date))
+          setAppointments(sorted)
         }
       } catch (error) {
-        console.error('Error fetching slots:', error.response?.data?.message || error.message)
+        console.error(
+          'Error fetching appointments:',
+          error.response?.data?.message || error.message
+        )
       } finally {
         setLoading(false)
       }
@@ -55,19 +63,55 @@ const Health = ({ setSubView, setActive, setData }) => {
     fetchAppointments()
   }, [])
 
-  // Merge notifications + appointments
+  // 🔹 Fetch Teleconsultations
   useEffect(() => {
-    if (notifications.length && appointments.length) {
-      const merged = notifications.map((n) => {
-        const matchedAppointment = appointments.find((a) => String(a.id) === String(n.booking_id))
-        return {
-          ...n,
-          appointment: matchedAppointment || null
+    const fetchTeleconsultations = async () => {
+      try {
+        setLoading(true)
+        const response = await getBookTeleconsultation()
+        if (response.data?.status === true) {
+          const sorted = response.data.data
+            .map((item) => ({
+              ...item,
+              type: 'Teleconsultation',
+              unified_date: item.date
+            }))
+            .sort((a, b) => new Date(b.unified_date) - new Date(a.unified_date))
+          setTeleconsultations(sorted)
         }
+      } catch (error) {
+        console.error(
+          'Error fetching teleconsultations:',
+          error.response?.data?.message || error.message
+        )
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchTeleconsultations()
+  }, [])
+
+  // 🔹 Merge both appointments (clinic + teleconsultation)
+  useEffect(() => {
+    const all = [...appointments, ...teleconsultations].sort(
+      (a, b) => new Date(b.unified_date) - new Date(a.unified_date)
+    )
+    setMergedAppointments(all)
+  }, [appointments, teleconsultations])
+
+  // 🔹 Merge Notifications + All Appointments
+  useEffect(() => {
+    if (notifications.length && mergedAppointments.length) {
+      const merged = notifications.map((n) => {
+        const match = mergedAppointments.find(
+          (a) =>
+            String(a.id) === String(n.booking_id) || String(a.booking_id) === String(n.booking_id)
+        )
+        return { ...n, appointment: match || null }
       })
       setMergedData(merged)
     }
-  }, [notifications, appointments])
+  }, [notifications, mergedAppointments])
 
   return (
     <div className="rounded-4xl lg:rounded-none lg:rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm py-5 md:px-5 xl:pt-8 xl:px-10 font-sofia">
@@ -88,7 +132,7 @@ const Health = ({ setSubView, setActive, setData }) => {
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="text-black text-xs">
-              {['Date', 'Upcoming Appointments', 'Time', 'Location', ''].map((header) => (
+              {['Date', 'Appointment Type', 'Time', 'Location', ''].map((header) => (
                 <th key={header} className="py-3 px-4 font-normal whitespace-nowrap">
                   {header}
                 </th>
@@ -102,12 +146,14 @@ const Health = ({ setSubView, setActive, setData }) => {
                 className="text-xs text-left hover:bg-[#E9F8FF] border-b border-[#DEDEDE]"
               >
                 <td className="py-3 px-4">
-                  {item.appointment?.date
-                    ? new Date(item.appointment.date).toLocaleDateString('en-GB')
+                  {item.appointment?.unified_date
+                    ? new Date(item.appointment.unified_date).toLocaleDateString('en-GB')
                     : '--'}
                 </td>
                 <td className="py-3 px-4 capitalize">
-                  {item.appointment?.service?.replace(/_/g, ' ') || item.type}
+                  {item.appointment?.service_names?.join(', ') ||
+                    item.appointment?.service?.replace(/_/g, ' ') ||
+                    '--'}
                 </td>
                 <td className="py-3 px-4">
                   {item.appointment?.time
@@ -118,7 +164,9 @@ const Health = ({ setSubView, setActive, setData }) => {
                       })
                     : '--'}
                 </td>
-                <td className="py-3 px-4">{item.appointment?.meeting_link}</td>
+                <td className="py-3 px-4">
+                  {item.appointment?.center_name || item.appointment?.meeting_link || '--'}
+                </td>
                 <td className="py-3 px-4 text-[#0078D4]">
                   <button
                     onClick={() => {
