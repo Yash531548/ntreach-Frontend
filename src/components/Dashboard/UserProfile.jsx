@@ -226,7 +226,7 @@ const UserProfile = ({ setSelectedView }) => {
         } catch {
             // setMessage('Upload failed');
             setMessage({
-                type: "Upload Failed",
+                text: "Upload Failed",
                 type: "error"
             })
         }
