@@ -222,7 +222,7 @@ const handleGeolocate = async () => {
       const data = await res.json();
       console.log(data)
 
-      const stateName = data.address.state || data.address.city;
+      let stateName = data.address.state || data.address.city;
       const districtName = data.address.city_district;
 
       // Fallback using ISO code mapping if available
