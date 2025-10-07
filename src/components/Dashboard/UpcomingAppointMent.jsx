@@ -8,15 +8,18 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
     const fetchAppointments = async () => {
       try {
         const response = await getBookingAppointment()
-        if (response.data.status === 'success') {
-          const sortedAppointments = response.data.user
-            .filter((a) => new Date(a.appointment_date) >= new Date())
+        if (response.data?.status === 'success') {
+          const sortedAppointments = response.data?.user
+            .filter(
+              (a) =>
+                new Date(a.appointment_date).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)
+            )
             .sort(
-              (a, b) => new Date(b.appointment_date) - new Date(a.appointment_date) // descending
+              (a, b) => new Date(b.created_at) - new Date(a.created_at) // descending
             )
           setAppointments(sortedAppointments) // update state with API data
         } else {
-          console.error('Error fetching appointments:', response.data.message)
+          console.error('Error fetching appointments:', response.data?.message)
         }
       } catch (error) {
         console.error(
@@ -53,12 +56,12 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
               <th className="py-3 px-4" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
                 Test Date
               </th>
-              <th
+              {/* <th
                 className="py-3 px-2 xl:px-4"
                 style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
               >
                 Type of Test
-              </th>
+              </th> */}
               <th className="py-3 px-4" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
                 Type
               </th>
@@ -79,8 +82,10 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
                 <td className="py-3 px-4 rounded-l-full">
                   {new Date(appointment.appointment_date).toLocaleDateString('en-GB')}
                 </td>
-                <td className="py-3 px-4 capitalize">{appointment.service_names?.toString()}</td>
-                <td className="py-3 px-4 capitalize">{appointment.booking_status}</td>
+                {/* <td className="py-3 px-4 capitalize">{appointment.service_names?.toString()}</td> */}
+                <td className="py-3 px-4 capitalize">
+                  {appointment.follow_up_date ? 'Follow-up' : 'Initial appointment'}
+                </td>
                 <td className="py-3 px-4">{appointment.center_name?.toString()}</td>
                 {/* <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
                   <button
