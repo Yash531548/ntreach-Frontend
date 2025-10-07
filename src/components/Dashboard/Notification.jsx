@@ -1,27 +1,29 @@
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getNotifications } from '../../Api/getNotifications'
+import { getBookingAppoinment } from '../../Api/getBookingAppoinment'
+import { getBookTeleconsultation } from '../../Api/getBookTeleconsultation'
 import { CircleArrowLeft } from 'lucide-react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
-import { getNotifications } from '../../Api/getNotifications'
-import { getBookTeleconsultation } from '../../Api/getBookTeleconsultation'
 
 const Notification = ({ setSelectedView }) => {
   const [notifications, setNotifications] = useState([])
-  const [appointments, setAppointments] = useState([])
-  const [mergedData, setMergedData] = useState([])
+  const [appointments, setAppointments] = useState([]) // from getBookingAppoinment
+  const [teleconsultations, setTeleconsultations] = useState([]) // from getBookTeleconsultation
+  const [mergedAppointments, setMergedAppointments] = useState([]) // both merged
+  const [mergedData, setMergedData] = useState([]) // notifications + mergedAppointments
   const [loading, setLoading] = useState(true)
 
+  // 🔹 Fetch Notifications
   useEffect(() => {
     const fetchNotifications = async () => {
-      setLoading(true)
       try {
+        setLoading(true)
         const response = await getNotifications()
-        if (response.data.status) {
-          const notifications = response.data.data
-            .filter((n) => n.type === 'Teleconsultation')
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          setNotifications(notifications)
-        } else {
-          console.error('Error fetching notifications:', response.data.message)
+        if (response.data?.status) {
+          const teleconsultNotifs = response.data.data.sort(
+            (a, b) => new Date(b.created_at) - new Date(a.created_at)
+          )
+          setNotifications(teleconsultNotifs)
         }
       } catch (error) {
         console.error('Error fetching notifications:', error.message)
@@ -32,21 +34,27 @@ const Notification = ({ setSelectedView }) => {
     fetchNotifications()
   }, [])
 
+  // 🔹 Fetch Appointments (clinic bookings)
   useEffect(() => {
     const fetchAppointments = async () => {
-      setLoading(true)
       try {
-        const response = await getBookTeleconsultation()
-        if (response.data.status === true) {
-          const appointments = response.data.data.sort(
-            (a, b) => new Date(b.date) - new Date(a.date)
-          )
-          setAppointments(appointments)
-        } else {
-          console.error('Error fetching slots:', response.data.message)
+        setLoading(true)
+        const response = await getBookingAppoinment()
+        if (response.data?.status === 'success') {
+          const sorted = response.data.user
+            .map((item) => ({
+              ...item,
+              type: 'Appointment',
+              unified_date: item.appointment_date
+            }))
+            .sort((a, b) => new Date(b.unified_date) - new Date(a.unified_date))
+          setAppointments(sorted)
         }
       } catch (error) {
-        console.error('Error fetching slots:', error.response?.data?.message || error.message)
+        console.error(
+          'Error fetching appointments:',
+          error.response?.data?.message || error.message
+        )
       } finally {
         setLoading(false)
       }
@@ -54,19 +62,55 @@ const Notification = ({ setSelectedView }) => {
     fetchAppointments()
   }, [])
 
-  // Merge notifications + appointments
+  // 🔹 Fetch Teleconsultations
   useEffect(() => {
-    if (notifications.length && appointments.length) {
-      const merged = notifications.map((n) => {
-        const matchedAppointment = appointments.find((a) => String(a.id) === String(n.booking_id))
-        return {
-          ...n,
-          appointment: matchedAppointment || null
+    const fetchTeleconsultations = async () => {
+      try {
+        setLoading(true)
+        const response = await getBookTeleconsultation()
+        if (response.data?.status === true) {
+          const sorted = response.data.data
+            .map((item) => ({
+              ...item,
+              type: 'Teleconsultation',
+              unified_date: item.date
+            }))
+            .sort((a, b) => new Date(b.unified_date) - new Date(a.unified_date))
+          setTeleconsultations(sorted)
         }
+      } catch (error) {
+        console.error(
+          'Error fetching teleconsultations:',
+          error.response?.data?.message || error.message
+        )
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchTeleconsultations()
+  }, [])
+
+  // 🔹 Merge both appointments (clinic + teleconsultation)
+  useEffect(() => {
+    const all = [...appointments, ...teleconsultations].sort(
+      (a, b) => new Date(b.unified_date) - new Date(a.unified_date)
+    )
+    setMergedAppointments(all)
+  }, [appointments, teleconsultations])
+
+  // 🔹 Merge Notifications + All Appointments
+  useEffect(() => {
+    if (notifications.length && mergedAppointments.length) {
+      const merged = notifications.map((n) => {
+        const match = mergedAppointments.find(
+          (a) =>
+            String(a.id) === String(n.booking_id) || String(a.booking_id) === String(n.booking_id)
+        )
+        return { ...n, appointment: match || null }
       })
       setMergedData(merged)
     }
-  }, [notifications, appointments])
+  }, [notifications, mergedAppointments])
 
   return (
     <div className="rounded-r-4xl w-full md:border md:border-gray-300 border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10">
@@ -113,13 +157,12 @@ const Notification = ({ setSelectedView }) => {
               >
                 <div className="bg-gradient-to-r from-[#323FF7] to-[#33AEE5] bg-clip-text text-transparent text-center">
                   <span>
-                    {item.appointment?.date
-                      ? new Date(item.appointment.date).toLocaleDateString('en-GB')
+                    {item.appointment?.unified_date
+                      ? new Date(item.appointment.unified_date).toLocaleDateString('en-GB')
                       : '--'}
                   </span>
                   <br />
                   <span>
-                    (
                     {item.appointment?.time
                       ? new Date(`1970-01-01T${item.appointment.time}`).toLocaleTimeString([], {
                           hour: '2-digit',
@@ -127,14 +170,16 @@ const Notification = ({ setSelectedView }) => {
                           hour12: true
                         })
                       : '--'}
-                    )
                   </span>
                 </div>
               </div>
 
               {/* Right: Message */}
               <p className="text-xs text-black capitalize">
-                {item.appointment?.service?.replace(/_/g, ' ') || item.type} <br />
+                {item.appointment?.service_names?.join(', ') ||
+                  item.appointment?.service?.replace(/_/g, ' ') ||
+                  '--'}
+                <br />
                 {item.data}
               </p>
             </div>
