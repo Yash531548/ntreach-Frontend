@@ -6,8 +6,8 @@ const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
     const appointment = {
         appointmentType: data?.data?.type || data?.type || '-',
         serviceType: data?.data?.service?.replace(/_/g, ' ') || data?.service?.replace(/_/g, ' ') || data?.service_names?.toString() || '-',
-        date: data?.data?.date || data?.date || data?.appointment_date || '-',
-        time: data?.data?.time || data?.time || '-',
+        date: data?.data?.date || data?.date || data?.appointment_date,
+        time: data?.data?.time || data?.time,
         language: data?.data?.language || data?.language || '-',
         joiningInfo: data?.meet_link || data?.meet_link || '-',
     };
