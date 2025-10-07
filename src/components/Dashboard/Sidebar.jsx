@@ -43,11 +43,12 @@ const Sidebar = ({ active, setActive }) => {
     // Use global profile from context
     const { profile } = useProfile();
     console.log("profile",profile)
-    const avatarUrl = user.user?.profile_photo ? `${BASE_URL}/storage/${user.user?.profile_photo}` : ManAvatar;
-    const userName = user.user?.name || "Unknown User";
-    // const userName = profile.name 
-    //     ? `${profile.name}`
-    //     : "Unknown User";
+    // const avatarUrl = user.user?.profile_photo ? `${BASE_URL}/storage/${user.user?.profile_photo}` : ManAvatar;
+    // const userName = user.user?.name || "Unknown User";
+    const avatarUrl = profile.avatarUrl;
+    const userName = profile.name 
+        ? `${profile.name}`
+        : "Unknown User";
 
     const phone = user.user?.phone_number || "";
 
