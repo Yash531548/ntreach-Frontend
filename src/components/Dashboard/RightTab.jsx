@@ -141,7 +141,7 @@ const RightTab = ({ active, setActive }) => {
                 ))}
 
             </div>
-            <div className=" relative gap-4 rounded-full  cursor-pointer bg-[#F3F3F3] shadow-lg mx-auto ml-9 ">
+            {/* <div className=" relative gap-4 rounded-full  cursor-pointer bg-[#F3F3F3] shadow-lg mx-auto ml-9 ">
 
                 <img src={chatbot} alt="Ask" className="w-14 h-14 rounded-full border absolute top-[-26%] right-[92%]  " />
                 <div className="flex items-center  ">
@@ -156,7 +156,7 @@ const RightTab = ({ active, setActive }) => {
                     </button>
                 </div>
 
-            </div>
+            </div> */}
         </div>
     );
 };
