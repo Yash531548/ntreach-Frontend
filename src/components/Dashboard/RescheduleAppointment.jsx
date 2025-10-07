@@ -151,13 +151,13 @@ const RescheduleAppointment = ({ setSubView, setSelectedView, data, setData }) =
             onClick={() => setSubView(null)}
           />
           <div
-            className="text-[#1475A1] whitespace-nowrap leading-none text-[25px] md:text-[28px] xl:text-3xl"
+            className="text-black whitespace-nowrap leading-none text-[25px] md:text-[28px] xl:text-3xl"
             style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
           >
             <p>
-              Reschedule <span className="hidden md:inline-block"> an Appointment</span>
+              Reschedule <span className="hidden md:inline-block"> a Consultation</span>
             </p>
-            <p className="md:hidden">An Appointment </p>
+            <p className="md:hidden">a Consultation </p>
           </div>
         </div>
         <div className="relative" onClick={() => setSelectedView('Notifications')}>

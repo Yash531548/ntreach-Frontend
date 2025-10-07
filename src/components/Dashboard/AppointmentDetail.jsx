@@ -19,7 +19,7 @@ const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
                     <CircleArrowLeft className='text-gray-700 cursor-pointer '
                         onClick={() => setSubView(null)}
                     />
-                    <p className='text-[#1475A1] text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Appointment Details</p>
+                    <p className='text-black text-[25px] md:text-[28px] xl:text-3xl' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Appointment Details</p>
                 </div>
                 <div className='relative' onClick={() => setSelectedView("Notifications")}>
                     <img src={NotificationMobileIcon} alt="Notification icon" className='lg:hidden  ' />
@@ -119,7 +119,8 @@ const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
             <div className='mt-[1.7rem]'>
                 <button
                     onClick={() => {
-                        setSelectedView("Upcoming Appointments")
+                        // setSelectedView("Upcoming Appointments")
+                        setSelectedView("teleconsultation")
                         setSubView("Reschedule")
                         setData(data)
                     }}
@@ -128,7 +129,8 @@ const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
                                 bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
                                 text-white rounded-full cursor-pointer gap-3 "
                 >
-                    Reschedule Appointment
+                    {/* Reschedule Appointment */}
+                    Reschedule Consultation
                     <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white text-black text-lg  ">
                         <ArrowRight width={17} />
                     </span>

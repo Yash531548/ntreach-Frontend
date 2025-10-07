@@ -29,13 +29,16 @@ const Dashboard = () => {
                 }
                 return < Health setSubView={setSubView} setActive={setSelectedView} setData={setData} />;
             case 'Upcoming Appointments':
-                if (subView === 'Reschedule') {
-                    return < RescheduleAppointment setSubView={setSubView} setSelectedView={setSelectedView} data={data} setData={setData} />
-                }
+                // if (subView === 'Reschedule') {
+                //     return < RescheduleAppointment setSubView={setSubView} setSelectedView={setSelectedView} data={data} setData={setData} />
+                // }
                 return < UpcomingAppointMent setSubView={setSubView} setData={setData} />;
             case 'teleconsultation':
                 if (subView === 'Past Consultation') {
                     return < PastConsultation setSubView={setSubView} />
+                }
+                if (subView === 'Reschedule') {
+                    return < RescheduleAppointment setSubView={setSubView} setSelectedView={setSelectedView} data={data} setData={setData} />
                 }
                 return < BookAConsultant setSubView={setSubView} setSelectedView={setSelectedView} setData={setData} />;
             case 'My Results/Past Data':
