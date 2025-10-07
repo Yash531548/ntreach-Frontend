@@ -16,7 +16,10 @@ const ResultData = ({ setSubView, setSelectedView }) => {
       const response = await getBookingAppoinment()
       if (response.data.status === 'success') {
         const sortedAppointments = response.data.user
-          .filter((a) => new Date(a.appointment_date) <= new Date())
+          .filter(
+            (a) =>
+              new Date(a.appointment_date).setHours(0, 0, 0, 0) < new Date().setHours(0, 0, 0, 0)
+          )
           .sort(
             (a, b) => new Date(b.appointment_date) - new Date(a.appointment_date) // descending
           )
@@ -79,9 +82,9 @@ const ResultData = ({ setSubView, setSelectedView }) => {
               <th className="px-4 py-3" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
                 Test Date
               </th>
-              <th className="md:px-4 py-3" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
+              {/* <th className="md:px-4 py-3" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
                 Type of Test
-              </th>
+              </th> */}
               <th
                 className="px-4 py-3 text-center"
                 style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
@@ -102,7 +105,7 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                 <td className="px-4 py-3 rounded-l-4xl">
                   {new Date(appointment.appointment_date).toLocaleDateString('en-GB')}
                 </td>
-                <td className="px-4 py-3">{appointment.service_names.join(', ')}</td>
+                {/* <td className="px-4 py-3">{appointment.service_names.join(', ')}</td> */}
                 <td className="px-4 py-3 text-center">{appointment.status}</td>
                 <td className="px-4 py-3 rounded-r-4xl text-[#323FF7]">
                   {!appointment.report_file ? (
