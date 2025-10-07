@@ -2,10 +2,11 @@ import { ArrowRight, CircleArrowLeft } from 'lucide-react'
 import React from 'react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
+    console.log(data)
     const appointment = {
         appointmentType: data?.data?.type || data?.type || '-',
-        serviceType: data?.data?.service || data?.service || '-',
-        date: data?.data?.date || data?.date || '-',
+        serviceType: data?.data?.service?.replace(/_/g, ' ') || data?.service?.replace(/_/g, ' ') || data?.service_names?.toString() || '-',
+        date: data?.data?.date || data?.date || data?.appointment_date || '-',
         time: data?.data?.time || data?.time || '-',
         language: data?.data?.language || data?.language || '-',
         joiningInfo: data?.meet_link || data?.meet_link || '-',
@@ -39,12 +40,12 @@ const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
                     {/* Row 1: Appointment Type (full width mobile, col 1 desktop) */}
                     <div>
                         <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Appointment Type</p>
-                        <p className="mt-1">{appointment.appointmentType}</p>
+                        <p className="capitalize mt-1">{appointment.appointmentType}</p>
                     </div>
                     {/* Row 1: Type of Service (full width mobile, col 2 desktop) */}
                     <div className='hidden md:block'>
                         <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Type of Service</p>
-                        <p className="mt-1">{appointment.serviceType}</p>
+                        <p className="capitalize whitespace-nowrap mt-1">{appointment.serviceType}</p>
                     </div>
                     {/* Empty on mobile, col 3 desktop */}
                     <div className="hidden md:block"></div>
@@ -53,14 +54,26 @@ const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
                     <div className="flex flex-row gap-6 w-full md:flex-col md:gap-0">
                         <div className="flex-1">
                             <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Appointment Date</p>
-                            <p className="mt-1">{appointment.date}</p>
+                            <p className="mt-1">
+                                {appointment?.date
+                                ? new Date(appointment.date).toLocaleDateString('en-GB')
+                                : '--'}
+                            </p>
                         </div>
                     </div>
 
                     <div className="flex-1 flex  gap-8 md:hidden">
                         <div>
                             <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Appointment Time</p>
-                            <p className="mt-1">{appointment.time}</p>
+                            <p className="mt-1">
+                                {appointment?.time
+                                ? new Date(`1970-01-01T${appointment.time}`).toLocaleTimeString([], {
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    hour12: true
+                                })
+                                : '--'}
+                            </p>
                         </div>
                         <div className=''>
                             <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Type of Service</p>
@@ -70,7 +83,15 @@ const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
                     {/* Only visible desktop: Time in own col */}
                     <div className="hidden md:block">
                         <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Appointment Time</p>
-                        <p className="mt-1">{appointment.time}</p>
+                        <p className="mt-1">
+                            {appointment?.time
+                            ? new Date(`1970-01-01T${appointment.time}`).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: true
+                            })
+                            : '--'}
+                        </p>
                     </div>
                     {/* Location always in own col */}
                     <div className='hidden md:block'>
