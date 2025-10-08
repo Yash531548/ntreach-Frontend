@@ -14,11 +14,13 @@ const RiskMeter = () => {
         // Trigger animation after mount
         const timer = setTimeout(() => setRiskPercent(totalWeight), 200);
         return () => clearTimeout(timer);
+        // setRiskPercent(150)
     }, [totalWeight]);
 
     // map 0–100 → -90 to +90 degrees
-    const angle = (riskPercent / 100) * 180 - 90;
-
+    // const angle = (riskPercent / 100) * 180 - 90;
+    const clampedRiskValue = Math.max(3 , Math.min(riskPercent , 105));
+    const angle = (clampedRiskValue / 100) * 180 - 90;
     // Define color segments
     const segments = [
         { range: [0, 20], color: "#006400" }, // Dark Green
@@ -57,7 +59,7 @@ const RiskMeter = () => {
                 {/* Needle */}
                 <div 
                     className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center transition-transform duration-[1500ms] ease-out" 
-                    style={{ transform: `rotate(${angle}deg)`, transformOrigin: "bottom center" }}
+                    style={{ transform: `rotate(${angle}deg)`  }}
                 >
                     <img src={Base} alt="baseicon" className="w-[35px] md:w-[30px] lg:w-[25px] xl:w-[34px] origin-bottom z-10 "  />
                     <img
@@ -67,7 +69,7 @@ const RiskMeter = () => {
                     />
                 </div>
 
-                <p className="text-[#E82D48]" style={{ fontFamily: "Sofia Pro", fontWeight: 700, paddingBottom: "5px" }}>High/ <span className="text-[#3FD14A]">Low</span></p>
+                <p className=" text-[#3FD14A]" style={{ fontFamily: "Sofia Pro", fontWeight: 700, paddingBottom: "5px" }}>Low/ <span className="text-[#E82D48]">High</span></p>
             </div>
         </div>
     );
