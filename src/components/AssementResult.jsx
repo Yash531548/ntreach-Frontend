@@ -22,10 +22,13 @@ const AssementResult = () => {
         // Trigger animation after mount
         const timer = setTimeout(() => setRiskValue(totalWeight), 200);
         return () => clearTimeout(timer);
+        // setRiskValue(170)
     }, [totalWeight]);
 
     // map 0–100 → -90 to +90 degrees
-    const angle = (riskValue / 100) * 180 - 90;
+    // const angle = (riskValue / 100) * 180 - 90;
+    const ClampedRiskValue = Math.max(0, Math.min(riskValue, 100));
+    const angle = (ClampedRiskValue / 100) * 180 - 90;
 
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
@@ -44,8 +47,8 @@ const AssementResult = () => {
                                 <img src={MeterIcon} alt="Risk Meter" className=' w-full md:max-w-70 lg:max-w-80 xl:w-96' />
 
                                 {/* Needle */}
-                                <div 
-                                    className="absolute -bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center transition-transform duration-[1500ms] ease-out" style={{ transform: `rotate(${angle}deg)`, transformOrigin: "bottom center" }}
+                                <div
+                                    className="absolute -bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center transition-transform duration-[1500ms] ease-out" style={{ transform: `rotate(${angle}deg)` }}
                                 >
                                     <img src={BaseIcon} alt="baseicon" className="w-[40px] xl:w-[44px] origin-bottom " />
                                     <img
