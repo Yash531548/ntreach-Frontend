@@ -56,12 +56,12 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
               <th className="py-3 px-4" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
                 Test Date
               </th>
-              {/* <th
+              <th
                 className="py-3 px-2 xl:px-4"
                 style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
               >
                 Type of Test
-              </th> */}
+              </th>
               <th className="py-3 px-4" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
                 Type
               </th>
@@ -82,7 +82,7 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
                 <td className="py-3 px-4 rounded-l-full">
                   {new Date(appointment.appointment_date).toLocaleDateString('en-GB')}
                 </td>
-                {/* <td className="py-3 px-4 capitalize">{appointment.service_names?.toString()}</td> */}
+                <td className="py-3 px-4 capitalize">{appointment.service_names?.toString()}</td>
                 <td className="py-3 px-4 capitalize">
                   {appointment.follow_up_date ? 'Follow-up' : 'Initial appointment'}
                 </td>

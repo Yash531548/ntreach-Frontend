@@ -82,9 +82,9 @@ const ResultData = ({ setSubView, setSelectedView }) => {
               <th className="px-4 py-3" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
                 Test Date
               </th>
-              {/* <th className="md:px-4 py-3" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
+              <th className="md:px-4 py-3" style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}>
                 Type of Test
-              </th> */}
+              </th>
               <th
                 className="px-4 py-3 text-center"
                 style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
@@ -105,7 +105,7 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                 <td className="px-4 py-3 rounded-l-4xl">
                   {new Date(appointment.appointment_date).toLocaleDateString('en-GB')}
                 </td>
-                {/* <td className="px-4 py-3">{appointment.service_names.join(', ')}</td> */}
+                <td className="px-4 py-3">{appointment.service_names.join(', ')}</td>
                 <td className="px-4 py-3 text-center">{appointment.status}</td>
                 <td className="px-4 py-3 rounded-r-4xl text-[#323FF7]">
                   {!appointment.report_file ? (
