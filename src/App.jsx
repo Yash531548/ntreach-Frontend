@@ -1,7 +1,7 @@
 import './App.css'
 import Layout from './Layout/Layout'
 import Home from './pages/Home'
-import { Route, Routes } from 'react-router'
+import { Route, Routes, useLocation } from 'react-router'
 import Questionnaire from './pages/Questionnaire'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
@@ -22,12 +22,18 @@ import CounsellarForm from './components/CounsellarForm'
 import AssementResult from './components/AssementResult'
 import ProtectedRoute from './Utility/ProtectedRoute'
 import Search from './pages/Search'
+import ProviderLogin from './pages/SP/ProviderLogin'
+import ProviderDashboardLayout from './Layout/ProviderDashboardLayout'
 
 function App() {
+  const {pathname} = useLocation();
+
+  // Check if current path starts with /provider
+  const isProviderPath = pathname.startsWith('/provider');
   return (
     <>
       <ScrollToTop />
-      <div className='bg-white h-screen '>
+      <div className={`bg-white ${isProviderPath? "": "h-screen"}  `}>
         <Routes >
           {/* Parent route uses Layout */}
           <Route path='/' element={< Layout />}>
@@ -65,6 +71,10 @@ function App() {
             <Route path='/appointmentconfirmed' element={<AppointmentConfirmed />} />
 
             <Route path="/search" element={<Search />} />
+          </Route>
+          <Route path="/provider">
+            <Route path="login" element={<ProviderLogin />} />
+            <Route path="dashboard" element={<ProviderDashboardLayout />} />
           </Route>
         </Routes>
       </div>
