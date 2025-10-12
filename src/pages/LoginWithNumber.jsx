@@ -68,9 +68,8 @@ const LoginWithNumber = () => {
         try {
             const response = await verifyOtp(phoneNumber, otp);
             if (response.token && response.status) {
-                console.log("response: token : ", response.token);
-                const userData = { token: response.token }; // replace with real data
-                login(userData);
+                console.log("user detail", response.user);
+                login({ token: response.token, user: response.user });
                 navigate('/questionnaire');
             } else {
                 setError(response.message || "Invalid OTP or login failed");
