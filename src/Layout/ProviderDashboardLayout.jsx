@@ -18,7 +18,7 @@ const ProviderDashboardLayout = () => {
         navigate("/provider/login");
     };
     return (
-        <div className="flex h-screen bg-gray-50 overflow-hidden">
+        <div className="flex h-screen bg-gray-50 ">
             {/* Sidebar for desktop */}
             <aside className="hidden md:flex md:flex-col md:w-60 bg-white shadow-md border-r border-gray-200 p-5 gap-12">
                 <div className="space-y-8">
