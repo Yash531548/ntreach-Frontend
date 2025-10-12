@@ -1,7 +1,7 @@
 import './App.css'
 import Layout from './Layout/Layout'
 import Home from './pages/Home'
-import { Route, Routes, useLocation } from 'react-router'
+import { Navigate, Route, Routes, useLocation } from 'react-router'
 import Questionnaire from './pages/Questionnaire'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
@@ -24,16 +24,18 @@ import ProtectedRoute from './Utility/ProtectedRoute'
 import Search from './pages/Search'
 import ProviderLogin from './pages/SP/ProviderLogin'
 import ProviderDashboardLayout from './Layout/ProviderDashboardLayout'
+import ProviderMyAppointments from './components/SP/ProviderMyAppointments'
+import ProviderMySlots from './components/SP/ProviderMySlots'
 
 function App() {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
 
   // Check if current path starts with /provider
   const isProviderPath = pathname.startsWith('/provider');
   return (
     <>
       <ScrollToTop />
-      <div className={`bg-white ${isProviderPath? "": "h-screen"}  `}>
+      <div className={`bg-white ${isProviderPath ? "" : "h-screen"}  `}>
         <Routes >
           {/* Parent route uses Layout */}
           <Route path='/' element={< Layout />}>
@@ -63,7 +65,7 @@ function App() {
                 <PrepConsultation />
               </ProtectedRoute>
             } />
-           
+
             <Route path='/bookappointment' element={<BookAppointment />} />
             <Route path='/schedulesppointment' element={<ScheduleAppointment />} />
             <Route path='/assessmentresult' element={<AssementResult />} />
@@ -74,7 +76,12 @@ function App() {
           </Route>
           <Route path="/provider">
             <Route path="login" element={<ProviderLogin />} />
-            <Route path="dashboard" element={<ProviderDashboardLayout />} />
+            <Route path="dashboard" element={<ProviderDashboardLayout />}>
+              {/* Default route: redirect to appointments */}
+              <Route index element={<Navigate to="appointments" replace />} />
+              <Route path="appointments" element={<ProviderMyAppointments />} />
+              <Route path="slots" element={<ProviderMySlots />} />
+            </Route>
           </Route>
         </Routes>
       </div>
