@@ -1,13 +1,11 @@
 import React, { useState, useMemo } from "react";
 import { Search, X } from "lucide-react";
 
-// Reusable Modal Component
-
 const Model = ({ open, onClose, children }) => {
     if (!open) return null;
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 transition" onClick={onClose}>
-            <div className="relative w-full max-w-lg bg-white rounded-lg shadow-lg p-6" role="dialog" aria-modal='true'>
+            <div className="relative w-full max-w-lg bg-white rounded-lg shadow-lg p-6" role="dialog" aria-modal='true' onClick={e => e.stopPropagation()}>
                 <button
                     className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 cursor-pointer"
                     onClick={onClose}
@@ -20,7 +18,7 @@ const Model = ({ open, onClose, children }) => {
         </div>
     )
 }
-const ProviderMyAppointments = () => {
+const ProviderPastAppointments = () => {
     // Mock API response data
     const appointmentsData = [
         {
@@ -82,8 +80,33 @@ const ProviderMyAppointments = () => {
     const [sortBy, setSortBy] = useState("date");
     const [filterBy, setFilterBy] = useState("all");
     const [selectedAppt, setSelectedAppt] = useState(null);
+    // Popup/modal state    
     const [modalOpen, setModalOpen] = useState(false);
+    const [modalMode, setModalMode] = useState(""); // "view_detail" | "get_summary" | "view_summary"
 
+    // Extra modal fields (summary/transcript inputs for get_summary mode)
+    const [transcriptInput, setTranscriptInput] = useState("");
+    const [summaryInput, setSummaryInput] = useState("");
+
+    // Show modal for a given appointment and mode
+    const openModal = (mode, appt) => {
+        setSelectedAppt(appt);
+        setModalMode(mode);
+        setModalOpen(true);
+        setTranscriptInput(appt?.transcript || "");
+        setSummaryInput(appt?.summary || "");
+    };
+    const closeModal = () => {
+        setModalOpen(false);
+        setModalMode("");
+        setSelectedAppt(null);
+        setTranscriptInput("");
+        setSummaryInput("");
+    };
+    const handleSummarySubmit = () => {
+        // Use selectedAppt.id, transcriptInput, and summaryInput with API here
+        closeModal();
+    };
     // Derived filtered/sorted data
     const filteredAppointments = useMemo(() => {
         let filtered = appointmentsData.filter((appt) =>
@@ -108,10 +131,9 @@ const ProviderMyAppointments = () => {
 
         return filtered;
     }, [appointmentsData, search, sortBy, filterBy]);
-
     return (
         <div className="bg-white p-3 md:p-6 rounded-lg md:shadow-sm  box-border w-full h-full">
-            <h1 className="text-lg md:text-xl font-semibold mb-4 md:mb-6">Upcoming Appointments</h1>
+            <h1 className="text-lg md:text-xl font-semibold mb-4 md:mb-6">Past Appointments</h1>
 
             {/* Top Controls */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4 mb-4 md:mb-6">
@@ -172,9 +194,14 @@ const ProviderMyAppointments = () => {
                                 <td className="py-2 px-3 ">{appt.type}</td>
                                 <td className="py-2 px-3">{appt.time}</td>
                                 <td className="py-2 px-3 text-black flex flex-col md:flex-row gap-1 md:gap-2">
+                                    <button className="hover:underline cursor-pointer"
+                                        onClick={() => openModal(appt.summary ? "view_summary" : "get_summary", appt)}>
+                                        {appt.summary ? "View Summary" : "Get Summary"}
+                                    </button>
                                     <button className="hover:underline cursor-pointer" onClick={() => {
-                                        setSelectedAppt(appt);
-                                        setModalOpen(true);
+                                        // setSelectedAppt(appt);
+                                        // setModalOpen(true);
+                                        openModal("view_detail", appt)
                                     }}>View Details</button>
                                     <button className="text-red-500 hover:underline cursor-pointer">Cancel</button>
                                 </td>
@@ -185,7 +212,7 @@ const ProviderMyAppointments = () => {
             </div>
             {/* Meeting Info Popup */}
             <Model open={modalOpen} onClose={() => setModalOpen(false)}>
-                {selectedAppt && (
+                {modalMode === "view_detail" && selectedAppt && (
                     <div>
                         <div className="mb-3">
                             <h3 className="text-lg font-semibold mb-2">Meeting Information</h3>
@@ -244,9 +271,51 @@ const ProviderMyAppointments = () => {
                         </div>
                     </div>
                 )}
+                {modalMode === "get_summary" && selectedAppt && (
+                    <div>
+                        <h3 className="text-lg font-semibold mb-2">Get Summary</h3>
+                        <hr />
+                        <div className="mb-5">
+                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Paste Transcript Below</div>
+                            <textarea
+                                rows={4}
+                                className="w-full border border-gray-300 rounded-md p-2 mb-3"
+                                value={transcriptInput}
+                                onChange={e => setTranscriptInput(e.target.value)}
+                                placeholder="Paste transcript here"
+                            />
+                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Enter Summary</div>
+                            <textarea
+                                rows={2}
+                                className="w-full border border-gray-300 rounded-md p-2 mb-4"
+                                value={summaryInput}
+                                onChange={e => setSummaryInput(e.target.value)}
+                                placeholder="Enter summary"
+                            />
+                            <button
+                                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                                onClick={handleSummarySubmit}
+                            >
+                                Input / Get Summary
+                            </button>
+                        </div>
+                    </div>
+                )}
+                {modalMode === "view_summary" && selectedAppt && (
+                    <div>
+                        <h3 className="text-lg font-semibold mb-2">Appointment Summary</h3>
+                        <hr />
+                        <div className="mb-5">
+                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Transcript</div>
+                            <div className="text-sm mb-2 whitespace-pre-wrap">{selectedAppt.transcript || "—"}</div>
+                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Summary</div>
+                            <div className="text-sm mb-2 whitespace-pre-wrap">{selectedAppt.summary || "—"}</div>
+                        </div>
+                    </div>
+                )}
             </Model>
         </div>
-    );
-};
+    )
+}
 
-export default ProviderMyAppointments;
+export default ProviderPastAppointments
