@@ -100,6 +100,16 @@ const Header = () => {
                                 Contact Us
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink
+                                to="/provider/login"
+                                className={({ isActive }) =>
+                                    isActive ? "  text-[#1475A1] " : "hover:text-[#1475A1]"
+                                }
+                            >
+                                Service Provider
+                            </NavLink>
+                        </li>
                     </ul>
                 </nav>
 

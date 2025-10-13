@@ -29,10 +29,10 @@ const ProviderDashboardLayout = () => {
                             alt="NETREACH Logo"
                             className="h-8 md:h-10 xl:h-12 w-auto object-contain"
                         />
-                        <h2 className="text-sm text-gray-600 tracking-wide">Provider Dashboard</h2>
+                        <h2 className="text-sm text-gray-600 tracking-wide">Service Provider Dashboard</h2>
                     </div>
                     <nav className="flex flex-col space-y-3">
-                        <NavLink
+                        {/* <NavLink
                             to="appointments"
                             className={({ isActive }) =>
                                 `px-3 py-2 rounded-md text-sm font-medium ${isActive
@@ -42,7 +42,32 @@ const ProviderDashboardLayout = () => {
                             }
                         >
                             My Appointments
-                        </NavLink>
+                        </NavLink> */}
+                        <div>
+                            <div className="px-3 py-2 text-sm font-medium text-gray-600">My Appointments</div>
+                            <div className="pl-4 flex flex-col space-y-1">
+                                <NavLink
+                                    to="appointments/upcoming"
+                                    className={({ isActive }) =>
+                                        `px-3 py-2 rounded-md text-sm ${isActive
+                                            ? "bg-blue-100 text-blue-600 font-semibold"
+                                            : "text-gray-700 hover:bg-gray-100"}`
+                                    }
+                                >
+                                    Upcoming
+                                </NavLink>
+                                <NavLink
+                                    to="appointments/past"
+                                    className={({ isActive }) =>
+                                        `px-3 py-2 rounded-md text-sm ${isActive
+                                            ? "bg-blue-100 text-blue-600 font-semibold"
+                                            : "text-gray-700 hover:bg-gray-100"}`
+                                    }
+                                >
+                                    Past
+                                </NavLink>
+                            </div>
+                        </div>
                         <NavLink
                             to="slots"
                             className={({ isActive }) =>

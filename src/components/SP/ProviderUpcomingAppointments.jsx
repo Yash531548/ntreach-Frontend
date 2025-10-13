@@ -1,8 +1,5 @@
 import React, { useState, useMemo } from "react";
 import { Search, X } from "lucide-react";
-
-// Reusable Modal Component
-
 const Model = ({ open, onClose, children }) => {
     if (!open) return null;
     return (
@@ -20,8 +17,7 @@ const Model = ({ open, onClose, children }) => {
         </div>
     )
 }
-const ProviderMyAppointments = () => {
-    // Mock API response data
+const ProviderUpcomingAppointments = () => {
     const appointmentsData = [
         {
             // id: 1,
@@ -108,7 +104,6 @@ const ProviderMyAppointments = () => {
 
         return filtered;
     }, [appointmentsData, search, sortBy, filterBy]);
-
     return (
         <div className="bg-white p-3 md:p-6 rounded-lg md:shadow-sm  box-border w-full h-full">
             <h1 className="text-lg md:text-xl font-semibold mb-4 md:mb-6">Upcoming Appointments</h1>
@@ -246,7 +241,7 @@ const ProviderMyAppointments = () => {
                 )}
             </Model>
         </div>
-    );
-};
+    )
+}
 
-export default ProviderMyAppointments;
+export default ProviderUpcomingAppointments
