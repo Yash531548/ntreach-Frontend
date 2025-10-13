@@ -2,6 +2,7 @@ import './App.css'
 import Layout from './Layout/Layout'
 import Home from './pages/Home'
 import { Navigate, Route, Routes, useLocation } from 'react-router'
+import { VnProvider } from './Context/VnContext.jsx'
 import Questionnaire from './pages/Questionnaire'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
@@ -38,9 +39,10 @@ function App() {
       <div className={`bg-white ${isProviderPath ? "" : "h-screen"}  `}>
         <Routes >
           {/* Parent route uses Layout */}
-          <Route path='/' element={< Layout />}>
+          <Route path='/' element={<VnProvider><Layout /></VnProvider>}>
             {/* Nested routes inherit the layout */}
             <Route index element={<Home />} />
+            <Route path=":vnName" element={<Home />} />
             <Route path="/questionnaire" element={
               <ProtectedRoute >
                 <Questionnaire />

@@ -1,8 +1,15 @@
-import React from 'react';
+import { useVn } from '../Context/VnContext'
 import NavigatorCard from '../components/Teams/NavigatorCard';
 import { VnData } from '../libs/vnData';
 
 const Team = () => {
+    const { vnData, loading } = useVn()
+
+    // If vnData is loaded and has a name, filter it. Otherwise, show all
+    const displayedVns =
+        !loading && vnData?.name
+            ? VnData.filter(vn => vn.VnName === vnData.name)
+            : VnData;
     
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
@@ -27,9 +34,9 @@ const Team = () => {
             "
                 >
                     {/* Replace with dynamic mapping over your data */}
-                    {VnData.map((vn) => (
+                    {displayedVns.map((vn, i) => (
                         <NavigatorCard
-                            key={vn.VnID}
+                            key={i}
                             VnImage={vn.VnImage}
                             VnName={vn.VnName}
                             VnState={vn.VnState}

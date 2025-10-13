@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ChatBot from '../ChatBot'
 import GetTested from '../../assets/Dashboard/GetTested.png'
 import { useLocation, useNavigate } from 'react-router'
+import { useVn } from '../../Context/VnContext'
 import { ChevronDown } from 'lucide-react'
 import { fetchStates } from '../../Api/getState'
 import { fetchDistrictsApi } from '../../Api/fetchDistrictsApi'
@@ -26,6 +27,13 @@ const ScheduleAppointment = () => {
 
     const [appointmentDate, setAppointmentDate] = useState('')
     const [loadingSubmit, setLoadingSubmit] = useState(false)
+
+    const { vnData, loading } = useVn()
+
+    // If vnData is loaded and has a state_list, filter it. Otherwise, show all
+    const displayedStates = !loading && vnData?.state_list?.length
+        ? states.filter(state => vnData.state_list.map(String).includes(String(state.state_code)))
+        : states;
 
     // Fetch states once on mount
     useEffect(() => {
@@ -124,7 +132,8 @@ const ScheduleAppointment = () => {
             district: Number(selectedDistrict),
             testing_center: Number(selectedCenter),
             appointment_date: formatDateForAPI(appointmentDate),
-            type: "Upcoming"
+            type: "Upcoming",
+            booking_type: !loading && vnData?.name ? 'outreach' : 'self'
         };
 
         console.log("data to send on book an appointment", data);
@@ -188,7 +197,7 @@ const ScheduleAppointment = () => {
                                 }}
                             >
                                 <option >Select State</option>
-                                {states.map(state => (
+                                {displayedStates.map(state => (
                                     <option key={state.id} value={state.id}>{state.state_name}</option>
                                 ))}
                             </select>
