@@ -10,7 +10,10 @@ const Team = () => {
         !loading && vnData?.name
             ? VnData.filter(vn => vn.VnName === vnData.name)
             : VnData;
-    
+    // Sort alphabetically by VnName (after filtering)
+    const sortedVns = displayedVns.slice().sort((a, b) =>
+        a.VnName.localeCompare(b.VnName)
+    );
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
             <main
@@ -34,7 +37,8 @@ const Team = () => {
             "
                 >
                     {/* Replace with dynamic mapping over your data */}
-                    {displayedVns.map((vn, i) => (
+                    {/* {displayedVns.map((vn, i) => ( */}
+                    {sortedVns.map((vn, i) => (
                         <NavigatorCard
                             key={i}
                             VnImage={vn.VnImage}

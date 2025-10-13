@@ -20,15 +20,43 @@ const NavigatorCard = ({ VnImage, VnName, VnState, VnMobile }) => (
     "
         style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
     >
-        <div className='h-[6rem]  md:h-[8rem]'>
+        {/* <div className='h-[6rem]  md:h-[8rem]'>
             <div className="mb-4 sm:mb-5 flex justify-center ">
                 <img src={VnImage} alt="" className="w-16 sm:w-20 md:w-24 object-cover rounded-full" />
             </div>
+        </div> */}
+        <div className="relative flex justify-center items-center h-[7rem] md:h-[9rem]">
+            {/* Yellow circular background */}
+            <div
+                className="
+          absolute
+          rounded-full
+          bg-[#FFD600]
+          w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28
+          top-1/2 left-1/2
+          -translate-x-1/2 -translate-y-1/2
+        "
+            />
+            {/* Image ahead */}
+            <img
+                src={VnImage}
+                alt=""
+                className="
+          z-10
+          w-16 sm:w-20 md:w-24 md:h-24
+          object-cover
+          rounded-full
+          relative
+          shadow-lg
+          mt-6
+        "
+                
+            />
         </div>
         <div className="text-lg sm:text-xl md:text-2xl font-semibold text-black text-center ">
             {VnName}
         </div>
-        
+
         <div className="flex items-center mt-1 text-xs sm:text-sm w-full justify-center grow ">
             <MapPin className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mr-1 text-[#FF5593]" />
             {/* <div className="max-w-[110px] sm:max-w-[150px] text-center truncate" title={VnState}> */}
