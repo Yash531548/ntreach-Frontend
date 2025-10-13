@@ -147,7 +147,7 @@ const ProviderMyAppointments = () => {
             </div>
 
             {/* Table Section */}
-            <div className="w-full max-h-[69vh] max-w-[95vw] md:max-w-2xl lg:max-w-3xl xl:max-w-full overflow-y-auto overflow-x-auto rounded-md shadow-sm mt-[2rem] mb-[1rem] pt-3 "
+            <div className="w-full max-h-[69vh] max-w-[95vw]  overflow-y-auto overflow-x-auto rounded-md shadow-sm mt-[2rem] mb-[1rem] pt-3 "
                 style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}>
                 <table className=" text-left border-collapse whitespace-nowrap w-full ">
                     <thead>
