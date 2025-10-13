@@ -171,7 +171,7 @@ const ProviderMyAppointments = () => {
                                 <td className="py-2 px-3">{appt.name}</td>
                                 <td className="py-2 px-3 ">{appt.type}</td>
                                 <td className="py-2 px-3">{appt.time}</td>
-                                <td className="py-2 px-3 text-blue-600 flex flex-col md:flex-row gap-1 md:gap-2">
+                                <td className="py-2 px-3 text-black flex flex-col md:flex-row gap-1 md:gap-2">
                                     <button className="hover:underline cursor-pointer" onClick={() => {
                                         setSelectedAppt(appt);
                                         setModalOpen(true);
