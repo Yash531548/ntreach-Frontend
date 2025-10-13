@@ -13,6 +13,7 @@ import DynamicMap from './DynamicMap'
 const ScheduleAppointment = () => {
     const location = useLocation();
     const incomingServices = location.state?.selectedServices || [];
+    const name = location.state?.name || '';
     // console.log("incomingservice",incomingServices);
     const navigate = useNavigate()
     const [states, setStates] = useState([]);
@@ -133,7 +134,8 @@ const ScheduleAppointment = () => {
             testing_center: Number(selectedCenter),
             appointment_date: formatDateForAPI(appointmentDate),
             type: "Upcoming",
-            booking_type: !loading && vnData?.name ? 'outreach' : 'self'
+            booking_type: !loading && vnData?.name ? 'outreach' : 'self',
+            booking_name: name,
         };
 
         console.log("data to send on book an appointment", data);

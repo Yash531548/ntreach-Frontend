@@ -61,7 +61,7 @@ const BookAppointment = () => {
             return;
         }
 
-        navigate('/schedulesppointment', { state: { selectedServices: Array.from(selectedServices) } });
+        navigate('/schedulesppointment', { state: { selectedServices: Array.from(selectedServices), name: UserName } });
     };
 
     return (
