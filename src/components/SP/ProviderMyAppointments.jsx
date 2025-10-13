@@ -110,7 +110,7 @@ const ProviderMyAppointments = () => {
     }, [appointmentsData, search, sortBy, filterBy]);
 
     return (
-        <div className="bg-white p-3 md:p-6 rounded-lg shadow-sm  box-border">
+        <div className="bg-white p-3 md:p-6 rounded-lg md:shadow-sm  box-border w-full h-full">
             <h1 className="text-lg md:text-xl font-semibold mb-4 md:mb-6">My Appointments</h1>
 
             {/* Top Controls */}
@@ -147,11 +147,11 @@ const ProviderMyAppointments = () => {
             </div>
 
             {/* Table Section */}
-            <div className="w-full max-h-[53vh] overflow-y-auto overflow-x-auto rounded-md shadow-sm mt-[2rem] mb-[1rem] pt-3 p-4"
+            <div className="w-full max-h-[69vh] max-w-[95vw] md:max-w-2xl lg:max-w-3xl xl:max-w-full overflow-y-auto overflow-x-auto rounded-md shadow-sm mt-[2rem] mb-[1rem] pt-3 "
                 style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}>
-                <table className="w-full text-left border-collapse whitespace-nowrap">
+                <table className=" text-left border-collapse whitespace-nowrap w-full ">
                     <thead>
-                        <tr className="border-b border-gray-300 text-gray-600 text-left">
+                        <tr className="border-b border-gray-300 text-gray-600 text-left text-xs">
                             <th className="py-2 px-3 ">SL.No</th>
                             <th className="py-2 px-3 ">Date</th>
                             <th className="py-2 px-3 ">Name</th>
@@ -164,7 +164,7 @@ const ProviderMyAppointments = () => {
                         {filteredAppointments.map((appt, index) => (
                             <tr
                                 key={appt.id}
-                                className="border-b border-gray-200 hover:bg-gray-50"
+                                className="border-b border-gray-200 hover:bg-gray-50 text-xs"
                             >
                                 <td className="py-2 px-3">{String(index + 1).padStart(2, "0")}</td>
                                 <td className="py-2 px-3">{appt.date}</td>
@@ -196,7 +196,7 @@ const ProviderMyAppointments = () => {
                             <div className="text-sm">{selectedAppt.name}</div>
                         </div>
                         {/* <div className="mb-2 flex flex-col md:flex-row gap-4 md:gap-12"> */}
-                        <div className="mb-5 grid grid-cols-1 md:grid-cols-2 ">
+                        <div className="mb-5 grid grid-cols-2 ">
                             <div>
                                 <div className="text-[13px] mb-1 text-gray-600 font-medium">Patient Gender</div>
                                 <div className="text-sm">{selectedAppt.gender || "—"}</div>
@@ -206,7 +206,7 @@ const ProviderMyAppointments = () => {
                                 <div className="text-sm">{selectedAppt.bloodGroup || "—"}</div>
                             </div>
                         </div>
-                        <div className="mb-5 grid grid-cols-1 md:grid-cols-2 ">
+                        <div className="mb-5 grid grid-cols-2 ">
                             <div>
                                 <div className="text-[13px] mb-1 text-gray-600 font-medium">Type of Consultation</div>
                                 <div className="text-sm">{selectedAppt.type}</div>
@@ -229,7 +229,7 @@ const ProviderMyAppointments = () => {
                                 href={selectedAppt.meetingLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="px-8 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition text-sm flex-1 text-center cursor-pointer"
+                                className="px-8 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition text-sm flex-1 flex items-center justify-center  cursor-pointer"
                             >
                                 Join Link
                             </a>
