@@ -9,6 +9,7 @@ import Sebastian1 from '../assets/Static/Vn/Sebastian1.png';
 import Ravi1 from '../assets/Static/Vn/Ravi1.png';
 import Sadiq1 from '../assets/Static/Vn/Sadiq1.png';
 import Kumar1 from '../assets/Static/Vn/Kumar1.png';
+import Vipito from '../assets/Static/Vn/Vipito.jpg';
 export const VnData = [
         {
             VnID: 1,
@@ -86,5 +87,12 @@ export const VnData = [
             VnName: "Kumar",
             VnState: "Karnataka, Kerala, Tamil Nadu, Puducherry",
             VnMobile: 8655745688,
+        },
+        {
+            VnID: 10,
+            VnImage: Vipito ,
+            VnName: "Vipito Chisti",
+            VnState: "Assam,Nagaland,Sikkim  ,Manipur ,Mizoram ",
+            VnMobile: 8812853117,
         },
     ]
