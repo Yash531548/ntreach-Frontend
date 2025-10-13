@@ -26,6 +26,7 @@ import ProviderLogin from './pages/SP/ProviderLogin'
 import ProviderDashboardLayout from './Layout/ProviderDashboardLayout'
 import ProviderMyAppointments from './components/SP/ProviderMyAppointments'
 import ProviderMySlots from './components/SP/ProviderMySlots'
+import ProviderProfile from './pages/SP/ProviderProfile'
 
 function App() {
   const { pathname } = useLocation();
@@ -76,6 +77,7 @@ function App() {
           </Route>
           <Route path="/provider">
             <Route path="login" element={<ProviderLogin />} />
+            <Route path="profile" element={<ProviderProfile />} />
             <Route path="dashboard" element={<ProviderDashboardLayout />}>
               {/* Default route: redirect to appointments */}
               <Route index element={<Navigate to="appointments" replace />} />
