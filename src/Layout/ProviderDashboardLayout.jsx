@@ -113,7 +113,7 @@ const ProviderDashboardLayout = () => {
                                     <X className="w-6 h-6 text-gray-700" />
                                 </button>
                             </div>
-                            <h2 className="text-sm text-gray-600 tracking-wide">Provider Dashboard </h2>
+                            <h2 className="text-sm text-gray-600 tracking-wide">Service Provider Dashboard </h2>
                         </div>
                         <nav className="flex flex-col space-y-3">
                             <NavLink
@@ -162,7 +162,7 @@ const ProviderDashboardLayout = () => {
                     <button onClick={toggleSidebar}>
                         <Menu className="w-6 h-6 text-gray-700" />
                     </button>
-                    <h1 className="text-lg font-semibold">Provider Dashboard</h1>
+                    <h1 className="text-sm font-semibold">Service Provider Dashboard</h1>
                     <div className="w-6" /> {/* spacing placeholder */}
                 </header>
 

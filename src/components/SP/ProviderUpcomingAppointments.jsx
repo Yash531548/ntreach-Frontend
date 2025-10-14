@@ -191,7 +191,7 @@ const ProviderUpcomingAppointments = () => {
                             <div className="text-sm">{selectedAppt.name}</div>
                         </div>
                         {/* <div className="mb-2 flex flex-col md:flex-row gap-4 md:gap-12"> */}
-                        <div className="mb-5 grid grid-cols-2 ">
+                        {/* <div className="mb-5 grid grid-cols-2 ">
                             <div>
                                 <div className="text-[13px] mb-1 text-gray-600 font-medium">Patient Gender</div>
                                 <div className="text-sm">{selectedAppt.gender || "—"}</div>
@@ -199,6 +199,16 @@ const ProviderUpcomingAppointments = () => {
                             <div>
                                 <div className="text-[13px] mb-1 text-gray-600 font-medium">Patient Blood Group</div>
                                 <div className="text-sm">{selectedAppt.bloodGroup || "—"}</div>
+                            </div>
+                        </div> */}
+                        <div className="mb-5 grid grid-cols-2 ">
+                            <div>
+                                <div className="text-[13px] mb-1 text-gray-600 font-medium"> Date</div>
+                                <div className="text-sm">{selectedAppt.date || "—"}</div>
+                            </div>
+                            <div>
+                                <div className="text-[13px] mb-1 text-gray-600 font-medium"> Time</div>
+                                <div className="text-sm">{selectedAppt.time || "—"}</div>
                             </div>
                         </div>
                         <div className="mb-5 grid grid-cols-2 ">
@@ -210,10 +220,6 @@ const ProviderUpcomingAppointments = () => {
                                 <div className="text-[13px] mb-1 text-gray-600 font-medium">Type of Service</div>
                                 <div className="text-sm">{selectedAppt.service || "—"}</div>
                             </div>
-                        </div>
-                        <div className="mb-6">
-                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Notes from Patient</div>
-                            <div className="text-sm mb-2">{selectedAppt.notes || "—"}</div>
                         </div>
                         <div className="mb-5">
                             <div className="text-[13px] mb-1 text-gray-600 font-medium">Meeting Link</div>
