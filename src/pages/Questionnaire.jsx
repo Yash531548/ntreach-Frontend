@@ -511,9 +511,9 @@ const handleGeolocate = async () => {
                                     ): (
                                         <div className="w-[160px]"></div>
                                     )}
-                                    {currentStep < steps.length && currentStep < 4 ? (
+                                    {currentStep < steps.length && currentStep < 4  ? selectedRisk !== 1 && (
                                         <button
-                                            disabled={currentStep === 0 && !isStep1Complete}
+                                            disabled={currentStep === 0 && !isStep1Complete || selectedRisk === 1}
                                             onClick={() =>
                                                 setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
                                             }
@@ -521,7 +521,7 @@ const handleGeolocate = async () => {
                                             //    bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
                                             className={`relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
                                                     rounded-full cursor-pointer
-                                                    ${currentStep === 0 && !isStep1Complete
+                                                    ${currentStep === 0 && !isStep1Complete || selectedRisk === 1
                                                     ? 'bg-gray-400 cursor-not-allowed opacity-70' // Disabled styles
                                                     : 'bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white'
                                                 }`}
@@ -716,7 +716,7 @@ const handleGeolocate = async () => {
                                 ) : (
                                     <div className="w-[160px]" />
                                 )}
-                                {currentStep < steps.length && currentStep < 4 ? (
+                                {currentStep < steps.length && currentStep < 4 ? selectedRisk !==1 && (
                                     <button
                                         disabled={currentStep === 0 && !isStep1Complete}
                                         onClick={() =>

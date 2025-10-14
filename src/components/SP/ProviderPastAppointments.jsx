@@ -223,7 +223,7 @@ const ProviderPastAppointments = () => {
                             <div className="text-sm">{selectedAppt.name}</div>
                         </div>
                         {/* <div className="mb-2 flex flex-col md:flex-row gap-4 md:gap-12"> */}
-                        <div className="mb-5 grid grid-cols-2 ">
+                        {/* <div className="mb-5 grid grid-cols-2 ">
                             <div>
                                 <div className="text-[13px] mb-1 text-gray-600 font-medium">Patient Gender</div>
                                 <div className="text-sm">{selectedAppt.gender || "—"}</div>
@@ -231,6 +231,16 @@ const ProviderPastAppointments = () => {
                             <div>
                                 <div className="text-[13px] mb-1 text-gray-600 font-medium">Patient Blood Group</div>
                                 <div className="text-sm">{selectedAppt.bloodGroup || "—"}</div>
+                            </div>
+                        </div> */}
+                        <div className="mb-5 grid grid-cols-2 ">
+                            <div>
+                                <div className="text-[13px] mb-1 text-gray-600 font-medium"> Date</div>
+                                <div className="text-sm">{selectedAppt.date || "—"}</div>
+                            </div>
+                            <div>
+                                <div className="text-[13px] mb-1 text-gray-600 font-medium"> Time</div>
+                                <div className="text-sm">{selectedAppt.time || "—"}</div>
                             </div>
                         </div>
                         <div className="mb-5 grid grid-cols-2 ">
@@ -243,10 +253,10 @@ const ProviderPastAppointments = () => {
                                 <div className="text-sm">{selectedAppt.service || "—"}</div>
                             </div>
                         </div>
-                        <div className="mb-6">
+                        {/* <div className="mb-6">
                             <div className="text-[13px] mb-1 text-gray-600 font-medium">Notes from Patient</div>
                             <div className="text-sm mb-2">{selectedAppt.notes || "—"}</div>
-                        </div>
+                        </div> */}
                         <div className="mb-5">
                             <div className="text-[13px] mb-1 text-gray-600 font-medium">Meeting Link</div>
                             <div className="text-sm break-all">{selectedAppt.meetingLink || "—"}</div>
@@ -275,25 +285,18 @@ const ProviderPastAppointments = () => {
                     <div>
                         <h3 className="text-lg font-semibold mb-2">Get Summary</h3>
                         <hr />
-                        <div className="mb-5">
+                        <div className="my-5">
                             <div className="text-[13px] mb-1 text-gray-600 font-medium">Paste Transcript Below</div>
                             <textarea
-                                rows={4}
+                                rows={8}
                                 className="w-full border border-gray-300 rounded-md p-2 mb-3"
                                 value={transcriptInput}
                                 onChange={e => setTranscriptInput(e.target.value)}
                                 placeholder="Paste transcript here"
                             />
-                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Enter Summary</div>
-                            <textarea
-                                rows={2}
-                                className="w-full border border-gray-300 rounded-md p-2 mb-4"
-                                value={summaryInput}
-                                onChange={e => setSummaryInput(e.target.value)}
-                                placeholder="Enter summary"
-                            />
+                            
                             <button
-                                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition cursor-pointer"
                                 onClick={handleSummarySubmit}
                             >
                                 Input / Get Summary
