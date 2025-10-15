@@ -2,6 +2,7 @@ import { CircleArrowLeft } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 import { fetchPastConsultations } from '../../Api/fetchPastConsultations';
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 const getRandomDuration = () => {
     // Returns either 20 or 40 min (simulate field)
@@ -112,7 +113,18 @@ const PastConsultation = ({ setSubView }) => {
             try {
                 const data = await fetchPastConsultations();
                 // console.log("data",data)
-                setConsultations(data)
+
+                // Get yesterday's date (midnight)
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                yesterday.setHours(23, 59, 59, 999); // End of yesterday
+
+                // Filter and sort
+                const filteredSorted = data
+                    .filter(item => new Date(item.date) <= yesterday) // only till yesterday
+                    .sort((a, b) => new Date(b.date) - new Date(a.date)); // descending
+
+                setConsultations(filteredSorted);
             } catch (error) {
                 setConsultations([])
             }
@@ -169,16 +181,14 @@ const PastConsultation = ({ setSubView }) => {
                                         >
                                             <td className="py-3 px-4 rounded-l-full">{formatDate(item.date)}</td>
                                             <td className="py-3 px-4">{formatTime(item.time)}</td>
-                                            <td className="py-3 px-4 text-center xl:text-left">{getServiceDisplay(item.service)}</td>
+                                            <td className="py-3 px-4 text-center xl:text-left capitalize">{getServiceDisplay(item.service)}</td>
                                             {/* Filler for duration - random for now */}
                                             <td className="py-3 px-4">{getRandomDuration()}</td>
                                             {/* Placeholder for recommendations */}
                                             <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
-                                                <button
-                                                    onClick={() => { setSubView('Reschedule') }}
-                                                    className="text-[#323FF7] underline cursor-pointer whitespace-nowrap">
-                                                    {getRecommendationText()}
-                                                </button>
+                                                {item.summary_pdf_path && (
+                                                    <a href={`${BASE_URL}storage/${item.summary_pdf_path}`}target="_blank" className="text-[#323FF7] underline cursor-pointer whitespace-nowrap">{getRecommendationText()}</a>
+                                                )}
                                             </td>
                                         </tr>
                                     ))
