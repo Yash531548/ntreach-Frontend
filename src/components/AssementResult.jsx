@@ -9,18 +9,54 @@ import NeedleIcon from '../assets/Extra/Vector.png'
 import { useNavigate } from 'react-router'
 import { VnData } from '../libs/vnData'
 import { useVn } from '../Context/VnContext'
+import { getVns } from '../Api/getVns'
 
 
 
 const AssementResult = () => {
     const navigate = useNavigate();
-    const { vnData, loading } = useVn()
-    
-        // If vnData is loaded and has a name, filter it. Otherwise, show all
-        const displayedVns =
-            !loading && vnData?.name
-                ? VnData.filter(vn => vn.VnName === vnData.name)
-                : VnData;
+    const { vnData, loading } = useVn();
+    const [teamVns, setTeamVns] = useState([]);
+    const [loadingApi, setLoadingApi] = useState(false);
+
+    useEffect(() => {
+        // Fetch data on mount
+        async function fetchData() {
+            setLoadingApi(true);
+            try {
+                const response = await getVns();
+                console.log("response", response.data.data)
+                // response.data is expected to be your VN array.
+                let data = response.data.data;
+
+                // Handle if data is an object, not an array
+                if (!Array.isArray(data)) {
+                    // If it's an object, wrap it in an array, if null fallback to []
+                    data = data ? [data] : [];
+                }
+                setTeamVns(data)
+                // setTeamVns(response.data || []);
+            } catch (err) {
+                setTeamVns([]); // fallback to empty array on error
+            } finally {
+                setLoadingApi(false);
+            }
+        }
+        fetchData();
+    }, []);
+    // If vnData is loaded and has a name, filter it. Otherwise, show all
+    // const displayedVns =
+    //     !loading && vnData?.name
+    //         ? VnData.filter(vn => vn.VnName === vnData.name)
+    //         : VnData;
+    const displayedVns =
+        !loading && vnData?.name
+            ? teamVns.filter(vn => vn.name === vnData.name)
+            : teamVns;
+
+    const sortedVns = displayedVns.slice().sort((a, b) =>
+        (a.name || '').localeCompare(b.name || '')
+    );
 
     const totalWeight = parseFloat(localStorage.getItem('totalWeight')) || 50
     // animated needle value
@@ -113,7 +149,7 @@ const AssementResult = () => {
                     >
                         {/* Replace with dynamic mapping over your data */}
                         {/* {VnData.map((vn, i) => ( */}
-                        {displayedVns.map((vn, i) => (
+                        {/* {displayedVns.map((vn, i) => (
                             <NavigatorCard
                                 key={i}
                                 VnImage={vn.VnImage}
@@ -121,7 +157,25 @@ const AssementResult = () => {
                                 VnState={vn.VnState}
                                 VnMobile={vn.VnMobile}
                             />
-                        ))}
+                        ))} */}
+                        {loadingApi ? (
+                        <div>Loading...</div>
+                    ) : (
+                        sortedVns
+                            .filter(vn => vn.profile_photo)
+                            .map((vn, i) => (
+                                <NavigatorCard
+                                    key={i}
+                                    VnImage={vn.profile_photo}
+                                    VnName={vn.name}
+                                    VnState={vn.region}
+                                    VnMobile={vn.mobile_number}
+                                    vnInstagram={vn.instagram_url}
+                                    vnFacebook={vn.facebook_url}
+                                    vnLinkedin={vn.linkedin_url}
+                                />
+                            ))
+                    )}
                     </div>
                 </div>
             </main>

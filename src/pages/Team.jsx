@@ -1,20 +1,58 @@
+import { useEffect, useState } from 'react';
 import { useVn } from '../Context/VnContext'
 import NavigatorCard from '../components/Teams/NavigatorCard';
 import { VnData } from '../libs/vnData';
+import { getVns } from '../Api/getVns';
 
 const Team = () => {
     const { vnData, loading } = useVn()
+    const [teamVns, setTeamVns] = useState([]);
+    const [loadingApi, setLoadingApi] = useState(false);
+
+    useEffect(() => {
+        // Fetch data on mount
+        async function fetchData() {
+            setLoadingApi(true);
+            try {
+                const response = await getVns();
+                console.log("response", response.data.data)
+                // response.data is expected to be your VN array.
+                let data = response.data.data;
+
+                // Handle if data is an object, not an array
+                if (!Array.isArray(data)) {
+                    // If it's an object, wrap it in an array, if null fallback to []
+                    data = data ? [data] : [];
+                }
+                setTeamVns(data)
+                // setTeamVns(response.data || []);
+            } catch (err) {
+                setTeamVns([]); // fallback to empty array on error
+            } finally {
+                setLoadingApi(false);
+            }
+        }
+        fetchData();
+    }, []);
 
     // If vnData is loaded and has a name, filter it. Otherwise, show all
+    // const displayedVns =
+    //     !loading && vnData?.name
+    //         ? VnData.filter(vn => vn.VnName === vnData.name)
+    //         : VnData;
     const displayedVns =
         !loading && vnData?.name
-            ? VnData.filter(vn => vn.VnName === vnData.name)
-            : VnData;
+            ? teamVns.filter(vn => vn.name === vnData.name)
+            : teamVns;
     // Sort alphabetically by VnName (after filtering)
+    // const sortedVns = displayedVns.slice().sort((a, b) =>
+    //     a.VnName.localeCompare(b.VnName)
+    // );
     const sortedVns = displayedVns.slice().sort((a, b) =>
-        a.VnName.localeCompare(b.VnName)
+        (a.name || '').localeCompare(b.name || '')
     );
-    console.log(displayedVns);
+    // console.log("team vn", teamVns)
+
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
             <main
@@ -39,7 +77,7 @@ const Team = () => {
                 >
                     {/* Replace with dynamic mapping over your data */}
                     {/* {displayedVns.map((vn, i) => ( */}
-                    {sortedVns.map((vn, i) => (
+                    {/* {sortedVns.map((vn, i) => (
                         <NavigatorCard
                             key={i}
                             VnImage={vn.VnImage}
@@ -47,7 +85,25 @@ const Team = () => {
                             VnState={vn.VnState}
                             VnMobile={vn.VnMobile}
                         />
-                    ))}
+                    ))} */}
+                    {loadingApi ? (
+                        <div>Loading...</div>
+                    ) : (
+                        sortedVns
+                            .filter(vn => vn.profile_photo)
+                            .map((vn, i) => (
+                                <NavigatorCard
+                                    key={i}
+                                    VnImage={vn.profile_photo}
+                                    VnName={vn.name}
+                                    VnState={vn.region}
+                                    VnMobile={vn.mobile_number}
+                                    vnInstagram={vn.instagram_url}
+                                    vnFacebook={vn.facebook_url}
+                                    vnLinkedin={vn.linkedin_url}
+                                />
+                            ))
+                    )}
                 </div>
             </main>
         </div>
