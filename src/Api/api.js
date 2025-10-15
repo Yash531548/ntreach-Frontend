@@ -10,7 +10,7 @@ const api = axios.create({
 api.interceptors.request.use(config => {
   const user = getProviderUser();
 
-  if (user.access_token) {
+  if (user && user.access_token) {
     config.headers.Authorization = `Bearer ${user.access_token}`;
   }
 
