@@ -8,11 +8,19 @@ import BaseIcon from '../assets/Extra/Base.png'
 import NeedleIcon from '../assets/Extra/Vector.png'
 import { useNavigate } from 'react-router'
 import { VnData } from '../libs/vnData'
+import { useVn } from '../Context/VnContext'
 
 
 
 const AssementResult = () => {
     const navigate = useNavigate();
+    const { vnData, loading } = useVn()
+    
+        // If vnData is loaded and has a name, filter it. Otherwise, show all
+        const displayedVns =
+            !loading && vnData?.name
+                ? VnData.filter(vn => vn.VnName === vnData.name)
+                : VnData;
 
     const totalWeight = parseFloat(localStorage.getItem('totalWeight')) || 50
     // animated needle value
@@ -104,7 +112,8 @@ const AssementResult = () => {
             "
                     >
                         {/* Replace with dynamic mapping over your data */}
-                        {VnData.map((vn, i) => (
+                        {/* {VnData.map((vn, i) => ( */}
+                        {displayedVns.map((vn, i) => (
                             <NavigatorCard
                                 key={i}
                                 VnImage={vn.VnImage}

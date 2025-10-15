@@ -14,6 +14,7 @@ const Team = () => {
     const sortedVns = displayedVns.slice().sort((a, b) =>
         a.VnName.localeCompare(b.VnName)
     );
+    console.log(displayedVns);
     return (
         <div className='container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0'>
             <main

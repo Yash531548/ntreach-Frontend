@@ -79,8 +79,8 @@ const ScheduleAppointment = () => {
         // Find the matching state object's code
         const stateObj = states.find(s => String(s.id) === String(selectedState));
         const state_code = stateObj ? stateObj.state_code : '';
-        console.log("state_code", state_code)
-        console.log("selected district", selectedDistrict)
+        // console.log("state_code", state_code)
+        // console.log("selected district", selectedDistrict)
         if (!state_code) {
             setCenters([]);
             setSelectedCenter('');
@@ -93,7 +93,7 @@ const ScheduleAppointment = () => {
                     district_id: selectedDistrict,
                     state_code: state_code,
                 });
-                console.log("data", data)
+                // console.log("data", data)
                 setCenters(data.length > 0 ? data : []);
                 setSelectedCenter('');
             } catch (error) {
@@ -134,9 +134,14 @@ const ScheduleAppointment = () => {
             testing_center: Number(selectedCenter),
             appointment_date: formatDateForAPI(appointmentDate),
             type: "Upcoming",
-            booking_type: !loading && vnData?.name ? 'outreach' : 'self',
+            // booking_type: !loading && vnData?.name ? 'outreach' : 'self',
+            booking_type: "SELF",
             booking_name: name,
         };
+        // ✅ Conditionally add vn_id only if vnData is available
+        if (vnData?.id) {
+            data.vn_id = vnData.id;
+        }
 
         console.log("data to send on book an appointment", data);
         try {
@@ -199,7 +204,8 @@ const ScheduleAppointment = () => {
                                 }}
                             >
                                 <option >Select State</option>
-                                {displayedStates.map(state => (
+                                {/* {displayedStates.map(state => ( */}
+                                {states.map(state => (
                                     <option key={state.id} value={state.id}>{state.state_name}</option>
                                 ))}
                             </select>
@@ -282,7 +288,7 @@ const ScheduleAppointment = () => {
                 </div>
                 <div className='container max-w-[500px] w-[400px] xl:w-[500px] flex flex-col justify-center'>
                     <DynamicMap selected={selectedName} />
-                    
+
                     {/* <iframe
                         title="Google Map"
                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14015.545715902042!2d77.06889685!3d28.4956846!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d193f7e6f7e57%3A0xab1dd7c234b63b8c!2sDLF%20CyberPark!5e0!3m2!1sen!2sin!4v1693212345678"
