@@ -48,18 +48,9 @@ const ProviderProfile = () => {
     }));
   }
 
-  const submitProfile = () => {
-    console.log("Submitting provider profile:", profile);
-
-  }
-
   const getProfile = useCallback(async () => {
     try {
-      const response = await api.get('/sp/get_profile', {
-        headers: {
-          Authorization: `Bearer ${auth.user.access_token}`,
-        }
-      });
+      const response = await api.get('/sp/get_profile');
 
       setProfile({
         firstName: response.data?.user?.first_name || '',
@@ -75,7 +66,7 @@ const ProviderProfile = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [auth.user]);
+  }, []);
 
   const updateProfile = useCallback(async () => {
     try {
@@ -84,20 +75,14 @@ const ProviderProfile = () => {
         last_name: profile.lastName,
         clinic_address: profile.clinicAddress,
         services: profile.services.map(service => service.service_type_id),
-      },
-        {
-          headers: {
-            Authorization: `Bearer ${auth.user.access_token}`,
-          }
-        }
-      );
+      });
 
       alert("Profile submitted successfully!");
       navigate("/provider/dashboard");
     } catch (error) {
       console.error(error);
     }
-  }, [profile, auth.user, navigate]);
+  }, [profile, navigate]);
 
   useEffect(() => {
     const fetchServices = async () => {
