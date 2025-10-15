@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router';
 const BASE_URL = import.meta.env.VITE_API_URL;
 import { useVn } from '../../Context/VnContext'
 import ChatBot from '../ChatBot';
 import Receipt from './Receipt';
 import NavigatorCard from '../Teams/NavigatorCard';
+import { getVns } from '../../Api/getVns';
 
 const AppointmentConfirmed = () => {
     const [showModal, setShowModal] = useState(false);
@@ -13,7 +14,31 @@ const AppointmentConfirmed = () => {
     console.log("appointment data", appointmentData)
     const handleClick = () => setShowModal(true);
 
-    const { vnData, loading } = useVn()
+    const { vnData, loading } = useVn();
+    const [vnDetails, setVnDetails] = useState([]); // Array of VNs if context VN not available
+
+    useEffect(() => {
+        const fetchVnsForState = async () => {
+            if (!vnData) { // fetch only if vnData is not available
+                try {
+                    const response = await getVns();
+                    if (response.data.status === 'success') {
+                        const vns = response.data.data;
+                        const stateId = appointmentData.appointment_data.state_id.toString();
+                        const matchedVns = vns.filter(vn => vn.state_list.includes(stateId));
+                        setVnDetails(matchedVns); // array of matching VNs
+                    }
+                } catch (error) {
+                    console.error('Error fetching VNs:', error.message);
+                }
+            }
+        };
+
+        fetchVnsForState();
+    }, [vnData, appointmentData]);
+
+    // Use context VN if available; otherwise, use fetched VNs
+    const vnsToDisplay = vnData ? [vnData] : vnDetails;
 
     return (
         <>
@@ -68,18 +93,20 @@ const AppointmentConfirmed = () => {
                         Download Receipt
                     </a>
 
-                    <div className="w-full mt-5">
-                        {!loading && vnData?.name && (
+                    {/* VN Cards */}
+                    <div className="w-full mt-5 grid grid-cols-2">
+                        {!loading && vnsToDisplay.length > 0 && vnsToDisplay.map((vn, index) => (
                             <NavigatorCard
-                                VnImage={vnData.profile_photo}
-                                VnName={vnData.name}
-                                VnState={vnData.state_list?.join(', ')}
-                                VnMobile={vnData.mobile_number}
-                                vnInstagram={vnData.instagram_url}
-                                vnFacebook={vnData.facebook_url}
-                                vnLinkedin={vnData.linkedin_url}
+                                key={index}
+                                VnImage={vn.profile_photo}
+                                VnName={vn.name}
+                                // VnState={vn.state_list?.join(', ')}
+                                VnMobile={vn.mobile_number}
+                                vnInstagram={vn.instagram_url}
+                                vnFacebook={vn.facebook_url}
+                                vnLinkedin={vn.linkedin_url}
                             />
-                        )}
+                        ))}
                     </div>
 
                     {/* Only show on desktop/laptop */}
