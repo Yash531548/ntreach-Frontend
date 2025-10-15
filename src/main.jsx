@@ -5,13 +5,15 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router'
 import { AuthProvider } from './Context/AuthContext.jsx'
 import { ProfileProvider } from './Context/ProfileContext.jsx'
+import { AuthProviderUser } from './Context/AuthProviderUserContext'
 
 createRoot(document.getElementById('root')).render(
-
-  <AuthProvider >
+  <AuthProvider>
     <ProfileProvider>
       <BrowserRouter>
-        <App />
+        <AuthProviderUser>
+          <App />
+        </AuthProviderUser>
       </BrowserRouter>,
     </ProfileProvider>
   </AuthProvider>
