@@ -102,14 +102,14 @@ export default function Questionnaire() {
 
     // Only for Step 1 (currentStep === 0)
     useEffect(() => {
-        if (profileContext.mobile) {
+        if (user?.user?.phone_number) {
             // This ensures answers[1] is always filled if user is logged in
             setAnswers(prev => ({
                 ...prev,
-                1: profileContext.mobile
+                1: user.user.phone_number
             }))
         }
-    }, [profileContext.mobile])
+    }, [user?.user?.phone_number])
     // Submit answers
     const handleGetResult = async () => {
         // Calculate total weight based on answers and steps data
