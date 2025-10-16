@@ -1,79 +1,103 @@
-import React from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { MapPin } from 'lucide-react';
+import { fetchStates as getStates } from '../../Api/getState';
 
-import WhatsappIcon from '../../assets/Static/WhatsApp.png'
-import FacebookIcon from '../../assets/Static/Facebook.png'
-import InstagramIcon1 from "../../assets/Static/Instagram1.png"
+import WhatsappIcon from '../../assets/Static/WhatsApp.png';
+import FacebookIcon from '../../assets/Static/Facebook.png';
+import InstagramIcon1 from "../../assets/Static/Instagram1.png";
 
-const NavigatorCard = ({ VnImage, VnName, VnState, VnMobile }) => (
+const NavigatorCard = ({ VnImage, VnName, VnStateList = [], VnMobile }) => {
+  const [states, setStates] = useState([]);
+
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        const response = await getStates();
+        setStates(response);
+      } catch (error) {
+        console.error('Error fetching states:', error.message);
+      }
+    };
+    fetchStates();
+  }, []);
+
+  // Keep decodedStates as array
+  const decodedStates = useMemo(() => {
+    if (!Array.isArray(VnStateList) || !states.length) return [];
+
+    return VnStateList.map(code =>
+      states.find(
+        s => Number(s.state_code) === Number(code)
+      )?.state_name
+    ).filter(Boolean);
+  }, [VnStateList, states]);
+
+  return (
     <div
-        className="
-    bg-[#DAF3FF]
-    rounded-3xl
-    flex flex-col items-center
-    px-2 py-4 sm:p-4 md:p-3
-    w-full max-w-[180px]
-    sm:max-w-[220px]
-    md:max-w-[220px]
-    shadow-md mx-auto
-    transition-all
-    "
-        style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
+      className="
+        bg-[#DAF3FF]
+        rounded-3xl
+        flex flex-col items-center
+        px-2 py-4 sm:p-4 md:p-3
+        w-full max-w-[180px]
+        sm:max-w-[220px]
+        md:max-w-[220px]
+        shadow-md mx-auto
+        transition-all
+      "
+      style={{ fontFamily: 'Sofia Pro', fontWeight: 400 }}
     >
-        {/* <div className='h-[6rem]  md:h-[8rem]'>
-            <div className="mb-4 sm:mb-5 flex justify-center ">
-                <img src={VnImage} alt="" className="w-16 sm:w-20 md:w-24 object-cover rounded-full" />
-            </div>
-        </div> */}
-        <div className="relative flex justify-center items-center h-[7rem] md:h-[9rem]">
-            {/* Yellow circular background */}
-            <div
-                className="
-          absolute
-          rounded-full
-          bg-[#FFD600]
-          w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28
-          top-1/2 left-1/2
-          -translate-x-1/2 -translate-y-1/2
-        "
-            />
-            {/* Image ahead */}
-            <img
-                src={VnImage}
-                alt=""
-                className="
-          z-10
-          w-16 sm:w-20 md:w-24 md:h-24
-          object-cover
-          rounded-full
-          relative
-          shadow-lg
-          mt-6
-        "
-                
-            />
-        </div>
-        <div className="text-lg sm:text-xl md:text-2xl font-semibold text-black text-center ">
-            {VnName}
-        </div>
+      <div className="relative flex justify-center items-center h-[7rem] md:h-[9rem]">
+        <div
+          className="
+            absolute rounded-full bg-[#FFD600]
+            w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28
+            top-1/2 left-1/2
+            -translate-x-1/2 -translate-y-1/2
+          "
+        />
+        <img
+          src={VnImage}
+          alt=""
+          className="
+            z-10 w-16 sm:w-20 md:w-24 md:h-24
+            object-cover rounded-full relative shadow-lg mt-6
+          "
+        />
+      </div>
 
-        <div className="flex items-center mt-1 text-xs sm:text-sm w-full justify-center grow ">
-            <MapPin className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mr-1 text-[#FF5593]" />
-            {/* <div className="max-w-[110px] sm:max-w-[150px] text-center truncate" title={VnState}> */}
-            <div className="max-w-[110px] sm:max-w-[160px] break-words text-center" title={VnState}>
-                {VnState}
-                {/* Karnataka, Kerala, Tamil Nadu, Puducherry */}
-            </div>
+      <div className="text-lg sm:text-xl md:text-2xl font-semibold text-black text-center">
+        {VnName}
+      </div>
+
+      {!!decodedStates.length && (
+        <div className="flex items-center mt-1 text-xs sm:text-sm w-full justify-center grow">
+          <MapPin className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mr-1 text-[#FF5593]" />
+          <div
+            className="max-w-[110px] sm:max-w-[160px] break-words text-center"
+            title={decodedStates.join(', ')}
+          >
+            {decodedStates.map((name, index) => (
+              <span key={index}>
+                {name}
+                {index < decodedStates.length - 1 && ', '}
+              </span>
+            ))}
+          </div>
         </div>
-        <div className="mt-2 text-black font-bold text-sm sm:text-base">
-            {VnMobile}
-        </div>
-        <div className="flex gap-2 mt-3 w-full items-center justify-center">
-            <img src={InstagramIcon1} alt="" className="w-5 sm:w-6" />
-            <img src={WhatsappIcon} alt="" className="w-6 sm:w-7" />
-            <img src={FacebookIcon} alt="" className="w-5 sm:w-6" />
-        </div>
+      )}
+
+      <div className="mt-2 text-black font-bold text-sm sm:text-base">
+        {VnMobile}
+      </div>
+
+      <div className="flex gap-2 mt-3 w-full items-center justify-center">
+        <img src={InstagramIcon1} alt="" className="w-5 sm:w-6" />
+        <img src={WhatsappIcon} alt="" className="w-6 sm:w-7" />
+        <img src={FacebookIcon} alt="" className="w-5 sm:w-6" />
+      </div>
     </div>
-);
+  );
+};
 
 export default NavigatorCard;

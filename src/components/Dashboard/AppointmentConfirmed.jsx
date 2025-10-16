@@ -100,7 +100,7 @@ const AppointmentConfirmed = () => {
                                 key={index}
                                 VnImage={vn.profile_photo}
                                 VnName={vn.name}
-                                // VnState={vn.state_list?.join(', ')}
+                                VnStateList={[appointmentData.appointment_data.state_id]}
                                 VnMobile={vn.mobile_number}
                                 vnInstagram={vn.instagram_url}
                                 vnFacebook={vn.facebook_url}
