@@ -153,7 +153,7 @@ const ProviderUpcomingAppointments = () => {
               >
                 <td className="py-2 px-3">{String(index + 1).padStart(2, "0")}</td>
                 <td className="py-2 px-3">{appt.date}</td>
-                <td className="py-2 px-3"></td>
+                <td className="py-2 px-3">{appt.patient_name}</td>
                 <td className="py-2 px-3 ">{appt.type === 'audio' ? 'Audio Teleconsultation' : 'Video Teleconsultation'}</td>
                 <td className="py-2 px-3">{convertTo12Hour(appt.start_time)} - {convertTo12Hour(appt.end_time)}</td>
                 <td className="py-2 px-3 text-black flex flex-col md:flex-row gap-1 md:gap-2">
@@ -214,7 +214,7 @@ const ProviderUpcomingAppointments = () => {
             <div className="mb-5 grid grid-cols-2 ">
               <div>
                 <div className="text-[13px] mb-1 text-gray-600 font-medium">Type of Consultation</div>
-                <div className="text-sm"></div>
+                <div className="text-sm">{selectedAppt.type === 'audio' ? 'Audio Teleconsultation' : 'Video Teleconsultation'}</div>
               </div>
               <div>
                 <div className="text-[13px] mb-1 text-gray-600 font-medium">Type of Service</div>
