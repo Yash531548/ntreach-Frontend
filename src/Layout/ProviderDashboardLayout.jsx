@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router";
 import { LogOut, Menu, X } from "lucide-react";
 import logoBac from "../assets/logo-bac.png"
+import { useAuthProviderUser } from "../Context/AuthProviderUserContext";
 
 const ProviderDashboardLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
+  const { logout } = useAuthProviderUser();
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
     const closeSidebar = () => setSidebarOpen(false);
     // 🔐 Logout handler
     const handleLogout = () => {
         // Clear any stored auth info
-
+      logout();
 
         // Redirect to login
         navigate("/provider/login");

@@ -1,324 +1,303 @@
-import React, { useState, useMemo } from "react";
-import { Search, X } from "lucide-react";
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { Search, X } from 'lucide-react'
+import api from '../../Api/api'
 
-const Model = ({ open, onClose, children }) => {
-    if (!open) return null;
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 transition" onClick={onClose}>
-            <div className="relative w-full max-w-lg bg-white rounded-lg shadow-lg p-6" role="dialog" aria-modal='true' onClick={e => e.stopPropagation()}>
-                <button
-                    className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 cursor-pointer"
-                    onClick={onClose}
-                    aria-label="Close"
-                >
-                    <X size={22} />
-                </button>
-                {children}
-            </div>
-        </div>
-    )
+const Modal = ({ open, onClose, children }) => {
+  if (!open) return null
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/30"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-full max-w-lg bg-white rounded-lg shadow-lg p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 cursor-pointer"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          <X size={22} />
+        </button>
+        {children}
+      </div>
+    </div>
+  )
 }
+
 const ProviderPastAppointments = () => {
-    // Mock API response data
-    const appointmentsData = [
-        {
-            // id: 1,
-            // date: "02-10-2025",
-            // name: "Yukti Aggarwal",
-            // type: "Audio Teleconsultation",
-            // time: "9:00 AM–10:00 AM",
-            id: 1,
-            date: "02-10-2025",
-            name: "Yukti Aggarwal",
-            gender: "Transgender",
-            bloodGroup: "O+",
-            type: "Audio Consultation",
-            service: "PrEP Consultation",
-            notes:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.",
-            meetingLink: "https://meet.example.com/abcdefg",
-            time: "9:00 AM–10:00 AM",
-        },
-        {
-            id: 2,
-            date: "02-10-2025",
-            name: "Priya Yadav",
-            type: "Audio Teleconsultation",
-            time: "11:00 AM–12:00 PM",
-        },
-        {
-            id: 3,
-            date: "05-10-2025",
-            name: "Yukti Aggarwal",
-            type: "Audio Teleconsultation",
-            time: "9:00 AM–10:00 AM",
-        },
-        {
-            id: 4,
-            date: "10-10-2025",
-            name: "Puja Kapoor",
-            type: "Video Teleconsultation",
-            time: "9:00 AM–10:00 AM",
-        },
-        {
-            id: 5,
-            date: "10-10-2025",
-            name: "Rahul Mehra",
-            type: "Video Teleconsultation",
-            time: "2:00 PM–3:00 PM",
-        },
-        {
-            id: 6,
-            date: "10-10-2025",
-            name: "Yukti Aggarwal",
-            type: "Audio Teleconsultation",
-            time: "4:00 PM–5:00 PM",
-        },
-    ];
+  const [appointments, setAppointments] = useState([])
+  const [search, setSearch] = useState('')
+  const [sortBy, setSortBy] = useState('date')
+  const [filterBy, setFilterBy] = useState('all')
+  const [modal, setModal] = useState({ open: false, mode: '', appt: null })
+  const [transcript, setTranscript] = useState('')
+  const [loading, setLoading] = useState(false)
 
-    const [search, setSearch] = useState("");
-    const [sortBy, setSortBy] = useState("date");
-    const [filterBy, setFilterBy] = useState("all");
-    const [selectedAppt, setSelectedAppt] = useState(null);
-    // Popup/modal state    
-    const [modalOpen, setModalOpen] = useState(false);
-    const [modalMode, setModalMode] = useState(""); // "view_detail" | "get_summary" | "view_summary"
+  // Fetch appointments
+  const getAppointments = useCallback(async () => {
+    try {
+      const res = await api.get('sp/past_booking')
+      setAppointments(res.data.past || [])
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
 
-    // Extra modal fields (summary/transcript inputs for get_summary mode)
-    const [transcriptInput, setTranscriptInput] = useState("");
-    const [summaryInput, setSummaryInput] = useState("");
+  useEffect(() => {
+    getAppointments()
+  }, [getAppointments])
 
-    // Show modal for a given appointment and mode
-    const openModal = (mode, appt) => {
-        setSelectedAppt(appt);
-        setModalMode(mode);
-        setModalOpen(true);
-        setTranscriptInput(appt?.transcript || "");
-        setSummaryInput(appt?.summary || "");
-    };
-    const closeModal = () => {
-        setModalOpen(false);
-        setModalMode("");
-        setSelectedAppt(null);
-        setTranscriptInput("");
-        setSummaryInput("");
-    };
-    const handleSummarySubmit = () => {
-        // Use selectedAppt.id, transcriptInput, and summaryInput with API here
-        closeModal();
-    };
-    // Derived filtered/sorted data
-    const filteredAppointments = useMemo(() => {
-        let filtered = appointmentsData.filter((appt) =>
-            appt.name.toLowerCase().includes(search.toLowerCase())
-        );
+  // Open modal
+  const openModal = (mode, appt) => {
+    setModal({ open: true, mode, appt })
+    setTranscript(appt?.transcript || '')
+  }
 
-        if (filterBy !== "all") {
-            filtered = filtered.filter(
-                (appt) =>
-                    (filterBy === "audio" && appt.type.includes("Audio")) ||
-                    (filterBy === "video" && appt.type.includes("Video"))
-            );
+  const closeModal = () => setModal({ open: false, mode: '', appt: null })
+
+  // Filter & sort
+  const filtered = useMemo(() => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0) // ignore time, compare only date
+
+    let data = appointments
+      // Search filter
+      .filter((a) =>
+        String(a.patient_name || a.patient_id)
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      )
+      // Filter by type
+      .filter((a) => (filterBy !== 'all' ? a.type.toLowerCase().includes(filterBy) : true))
+      // Only past dates
+      .filter((a) => {
+        const [year, month, day] = a.date.split('-') // assuming format 'YYYY-MM-DD'
+        const apptDate = new Date(year, month - 1, day)
+        return apptDate < today
+      })
+
+    // Sorting
+    if (sortBy === 'date') {
+      data.sort((a, b) => {
+        const [ay, am, ad] = a.date.split('-')
+        const [by, bm, bd] = b.date.split('-')
+        return new Date(by, bm - 1, bd) - new Date(ay, am - 1, ad)
+      })
+    } else {
+      data.sort((a, b) =>
+        String(a.patient_name || a.patient_id).localeCompare(b.patient_name || b.patient_id)
+      )
+    }
+
+    return data
+  }, [appointments, search, sortBy, filterBy])
+
+  const uploadTranscript = async () => {
+    if (!modal.appt || !transcript) {
+      alert('Transcript is empty!')
+      return
+    }
+
+    setLoading(true) // start loading
+
+    const blob = new Blob([transcript], { type: 'text/plain' })
+    const file = new File([blob], 'transcript.txt', { type: 'text/plain' })
+
+    const formData = new FormData()
+    formData.append('booking_id', modal.appt.booking_id)
+    formData.append('language', 'English')
+    formData.append('transcript', file)
+
+    try {
+      const res = await api.post('/sp/upload_transcript', formData, {
+        headers: {
+          Authorization: 'Bearer 100|GN8ovDTbu2T3qvKtBPy9vNdxDrvSfHQWDrmrQF8M73637613',
+          Accept: 'application/json'
         }
+      })
 
-        if (sortBy === "date") {
-            filtered = filtered.sort(
-                (a, b) =>
-                    new Date(a.date.split("-").reverse().join("-")) -
-                    new Date(b.date.split("-").reverse().join("-"))
-            );
-        }
+      alert('Transcript uploaded successfully!')
+      console.log('Success:', res.data)
+      closeModal()
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to upload transcript. Please try again.')
+      console.error('Upload failed:', err)
+    } finally {
+      setLoading(false) // end loading
+    }
+  }
 
-        return filtered;
-    }, [appointmentsData, search, sortBy, filterBy]);
-    return (
-        <div className="bg-white p-3 md:p-6 rounded-lg md:shadow-sm  box-border w-full h-full">
-            <h1 className="text-lg md:text-xl font-semibold mb-4 md:mb-6">Past Appointments</h1>
+  return (
+    <div className="bg-white p-4 md:p-6 rounded-lg w-full h-full">
+      <h1 className="text-xl font-semibold mb-4">Past Appointments</h1>
 
-            {/* Top Controls */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4 mb-4 md:mb-6">
-                <div className="relative w-full md:w-1/3">
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="w-full border border-gray-300 rounded-md pl-10 pr-3 py-2 focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm"
-                    />
-                    <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
-                </div>
-                <div className="flex flex-wrap gap-2 md:gap-3 items-center">
-                    <select
-                        value={sortBy}
-                        onChange={(e) => setSortBy(e.target.value)}
-                        className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none"
-                    >
-                        <option value="date">Sort by: Date</option>
-                        <option value="name">Sort by: Name</option>
-                    </select>
-                    <select
-                        value={filterBy}
-                        onChange={(e) => setFilterBy(e.target.value)}
-                        className="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none"
-                    >
-                        <option value="all">View by Type: All</option>
-                        <option value="audio">Audio Teleconsultation</option>
-                        <option value="video">Video Teleconsultation</option>
-                    </select>
-                </div>
-            </div>
-
-            {/* Table Section */}
-            <div className="w-full max-h-[69vh] max-w-[95vw]  overflow-y-auto overflow-x-auto rounded-md shadow-sm mt-[2rem] mb-[1rem] pt-3 "
-                style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}>
-                <table className=" text-left border-collapse whitespace-nowrap w-full ">
-                    <thead>
-                        <tr className="border-b border-gray-300 text-gray-600 text-left text-xs">
-                            <th className="py-2 px-3 ">SL.No</th>
-                            <th className="py-2 px-3 ">Date</th>
-                            <th className="py-2 px-3 ">Name</th>
-                            <th className="py-2 px-3 ">Type of Consultation </th>
-                            <th className="py-2 px-3 ">Time Slot</th>
-                            <th className="py-2 px-3">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredAppointments.map((appt, index) => (
-                            <tr
-                                key={appt.id}
-                                className="border-b border-gray-200 hover:bg-gray-50 text-xs"
-                            >
-                                <td className="py-2 px-3">{String(index + 1).padStart(2, "0")}</td>
-                                <td className="py-2 px-3">{appt.date}</td>
-                                <td className="py-2 px-3">{appt.name}</td>
-                                <td className="py-2 px-3 ">{appt.type}</td>
-                                <td className="py-2 px-3">{appt.time}</td>
-                                <td className="py-2 px-3 text-black flex flex-col md:flex-row gap-1 md:gap-2">
-                                    <button className="hover:underline cursor-pointer"
-                                        onClick={() => openModal(appt.summary ? "view_summary" : "get_summary", appt)}>
-                                        {appt.summary ? "View Summary" : "Get Summary"}
-                                    </button>
-                                    <button className="hover:underline cursor-pointer" onClick={() => {
-                                        // setSelectedAppt(appt);
-                                        // setModalOpen(true);
-                                        openModal("view_detail", appt)
-                                    }}>View Details</button>
-                                    <button className="text-red-500 hover:underline cursor-pointer">Cancel</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-            {/* Meeting Info Popup */}
-            <Model open={modalOpen} onClose={() => setModalOpen(false)}>
-                {modalMode === "view_detail" && selectedAppt && (
-                    <div>
-                        <div className="mb-3">
-                            <h3 className="text-lg font-semibold mb-2">Meeting Information</h3>
-                            <hr />
-                        </div>
-                        <div className="mb-5">
-                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Patient Name</div>
-                            <div className="text-sm">{selectedAppt.name}</div>
-                        </div>
-                        {/* <div className="mb-2 flex flex-col md:flex-row gap-4 md:gap-12"> */}
-                        {/* <div className="mb-5 grid grid-cols-2 ">
-                            <div>
-                                <div className="text-[13px] mb-1 text-gray-600 font-medium">Patient Gender</div>
-                                <div className="text-sm">{selectedAppt.gender || "—"}</div>
-                            </div>
-                            <div>
-                                <div className="text-[13px] mb-1 text-gray-600 font-medium">Patient Blood Group</div>
-                                <div className="text-sm">{selectedAppt.bloodGroup || "—"}</div>
-                            </div>
-                        </div> */}
-                        <div className="mb-5 grid grid-cols-2 ">
-                            <div>
-                                <div className="text-[13px] mb-1 text-gray-600 font-medium"> Date</div>
-                                <div className="text-sm">{selectedAppt.date || "—"}</div>
-                            </div>
-                            <div>
-                                <div className="text-[13px] mb-1 text-gray-600 font-medium"> Time</div>
-                                <div className="text-sm">{selectedAppt.time || "—"}</div>
-                            </div>
-                        </div>
-                        <div className="mb-5 grid grid-cols-2 ">
-                            <div>
-                                <div className="text-[13px] mb-1 text-gray-600 font-medium">Type of Consultation</div>
-                                <div className="text-sm">{selectedAppt.type}</div>
-                            </div>
-                            <div>
-                                <div className="text-[13px] mb-1 text-gray-600 font-medium">Type of Service</div>
-                                <div className="text-sm">{selectedAppt.service || "—"}</div>
-                            </div>
-                        </div>
-                        {/* <div className="mb-6">
-                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Notes from Patient</div>
-                            <div className="text-sm mb-2">{selectedAppt.notes || "—"}</div>
-                        </div> */}
-                        <div className="mb-5">
-                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Meeting Link</div>
-                            <div className="text-sm break-all">{selectedAppt.meetingLink || "—"}</div>
-                        </div>
-                        <div className="flex gap-3 mt-4 ">
-                            <a
-                                href={selectedAppt.meetingLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="px-8 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 transition text-sm flex-1 flex items-center justify-center  cursor-pointer"
-                            >
-                                Join Link
-                            </a>
-                            <button
-                                type="button"
-                                className="px-8 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition text-sm flex-1 text-center cursor-pointer"
-                                // Add real cancellation logic here
-                                onClick={() => setModalOpen(false)}
-                            >
-                                Cancel Appointment
-                            </button>
-                        </div>
-                    </div>
-                )}
-                {modalMode === "get_summary" && selectedAppt && (
-                    <div>
-                        <h3 className="text-lg font-semibold mb-2">Get Summary</h3>
-                        <hr />
-                        <div className="my-5">
-                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Paste Transcript Below</div>
-                            <textarea
-                                rows={8}
-                                className="w-full border border-gray-300 rounded-md p-2 mb-3"
-                                value={transcriptInput}
-                                onChange={e => setTranscriptInput(e.target.value)}
-                                placeholder="Paste transcript here"
-                            />
-                            
-                            <button
-                                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition cursor-pointer"
-                                onClick={handleSummarySubmit}
-                            >
-                                Input / Get Summary
-                            </button>
-                        </div>
-                    </div>
-                )}
-                {modalMode === "view_summary" && selectedAppt && (
-                    <div>
-                        <h3 className="text-lg font-semibold mb-2">Appointment Summary</h3>
-                        <hr />
-                        <div className="mb-5">
-                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Transcript</div>
-                            <div className="text-sm mb-2 whitespace-pre-wrap">{selectedAppt.transcript || "—"}</div>
-                            <div className="text-[13px] mb-1 text-gray-600 font-medium">Summary</div>
-                            <div className="text-sm mb-2 whitespace-pre-wrap">{selectedAppt.summary || "—"}</div>
-                        </div>
-                    </div>
-                )}
-            </Model>
+      {/* Controls */}
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+        <div className="relative md:w-1/3">
+          <input
+            type="text"
+            placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full border border-gray-300 rounded-md pl-10 pr-3 py-2 text-sm focus:outline-none"
+          />
+          <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
         </div>
-    )
+        <div className="flex flex-wrap gap-2 md:gap-3">
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+          >
+            <option value="date">Sort by: Date</option>
+            <option value="name">Sort by: Name</option>
+          </select>
+          <select
+            value={filterBy}
+            onChange={(e) => setFilterBy(e.target.value)}
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm"
+          >
+            <option value="all">View by Type: All</option>
+            <option value="audio">Audio Teleconsultation</option>
+            <option value="video">Video Teleconsultation</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="overflow-auto max-h-[70vh] rounded-md shadow-sm">
+        <table className="w-full text-left border-collapse">
+          <thead className="text-xs text-gray-600 border-b border-gray-300">
+            <tr>
+              <th className="py-2 px-3">SL.No</th>
+              <th className="py-2 px-3">Date</th>
+              <th className="py-2 px-3">Patient</th>
+              <th className="py-2 px-3">Type of Consultation</th>
+              <th className="py-2 px-3">Time Slot</th>
+              <th className="py-2 px-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="text-xs">
+            {filtered.map((a, i) => (
+              <tr key={a.booking_id} className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-2 px-3">{String(i + 1).padStart(2, '0')}</td>
+                <td className="py-2 px-3">{a.date}</td>
+                <td className="py-2 px-3 capitalize">{a.patient_name || a.patient_id}</td>
+                <td className="py-2 px-3 capitalize">{a.type}</td>
+                <td className="py-2 px-3">
+                  {a.start_time}–{a.end_time}
+                </td>
+                <td className="py-2 px-3 flex flex-col md:flex-row gap-1">
+                  <button
+                    className="hover:underline cursor-pointer"
+                    onClick={() => openModal(a.summary ? 'view_summary' : 'get_summary', a)}
+                  >
+                    {a.summary ? 'View Summary' : 'Get Summary'}
+                  </button>
+                  <button
+                    className="hover:underline cursor-pointer"
+                    onClick={() => openModal('view_detail', a)}
+                  >
+                    View Details
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Modal */}
+      <Modal open={modal.open} onClose={closeModal}>
+        {modal.appt && modal.mode === 'view_detail' && (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Meeting Info</h3>
+            <hr className="mb-4" />
+            <div className="mb-3">
+              <div className="text-[13px] text-gray-600">Patient</div>
+              <div className="text-sm">{modal.appt.patient_name || modal.appt.patient_id}</div>
+            </div>
+            <div className="mb-3 grid grid-cols-2 gap-4">
+              <div>
+                <div className="text-[13px] text-gray-600">Date</div>
+                <div className="text-sm">{modal.appt.date}</div>
+              </div>
+              <div>
+                <div className="text-[13px] text-gray-600">Time</div>
+                <div className="text-sm">
+                  {modal.appt.start_time}–{modal.appt.end_time}
+                </div>
+              </div>
+            </div>
+            <div className="mb-3 grid grid-cols-2 gap-4">
+              <div>
+                <div className="text-[13px] text-gray-600">Type of Consultation</div>
+                <div className="text-sm capitalize">{modal.appt.type}</div>
+              </div>
+              <div>
+                <div className="text-[13px] text-gray-600">Service</div>
+                <div className="text-sm capitalize">
+                  {modal.appt.service?.replace(/_/g, ' ') || '—'}
+                </div>
+              </div>
+            </div>
+            <div className="mb-3">
+              <div className="text-[13px] text-gray-600">Meeting Link</div>
+              <div className="text-sm break-all">{modal.appt.meeting_link || '—'}</div>
+            </div>
+            <a
+              href={modal.appt.meeting_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 text-sm flex justify-center"
+            >
+              Join Link
+            </a>
+          </div>
+        )}
+
+        {modal.appt && modal.mode === 'get_summary' && (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Get Summary</h3>
+            <hr className="mb-4" />
+            <textarea
+              rows={8}
+              className="w-full border border-gray-300 rounded-md p-2 mb-3"
+              value={transcript}
+              onChange={(e) => setTranscript(e.target.value)}
+              placeholder="Paste transcript here"
+            />
+            <button
+              className={`px-6 py-2 rounded-md text-white cursor-pointer ${
+                loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
+              }`}
+              onClick={uploadTranscript}
+              disabled={loading}
+            >
+              {loading ? 'Uploading...' : 'Input / Get Summary'}
+            </button>
+          </div>
+        )}
+
+        {modal.appt && modal.mode === 'view_summary' && (
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Appointment Summary</h3>
+            <hr className="mb-4" />
+            <div className="mb-2">
+              <div className="text-[13px] text-gray-600">Transcript</div>
+              <div className="text-sm whitespace-pre-wrap">{modal.appt.transcript || '—'}</div>
+            </div>
+            <div>
+              <div className="text-[13px] text-gray-600">Summary</div>
+              <div className="text-sm whitespace-pre-wrap">{modal.appt.summary || '—'}</div>
+            </div>
+          </div>
+        )}
+      </Modal>
+    </div>
+  )
 }
 
 export default ProviderPastAppointments

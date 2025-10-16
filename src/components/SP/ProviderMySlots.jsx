@@ -1,160 +1,177 @@
-import React, { useState } from "react";
+import { useState, useEffect, useCallback } from 'react'
+import api from '../../Api/api'
 
-
-const getSlotOptions = () => {
-    //  10:00 to 17:40, every 20 mins
-    const slots = []
-
-    for (let h = 10; h <= 17; h++) {
-        for (let m = 0; m < 60; m += 20) {
-            const hour = h.toString().padStart(2, '0');
-            const minute = m.toString().padStart(2, "0");
-            slots.push(`${hour}:${minute}`);
-        }
-    }
-    return slots;
-}
-// Helper to add minutes string-wise
-const addMinutes = (startTime, mins) => {
-    let [hour, minute] = startTime.split(':').map(Number);
-    minute += mins;
-    hour += Math.floor(minute / 60);
-    minute = minute % 60;
-    if (hour > 18) return ''
-    let endtime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-    return endtime;
-}
 const ProviderMySlots = () => {
-    const [slots, setSlots] = useState([]);
-    const [errorMessages, setErrorMessages] = useState({});
-    // const [dropdownOpen, setDropdownOpen] = useState(false);
-    // const slotsInterval = getSlotOptions();
-    // console.log(slotsInterval)
-    const addSlot = () => {
-        setSlots((prev) => ([
-            ...prev,
-            { date: '', startTime: '', endTime: '', meetingLink: "" }
-        ]))
+  const [slots, setSlots] = useState([])
+
+  // Fetch slots (flattened for UI)
+  const getSlots = useCallback(async () => {
+    try {
+      const res = await api.get('get_time_slot')
+
+      // Flatten the data: one entry per time slot
+      const flattened = res.data.data.flatMap((day) =>
+        day.time_slots.map((slot) => ({
+          date: day.date,
+          startTime: slot.start_time,
+          endTime: slot.end_time,
+          meetLink: '' // Add field if you want to store meeting links
+        }))
+      )
+
+      setSlots(flattened)
+      console.log('Flattened Slots:', flattened)
+    } catch (err) {
+      console.error(err.response?.data?.message || err.message)
     }
-    const handleChange = (index, field, value) => {
-        let message = "";
-        // Only allow values between 10:00 and 18:00
-        if (field === "startTime" || field === "endTime") {
-            if (value < "10:00" || value > "18:00") {
-                message = "Time must be between 10:00 and 18:00";
-                // Optionally, reset the field
-                value = "";
-            }
-        }
-        const updatedSlots = [...slots];
-        updatedSlots[index][field] = value;
-        setSlots(updatedSlots);
+  }, [])
 
-        // Set or clear the error for this slot
-        setErrorMessages(prev => ({ ...prev, [index]: message }));
+  useEffect(() => {
+    // getSlots()
+  }, [getSlots])
+
+  // Add new slot
+  const addSlot = () => setSlots([...slots, { date: '', startTime: '', endTime: '', meetLink: '' }])
+
+  // Handle field change
+  // Update handleChange
+  const handleChange = (index, field, value) => {
+    const updated = [...slots]
+    updated[index][field] = value
+
+    // If startTime changes, auto-update endTime +20 mins
+    if (field === 'startTime' && value) {
+      const [hours, minutes] = value.split(':').map(Number)
+      let endMinutes = minutes + 20
+      let endHours = hours + Math.floor(endMinutes / 60)
+      endMinutes = endMinutes % 60
+
+      // Pad with leading zeros
+      const endTime = `${String(endHours).padStart(2, '0')}:${String(endMinutes).padStart(2, '0')}`
+      updated[index].endTime = endTime
     }
 
-    const updateSlots = () => {
-        // Validate all slots
-        const errors = [];
-        slots.forEach((slot, idx) => {
-            if (!slot.date || !slot.startTime || !slot.endTime) {
-                errors.push(`Slot #${idx + 1} is incomplete.`);
-                return;
-            }
-            if (slot.startTime < "10:00" || slot.endTime > "18:00") {
-                errors.push(`Slot #${idx + 1}: Times must be between 10:00 and 18:00.`);
-            }
-            if (slot.startTime >= slot.endTime) {
-                errors.push(`Slot #${idx + 1}: Start Time must be before End Time.`);
-            }
-        });
+    setSlots(updated)
+  }
 
-        if (errors.length) {
-            alert(errors.join('\n'));
-            return;
-        }
-        console.log("Updated Slots:", slots);
-        // Call API here
-    };
+  // Update slots (group by date for API)
+  const updateSlots = async (e) => {
+    e.preventDefault()
 
-    return (
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h1 className="text-xl font-semibold mb-4">My Slots</h1>
-            <button className="w-full max-w-sm bg-black text-white px-4 py-3 cursor-pointer" onClick={addSlot}>Add Slot</button>
-            {/* Render slot forms below button */}
-            {slots.map((slots, index) => (
-                <div key={index} className="border border-gray-200 p-4 mb-3 rounde-md bg-gray-50">
-                    <div className="flex flex-col gap-2">
-                        <label className="text-sm font-medium text-black">Select Date</label>
-                        <input type="date" value={slots.date} onChange={(e) => handleChange(index, "date", e.target.value)} className="border border-gray-300 px-2 py-1 rounded" />
-                        {/* <input type="time" value={slots.time} onChange={(e)=> handleChange(index,"time",e.target.value)} className="border border-gray-300 px-2 py-1 rounded" /> */}
-                        {/* <select name="time" id="time" value={slots.time} onChange={(e) => handleChange(index, "time", e.target.value)} className="border border-gray-300 px-2 py-1 rounded relative "><option value="">Select Slot</option>
-                            {slotsInterval.map((t, idx) => (
-                                <option value={t} key={idx}>{t} - {addMinutes(t, 20)}</option>
-                            ))}
-                        </select> */}
-                        {/* <div className="relative">
-                            <div onClick={()=>setDropdownOpen(!dropdownOpen)} className="border border-gray-300 px-2 py-1 rounded flex justify-between">
-                            {slots.time || "Select Slot"}
-                            <span className={`inline-block transform transition-transform duration-300 ${dropdownOpen ? "rotate-180": "rotate-0"}`}>▼</span>
-                            </div>
-                            {dropdownOpen && (
-                                <div className="absolute z-10 bg-white border border-gray-300 w-full max-h-48 overflow-y-auto rounded mt-1">
-                                {slotsInterval.map((t,idx)=>(
-                                    <div onClick={()=>{
-                                            handleChange(index,"time",t)
-                                            // toggleDropdown(index)
-                                            setDropdownOpen(false);// Close dropdown on selection
-                                        }} className="px-2 py-1 hover:bg-gray-200 cursor-pointer">{t} - {addMinutes(t,20)}</div>
-                                    ))}
-                                </div>
-                            )}
-                            </div> */}
-                        <div className="flex flex-col md:flex-row gap-2 md:gap-5 ">
-                            <div className="flex flex-col flex-1 gap-2">
+    try {
+      // Group slots by date
+      const grouped = slots.reduce((acc, slot) => {
+        const { date, startTime, endTime, meetLink, availability_id } = slot
+        if (!acc[date]) acc[date] = []
+        acc[date].push({
+          start_time: startTime,
+          end_time: endTime,
+          meet_link: meetLink // if your API accepts this
+        })
+        return acc
+      }, {})
 
-                                <label className="text-sm font-medium text-black">Select Slot</label>
+      // Convert to array format expected by API
+      const payload = {
+        days: Object.entries(grouped).map(([date, time_slots]) => ({
+          date,
+          time_slots
+        }))
+      }
+      // console.log(payload)
 
-                                <input
-                                    type="time"
-                                    min="10:00"
-                                    max="18:00"
-                                    value={slots.startTime}
-                                    step="60"
-                                    onChange={(e) => handleChange(index, "startTime", e.target.value)}
-                                    className="border border-gray-300 px-2 py-1 rounded"
-                                />
-                                {errorMessages[index] && <span className="text-red-500 text-xs">{errorMessages[index]}</span>}
-                            </div>
-                            <div className="flex flex-col flex-1 gap-2">
+      const res = await api.post('add_time_slot', payload)
+      // console.log(res.data)
 
-                                <label className="text-sm font-medium text-black">End Time</label>
-                                <input
-                                    type="time"
-                                    min="10:00"
-                                    max="18:00"
-                                    value={slots.endTime}
-                                    step="60"
-                                    onChange={(e) => handleChange(index, "endTime", e.target.value)}
-                                    className="border border-gray-300 px-2 py-1 rounded"
-                                />
-                                {errorMessages[index] && <span className="text-red-500 text-xs">{errorMessages[index]}</span>}
-                            </div>
+      // Flatten response safely
+      const updatedSlots = (res.data.days || []).flatMap((day) =>
+        day.time_slots.map((slot) => ({
+          date: day.date,
+          startTime: slot.start_time,
+          endTime: slot.end_time,
+          meetLink: slot.meet_link
+        }))
+      )
+      setSlots(updatedSlots)
 
-                        </div>
+      alert('Slots saved successfully!')
+    } catch (err) {
+      console.error(err.response?.data?.message || err.message)
+      alert(err.response?.data?.message || err.message)
+    }
+  }
 
-                        <label className="text-sm font-medium text-black">Meeting Link</label>
-                        <input type="url" placeholder="Paste here" value={slots.meetingLink} onChange={(e) => handleChange(index, "meetingLink", e.target.value)} className="border border-gray-300 px-2 py-1 rounded" />
-                    </div>
-                </div>
-            ))}
-            {slots.length > 0 && (
-                <button onClick={updateSlots} className="w-full max-w-sm rounde-md px-4 py-3 bg-black text-white cursor-pointer">Update Slots</button>
-            )}
+  return (
+    <form onSubmit={updateSlots} className="bg-white p-6 rounded-lg shadow-sm">
+      <h1 className="text-xl font-semibold mb-4">My Slots</h1>
+
+      <button
+        onClick={addSlot}
+        className="w-full max-w-sm bg-black text-white px-4 py-3 rounded cursor-pointer"
+      >
+        Add Slot
+      </button>
+
+      {slots.map((slot, i) => (
+        <div key={i} className="border border-gray-200 p-4 mt-3 rounded-md bg-gray-50">
+          {/* Date */}
+          <label className="block text-sm font-medium mb-1">Select Date</label>
+          <input
+            type="date"
+            value={slot.date}
+            min={new Date().toISOString().split('T')[0]}
+            onChange={(e) => handleChange(i, 'date', e.target.value)}
+            required
+            className="border border-gray-300 px-2 py-1 rounded w-full mb-2"
+          />
+
+          {/* Start & End Time */}
+          <div className="flex flex-col md:flex-row gap-3">
+            <div className="flex-1">
+              <label className="block text-sm font-medium mb-1">Start Time</label>
+              <input
+                type="time"
+                min="10:00"
+                max="18:00"
+                value={slot.startTime}
+                onChange={(e) => handleChange(i, 'startTime', e.target.value)}
+                required
+                className="border border-gray-300 px-2 py-1 rounded w-full"
+              />
+            </div>
+
+            <div className="flex-1">
+              <label className="block text-sm font-medium mb-1">End Time</label>
+              <input
+                type="time"
+                value={slot.endTime}
+                onChange={(e) => handleChange(i, 'endTime', e.target.value)}
+                readOnly
+                className="border border-gray-300 px-2 py-1 rounded w-full"
+              />
+            </div>
+          </div>
+
+          {/* Meeting Link */}
+          <label className="block text-sm font-medium mt-3 mb-1">Meeting Link</label>
+          <input
+            type="url"
+            placeholder="Paste link here"
+            value={slot.meetLink}
+            onChange={(e) => handleChange(i, 'meetLink', e.target.value)}
+            required
+            className="border border-gray-300 px-2 py-1 rounded w-full"
+          />
         </div>
-    );
-};
+      ))}
 
-export default ProviderMySlots;
+      {slots.length > 0 && (
+        <button className="w-full max-w-sm mt-4 px-4 py-3 bg-black text-white rounded cursor-pointer">
+          Save Slots
+        </button>
+      )}
+    </form>
+  )
+}
 
+export default ProviderMySlots
