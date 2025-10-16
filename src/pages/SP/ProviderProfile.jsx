@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import logoBac from "../../assets/logo-bac.png";
 import Humsafar from "../../assets/humsafar-logo.png";
 import { getServiceType } from "../../Api/getServiceType";
@@ -225,12 +225,26 @@ const ProviderProfile = () => {
               )}
 
               {/* Submit Button */}
+              <div className="grid grid-cols-2 gap-5">
               <button
                 className="border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)] rounded-md text-white w-full py-2 cursor-pointer"
                 type="submit"
               >
                 Submit Profile
               </button>
+                {profile.services.length > 0 ? (
+                  <Link
+                    to="/provider/dashboard"
+                    className="rounded-md w-full py-2 text-white bg-black cursor-pointer flex justify-center items-center"
+                  >
+                    Continue
+                  </Link>
+                ) : (
+                  <div className="rounded-md w-full py-2 text-white bg-gray-400 cursor-not-allowed flex justify-center items-center">
+                    Continue
+                  </div>
+                )}
+              </div>
             </form>
           </div>
         </div>
