@@ -100,7 +100,7 @@ const Header = () => {
                                 Contact Us
                             </NavLink>
                         </li>
-                        <li>
+                        {/* <li>
                             <NavLink
                                 to="/provider/login"
                                 className={({ isActive }) =>
@@ -109,7 +109,7 @@ const Header = () => {
                             >
                                 Service Provider
                             </NavLink>
-                        </li>
+                        </li> */}
                     </ul>
                 </nav>
 
