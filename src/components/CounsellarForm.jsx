@@ -2,6 +2,9 @@ import { ChevronDown } from 'lucide-react'
 import React, { useState, useEffect } from 'react';
 import CounsellarFormImage from "../assets/Static/CounsellarForm.png"
 import { fetchStates } from "../Api/getState"; // ✅ API call
+import { useVn } from '../Context/VnContext'
+import { getVns } from '../Api/getVns';
+import NavigatorCard from './Teams/NavigatorCard';
 
 const CounsellarForm = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -35,6 +38,31 @@ const CounsellarForm = () => {
         message,
         });
     };
+
+    const { vnData, loading } = useVn();
+    const [vnDetails, setVnDetails] = useState([]); // Array of VNs if context VN not available
+
+    useEffect(() => {
+        const fetchVnsForState = async () => {
+            if (!vnData) { // fetch only if vnData is not available
+                try {
+                    const response = await getVns();
+                    if (response.data.status === 'success') {
+                        const vns = response.data.data;
+                        const matchedVns = vns.filter(vn => vn.state_list.includes(selectedState?.id));
+                        setVnDetails(matchedVns); // array of matching VNs
+                    }
+                } catch (error) {
+                    console.error('Error fetching VNs:', error.message);
+                }
+            }
+        };
+
+        fetchVnsForState();
+    }, [vnData, selectedState]);
+
+    // Use context VN if available; otherwise, use fetched VNs
+    const vnsToDisplay = vnData ? [vnData] : vnDetails;
 
     const fontStack = `"Sofia Pro", "Helvetica Neue", Helvetica, Arial, sans-serif`;
 
@@ -79,8 +107,12 @@ const CounsellarForm = () => {
                                 <label htmlFor="Counsellor" className="text-[#11688F] text-base">Select Counsellor</label>
                                 <select
                                     id="Counsellor"
-                                    value={selectedState}
-                                    onChange={(e) => setSelectedState(e.target.value)}
+                                    value={selectedState?.id || ""}
+                                    onChange={(e) => {
+                                        const stateId = e.target.value;
+                                        const stateObj = states.find(s => s.id.toString() === stateId);
+                                        setSelectedState(stateObj);
+                                    }}
                                     required
                                     className={`w-full appearance-none bg-[#F4F4F4] rounded-full px-4 py-0.5 pr-10 mt-1 outline-none text-sm ${!selectedState && 'text-[#A9A9A9]'}`}
                                     style={{ fontFamily: fontStack, fontWeight: 300 }}
@@ -89,7 +121,7 @@ const CounsellarForm = () => {
                                         Select State
                                     </option>
                                     {states.map((state) => (
-                                        <option key={state.id} value={state.state_name}>
+                                        <option key={state.id} value={state.id}>
                                         {state.state_name}
                                         </option>
                                     ))}
@@ -136,8 +168,24 @@ const CounsellarForm = () => {
                         <div className="flex flex-col justify-center items-center min-h-[55vh] container rounded-4xl w-full max-w-md shadow-sm bg-white p-4 md:p-0">
                             <span className="text-black text-[22px] md:text-[25px] text-center font-normal">Form Is Submitted Successfully</span>
                             <span className="mt-4 text-black text-base text-center">We Will Reach Out to You Shortly</span>
-                        </div>
-                    )}
+
+                            {/* VN Cards */}
+                            <div className="w-full mt-5 flex flex-wrap">
+                                {!loading && vnsToDisplay.length > 0 && vnsToDisplay.map((vn, index) => (
+                                    <NavigatorCard
+                                        key={index}
+                                        VnImage={vn.profile_photo}
+                                        VnName={vn.name}
+                                        VnStateList={[selectedState?.state_code]}
+                                        VnMobile={vn.mobile_number}
+                                        vnInstagram={vn.instagram_url}
+                                        vnFacebook={vn.facebook_url}
+                                        vnLinkedin={vn.linkedin_url}
+                                    />
+                                ))}
+                            </div>
+                                </div>
+                            )}
                 </div>
 
                 <div className="container md:flex justify-center items-center hidden ">
