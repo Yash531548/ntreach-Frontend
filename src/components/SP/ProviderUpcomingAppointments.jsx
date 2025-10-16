@@ -188,7 +188,7 @@ const ProviderUpcomingAppointments = () => {
             </div>
             <div className="mb-5">
               <div className="text-[13px] mb-1 text-gray-600 font-medium">Patient Name</div>
-              <div className="text-sm"></div>
+              <div className="text-sm capitalize">{selectedAppt.patient_name || "—"}</div>
             </div>
             {/* <div className="mb-2 flex flex-col md:flex-row gap-4 md:gap-12"> */}
             {/* <div className="mb-5 grid grid-cols-2 ">
