@@ -49,7 +49,8 @@ const CounsellarForm = () => {
                     const response = await getVns();
                     if (response.data.status === 'success') {
                         const vns = response.data.data;
-                        const matchedVns = vns.filter(vn => vn.state_list.includes(selectedState?.id));
+                        const stateId = selectedState?.state_code.toString();
+                        const matchedVns = vns.filter(vn => vn.state_list.includes(stateId));
                         setVnDetails(matchedVns); // array of matching VNs
                     }
                 } catch (error) {
