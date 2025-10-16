@@ -34,12 +34,14 @@ const ProviderPastAppointments = () => {
   const [modal, setModal] = useState({ open: false, mode: '', appt: null })
   const [transcript, setTranscript] = useState('')
   const [loading, setLoading] = useState(false)
+  const [uploadedTranscripts, setUploadedTranscripts] = useState({})
 
   // Fetch appointments
   const getAppointments = useCallback(async () => {
     try {
       const res = await api.get('sp/past_booking')
       setAppointments(res.data.past || [])
+      console.log(res.data.past)
     } catch (err) {
       console.error(err)
     }
@@ -118,6 +120,11 @@ const ProviderPastAppointments = () => {
         }
       })
 
+      setUploadedTranscripts((prev) => ({
+        ...prev,
+        [modal.appt.booking_id]: true
+      }))
+
       alert('Transcript uploaded successfully!')
       console.log('Success:', res.data)
       closeModal()
@@ -190,12 +197,22 @@ const ProviderPastAppointments = () => {
                   {a.start_time}–{a.end_time}
                 </td>
                 <td className="py-2 px-3 flex flex-col md:flex-row gap-1">
-                  <button
+                  {!a.transcript && !uploadedTranscripts[a.booking_id] ? (
+                    <button
+                      className="hover:underline cursor-pointer"
+                      onClick={() => openModal('get_summary', a)}
+                    >
+                      Get Summary
+                    </button>
+                  ) : (
+                    <></>
+                  )}
+                  {/* <button
                     className="hover:underline cursor-pointer"
                     onClick={() => openModal(a.summary ? 'view_summary' : 'get_summary', a)}
                   >
                     {a.summary ? 'View Summary' : 'Get Summary'}
-                  </button>
+                  </button> */}
                   <button
                     className="hover:underline cursor-pointer"
                     onClick={() => openModal('view_detail', a)}
