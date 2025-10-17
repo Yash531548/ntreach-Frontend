@@ -5,6 +5,7 @@ import { fetchStates } from "../Api/getState"; // ✅ API call
 import { useVn } from '../Context/VnContext'
 import { getVns } from '../Api/getVns';
 import NavigatorCard from './Teams/NavigatorCard';
+import { submitCounsellorRequest } from '../Api/meetCounsellor';
 
 const CounsellarForm = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -13,30 +14,39 @@ const CounsellarForm = () => {
     const [selectedState, setSelectedState] = useState("");
     const [mobile, setMobile] = useState("");
     const [message, setMessage] = useState("");
+    const [error, setError] = useState()
 
     // ✅ Fetch states on mount
     useEffect(() => {
         const loadStates = async () => {
-        try {
-            const data = await fetchStates();
-            setStates(data);
-        } catch (err) {
-            console.error("Error fetching states:", err);
-        }
+            try {
+                const data = await fetchStates();
+                setStates(data);
+            } catch (err) {
+                console.error("Error fetching states:", err);
+            }
         };
         loadStates();
     }, []);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setIsSubmitted(true);
-
-        console.log("Form submitted:", {
-        name,
-        selectedState,
-        mobile,
-        message,
-        });
+        setError(""); // Clear previous Error
+        // setIsSubmitted(true);
+        // Prepare payload
+        const payload = {
+            name,
+            mobile_no: mobile,
+            state_id: selectedState?.id,
+            message,
+        };
+        const response = await submitCounsellorRequest(payload);
+        if (response.status) {
+            setIsSubmitted(true);
+            setError('')
+        } else {
+            setError(response.message || 'Failed to submit. Please try again!')
+        }
     };
 
     const { vnData, loading } = useVn();
@@ -123,7 +133,7 @@ const CounsellarForm = () => {
                                     </option>
                                     {states.map((state) => (
                                         <option key={state.id} value={state.id}>
-                                        {state.state_name}
+                                            {state.state_name}
                                         </option>
                                     ))}
                                 </select>
@@ -160,6 +170,12 @@ const CounsellarForm = () => {
                                     style={{ fontFamily: fontStack, fontWeight: 300 }}
                                 />
                             </div>
+                            {error && (
+                                <div className="text-red-600 text-center py-1 text-sm">
+                                    {error}
+                                </div>
+                            )}
+
 
                             <button className="w-full cursor-pointer py-2 rounded-full text-white font-medium bg-gradient-to-b from-[#323FF7] to-[#33AEE5] shadow-lg">
                                 Submit
@@ -185,8 +201,8 @@ const CounsellarForm = () => {
                                     />
                                 ))}
                             </div>
-                                </div>
-                            )}
+                        </div>
+                    )}
                 </div>
 
                 <div className="container md:flex justify-center items-center hidden ">
