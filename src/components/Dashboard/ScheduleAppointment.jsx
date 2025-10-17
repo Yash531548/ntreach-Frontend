@@ -273,6 +273,9 @@ const ScheduleAppointment = () => {
                                 id='Appointment Date'
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 min={new Date().toISOString().split("T")[0]}   // ✅ prevents past dates
+                                // max={new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split("T")[0]}
+                                // Easier Version : Deal with Millisecond instead of setDate
+                                max={new Date(Date.now() + 7 * 24 * 60 * 60 *1000).toISOString().split("T")[0]}
                                 value={appointmentDate}
                                 onChange={(e) => setAppointmentDate(e.target.value)}
                             />
