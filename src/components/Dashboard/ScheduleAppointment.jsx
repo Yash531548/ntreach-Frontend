@@ -135,8 +135,8 @@ const ScheduleAppointment = () => {
             testing_center: Number(selectedCenter),
             appointment_date: formatDateForAPI(appointmentDate),
             type: "Upcoming",
-            booking_type: !loading && vnData?.name ? 'OUTREACH' : 'SELF',
-            // booking_type: "SELF",
+            // booking_type: !loading && vnData?.name ? 'OUTREACH' : 'SELF',
+            booking_type: "SELF",
             booking_name: name,
         };
         // ✅ Conditionally add vn_id only if vnData is available
