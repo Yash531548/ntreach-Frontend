@@ -25,7 +25,7 @@ const AppointmentConfirmed = () => {
                     if (response.data.status === 'success') {
                         const vns = response.data.data;
                         const stateId = appointmentData.appointment_data.state_id.toString();
-                        const matchedVns = vns.filter(vn => vn.state_list.includes(stateId));
+                        const matchedVns = vns.filter(vn => vn.state_list.includes(stateId) && !vn.vncode.startsWith("PO"));
                         setVnDetails(matchedVns); // array of matching VNs
                     }
                 } catch (error) {
@@ -94,7 +94,7 @@ const AppointmentConfirmed = () => {
                     </a>
 
                     {/* VN Cards */}
-                    <div className="w-full mt-5 grid grid-cols-2">
+                    <div className="w-full mt-5 flex flex-wrap">
                         {!loading && vnsToDisplay.length > 0 && vnsToDisplay.map((vn, index) => (
                             <NavigatorCard
                                 key={index}
