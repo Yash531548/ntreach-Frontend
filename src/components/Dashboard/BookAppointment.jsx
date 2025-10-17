@@ -157,9 +157,9 @@ const BookAppointment = () => {
                 <div className=' max-w-[500px]  min-h-[calc(100vh-64px-100px)]  md:flex justify-end    items-center hidden  '>
                     <img src={GetTested} alt="getTested Image" className='w-[90%] lg:w-[80%]  ' />
                 </div>
-                <div className='hidden md:block'>
+                {/* <div className='hidden md:block'>
                     <ChatBot />
-                </div>
+                </div> */}
             </main>
         </div>
     )
