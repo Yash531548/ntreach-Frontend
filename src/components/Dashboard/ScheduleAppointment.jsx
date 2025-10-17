@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from 'react-router'
 import { useVn } from '../../Context/VnContext'
 import { ChevronDown } from 'lucide-react'
 import { fetchStates } from '../../Api/getState'
+import { fetchPrepStates } from '../../Api/prepState'
 import { fetchDistrictsApi } from '../../Api/fetchDistrictsApi'
 import { fetchTestingCentersApi } from '../../Api/fetchTestingCentersApi'
 import { bookAppointment } from '../../Api/bookAppointment'
@@ -40,7 +41,7 @@ const ScheduleAppointment = () => {
     useEffect(() => {
         async function getState() {
             try {
-                const data = await fetchStates();
+                const data = incomingServices.includes(3) ? await fetchPrepStates() : await fetchStates();
                 setStates(data)
             } catch (error) {
                 console.error("error");
