@@ -751,7 +751,7 @@ const handleGeolocate = async () => {
 
 
                 {/* ------------------ FLOATING CHAT WIDGET (Laptop only) ------------------ */}
-                <div className="hidden lg:flex absolute bottom-0 right-0 lg:right-[-24px]  lg:bottom-10 2xl:right-3 2xl:bottom-6 gap-4 rounded-full cursor-pointer bg-gray-200 shadow-lg">
+                {/* <div className="hidden lg:flex absolute bottom-0 right-0 lg:right-[-24px]  lg:bottom-10 2xl:right-3 2xl:bottom-6 gap-4 rounded-full cursor-pointer bg-gray-200 shadow-lg">
                     <img
                         src={chatbot}
                         alt="Ask"
@@ -768,7 +768,7 @@ const handleGeolocate = async () => {
                             <Mic />
                         </button>
                     </div>
-                </div>
+                </div> */}
             </div>
 
         </div>

@@ -305,9 +305,9 @@ const ScheduleAppointment = () => {
                         className='lg:h-[480px] lg:w-[500px]'
                     ></iframe> */}
                 </div>
-                <div className="hidden lg:block xl:block">
+                {/* <div className="hidden lg:block xl:block">
                     <ChatBot />
-                </div>
+                </div> */}
             </main>
         </div>
     )
