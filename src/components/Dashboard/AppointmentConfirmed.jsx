@@ -94,7 +94,7 @@ const AppointmentConfirmed = () => {
                     </a>
 
                     {/* VN Cards */}
-                    <div className="w-full mt-5 grid grid-cols-2">
+                    <div className="w-full mt-5 flex flex-wrap">
                         {!loading && vnsToDisplay.length > 0 && vnsToDisplay.map((vn, index) => (
                             <NavigatorCard
                                 key={index}
