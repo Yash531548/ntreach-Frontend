@@ -48,7 +48,7 @@ const NavigatorCard = ({ VnImage, VnName, VnStateList = [], VnMobile ,vnInstagra
         px-2 py-4 sm:p-4 md:p-3
         w-full max-w-[180px]
         sm:max-w-[220px]
-        md:max-w-[220px]
+        md:max-w-[350px]
         shadow-md mx-auto
         transition-all
       "
