@@ -6,7 +6,7 @@ import WhatsappIcon from '../../assets/Static/WhatsApp.png';
 import FacebookIcon from '../../assets/Static/Facebook.png';
 import InstagramIcon1 from "../../assets/Static/Instagram1.png";
 
-const NavigatorCard = ({ VnImage, VnName, VnStateList = [], VnMobile ,vnInstagram, vnFacebook,vnLinkedin}) => {
+const NavigatorCard = ({ VnImage = "", VnName = "", VnStateList = [], VnMobile = "" ,vnInstagram = "", vnFacebook = "", vnLinkedin = ""}) => {
   const [states, setStates] = useState([]);
 
   useEffect(() => {
