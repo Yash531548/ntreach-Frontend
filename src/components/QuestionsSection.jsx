@@ -2,9 +2,14 @@
 export default function QuestionsSection({
     questions, answers, handleInputChange, handleCheckboxChange, handleGeolocate, user, profileContext, states, offset
 }) {
+    // Assuming initialAnswers is your prefilled answers state object.
+    if (answers[22] === undefined) {
+        answers[22] = 84; // 22 is question_id for HIV, 84 is answer_id for "No"
+    }
+
     return (
         <div className="space-y-6 h-auto">
-            {questions.map((q,index) => (
+            {questions.map((q, index) => (
                 <div key={q.question_id} className="text-sm md:text-base lg:text-base">
                     <p className="font-medium mb-2 text-[#11688F]">
                         {offset + index + 1}. {q.question}
@@ -50,31 +55,31 @@ export default function QuestionsSection({
                     {/* Select */}
                     {q.answer_input_type === "select" && (
                         <>
-                        <select
-                            value={answers[q.question_id] || ""}
-                            onChange={e => handleInputChange(q, e.target.value)}
-                            className="border outline-none w-full py-1 text-[13px] rounded-full px-3 border-[#A9A9A9] bg-[#F4F4F4]"
-                        >
-                            <option value="">Select</option>
-                            {q.question === "State" && states.length > 0 ?
-                                states.map(state => (
-                                    <option key={state.id} value={state.id}>
-                                        {state.state_name}
-                                    </option>
-                                )) :
-                                q.options.map(opt =>
-                                    <option key={opt.answer_id} value={opt.answer_id}>{opt.answer}</option>
-                                )
-                            }
-                        </select>
-                        <div className="flex justify-end">
-                            <button
-                            onClick={handleGeolocate}
-                            className="text-white bg-[#11688F] font-medium text-xs cursor-pointer px-2 py-1 mt-2 rounded-full"
+                            <select
+                                value={answers[q.question_id] || ""}
+                                onChange={e => handleInputChange(q, e.target.value)}
+                                className="border outline-none w-full py-1 text-[13px] rounded-full px-3 border-[#A9A9A9] bg-[#F4F4F4]"
                             >
-                            Use Current Location
-                            </button>
-                        </div>
+                                <option value="">Select</option>
+                                {q.question === "State" && states.length > 0 ?
+                                    states.map(state => (
+                                        <option key={state.id} value={state.id}>
+                                            {state.state_name}
+                                        </option>
+                                    )) :
+                                    q.options.map(opt =>
+                                        <option key={opt.answer_id} value={opt.answer_id}>{opt.answer}</option>
+                                    )
+                                }
+                            </select>
+                            <div className="flex justify-end">
+                                <button
+                                    onClick={handleGeolocate}
+                                    className="text-white bg-[#11688F] font-medium text-xs cursor-pointer px-2 py-1 mt-2 rounded-full"
+                                >
+                                    Use Current Location
+                                </button>
+                            </div>
                         </>
                     )}
 
