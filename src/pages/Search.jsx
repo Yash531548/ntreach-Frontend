@@ -135,7 +135,10 @@ const Search = () => {
                   VnName={vn.name}
                   VnImage={vn.profile_photo}
                   VnStateList={vn.state_list?.slice(0, 2)}
-                  VnMobile={vn.mobile}
+                  VnMobile={vn.mobile_number}
+                  vnInstagram={vn.instagram_url}
+                  vnFacebook={vn.facebook_url}
+                  vnLinkedin={vn.linkedin_url}
                 />
               ))}
             </div>
