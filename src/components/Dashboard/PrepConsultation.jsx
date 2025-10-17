@@ -51,7 +51,7 @@ const PrepConsultation = () => {
         console.log("services", services);
         navigate('/schedulesppointment', {
             state: {
-                selectedServices: Array.from(selectedServices)
+                selectedServices: Array.from(selectedServices), name: UserName
             }
         });
     };
