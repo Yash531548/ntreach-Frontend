@@ -110,9 +110,9 @@ const AppointmentConfirmed = () => {
                     </div>
 
                     {/* Only show on desktop/laptop */}
-                    <div className="hidden lg:block w-full">
+                    {/* <div className="hidden lg:block w-full">
                         <ChatBot />
-                    </div>
+                    </div> */}
                 </div>
             </div>
             {showModal && (

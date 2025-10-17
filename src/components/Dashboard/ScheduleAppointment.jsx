@@ -135,8 +135,8 @@ const ScheduleAppointment = () => {
             testing_center: Number(selectedCenter),
             appointment_date: formatDateForAPI(appointmentDate),
             type: "Upcoming",
-            booking_type: !loading && vnData?.name ? 'OUTREACH' : 'SELF',
-            // booking_type: "SELF",
+            // booking_type: !loading && vnData?.name ? 'OUTREACH' : 'SELF',
+            booking_type: "SELF",
             booking_name: name,
         };
         // ✅ Conditionally add vn_id only if vnData is available
@@ -273,6 +273,9 @@ const ScheduleAppointment = () => {
                                 id='Appointment Date'
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}
                                 min={new Date().toISOString().split("T")[0]}   // ✅ prevents past dates
+                                // max={new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split("T")[0]}
+                                // Easier Version : Deal with Millisecond instead of setDate
+                                max={new Date(Date.now() + 7 * 24 * 60 * 60 *1000).toISOString().split("T")[0]}
                                 value={appointmentDate}
                                 onChange={(e) => setAppointmentDate(e.target.value)}
                             />
@@ -302,9 +305,9 @@ const ScheduleAppointment = () => {
                         className='lg:h-[480px] lg:w-[500px]'
                     ></iframe> */}
                 </div>
-                <div className="hidden lg:block xl:block">
+                {/* <div className="hidden lg:block xl:block">
                     <ChatBot />
-                </div>
+                </div> */}
             </main>
         </div>
     )

@@ -31,11 +31,11 @@ const Contact = () => {
                 <div className=' w-[85%] md:w-[30%]  mt-10 xl:mt-12' >
                     <img src={contact_us} alt="Contact Us" className=' lg:h-[350px] xl:h-[400px]' />
                 </div>
-                <div className='relative  hidden lg:block'>
+                {/* <div className='relative  hidden lg:block'>
                     <div className='absolute -bottom-10 lg:bottom-0 -right-14 lg:-right-26 xl:right-0'>
                         <ChatBot />
                     </div>
-                </div>
+                </div> */}
             </main>
         </div>
     )
