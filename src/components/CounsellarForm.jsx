@@ -60,7 +60,7 @@ const CounsellarForm = () => {
                     if (response.data.status === 'success') {
                         const vns = response.data.data;
                         const stateId = selectedState?.state_code.toString();
-                        const matchedVns = vns.filter(vn => vn.state_list.includes(stateId));
+                        const matchedVns = vns.filter(vn => vn.state_list.includes(stateId) && !vn.vncode.startsWith("PO"));
                         setVnDetails(matchedVns); // array of matching VNs
                     }
                 } catch (error) {
