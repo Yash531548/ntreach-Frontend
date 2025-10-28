@@ -82,23 +82,63 @@ export default function Questionnaire() {
     };
 
     // For checkbox (multi-answer)
+    // const handleCheckboxChange = (question, value) => {
+    //     setAnswers(prev => {
+    //         const old = prev[question.question_id] || [];
+    //         if (old.includes(value)) {
+    //             // Remove
+    //             return {
+    //                 ...prev,
+    //                 [question.question_id]: old.filter(v => v !== value)
+    //             }
+    //         }
+    //         // Add
+    //         return {
+    //             ...prev,
+    //             [question.question_id]: [...old, value]
+    //         }
+    //     });
+    // };
+
     const handleCheckboxChange = (question, value) => {
-        setAnswers(prev => {
-            const old = prev[question.question_id] || [];
-            if (old.includes(value)) {
-                // Remove
-                return {
-                    ...prev,
-                    [question.question_id]: old.filter(v => v !== value)
-                }
-            }
-            // Add
+    const NONE_OF_THE_ABOVE = {
+        19: 70, // Q17
+        20: 76, // Q18
+    };
+
+    setAnswers(prev => {
+        const current = prev[question.question_id] || [];
+        const isCurrentlyChecked = current.includes(value);
+        const noneId = NONE_OF_THE_ABOVE[question.question_id];
+
+        if (isCurrentlyChecked) {
+            // Remove the just-unchecked value
             return {
                 ...prev,
-                [question.question_id]: [...old, value]
+                [question.question_id]: current.filter(v => v !== value)
+            };
+        } else {
+            if (value === noneId) {
+                // If selecting "None of the Above", uncheck all others and keep only noneId
+                return {
+                    ...prev,
+                    [question.question_id]: [noneId]
+                };
+            } else {
+                // If selecting any other, remove "None of the Above" if present and add value
+                return {
+                    ...prev,
+                    [question.question_id]: [
+                        ...current.filter(v => v !== noneId),
+                        value
+                    ]
+                };
             }
-        });
-    };
+        }
+    });
+};
+
+
 
     // Only for Step 1 (currentStep === 0)
     useEffect(() => {
@@ -163,101 +203,101 @@ export default function Questionnaire() {
         return ans !== undefined && ans !== null && ans !== '';
     });
 
-// 
-const indiaStateMap = {
-  "IN-AN": "Andaman and Nicobar Islands",
-  "IN-AP": "Andhra Pradesh",
-  "IN-AR": "Arunachal Pradesh",
-  "IN-AS": "Assam",
-  "IN-BR": "Bihar",
-  "IN-CH": "Chandigarh",
-  "IN-CT": "Chhattisgarh",
-  "IN-DN": "Dadra and Nagar Haveli",
-  "IN-DD": "Daman and Diu",
-  "IN-DL": "Delhi",
-  "IN-GA": "Goa",
-  "IN-GJ": "Gujarat",
-  "IN-HR": "Haryana",
-  "IN-HP": "Himachal Pradesh",
-  "IN-JK": "Jammu and Kashmir",
-  "IN-JH": "Jharkhand",
-  "IN-KA": "Karnataka",
-  "IN-KL": "Kerala",
-  "IN-LA": "Ladakh",
-  "IN-LD": "Lakshadweep",
-  "IN-MP": "Madhya Pradesh",
-  "IN-MH": "Maharashtra",
-  "IN-MN": "Manipur",
-  "IN-ML": "Meghalaya",
-  "IN-MZ": "Mizoram",
-  "IN-NL": "Nagaland",
-  "IN-OR": "Odisha",
-  "IN-PY": "Puducherry",
-  "IN-PB": "Punjab",
-  "IN-RJ": "Rajasthan",
-  "IN-SK": "Sikkim",
-  "IN-TN": "Tamil Nadu",
-  "IN-TG": "Telangana",
-  "IN-TR": "Tripura",
-  "IN-UP": "Uttar Pradesh",
-  "IN-UT": "Uttarakhand",
-  "IN-WB": "West Bengal"
-};
+    // 
+    const indiaStateMap = {
+        "IN-AN": "Andaman and Nicobar Islands",
+        "IN-AP": "Andhra Pradesh",
+        "IN-AR": "Arunachal Pradesh",
+        "IN-AS": "Assam",
+        "IN-BR": "Bihar",
+        "IN-CH": "Chandigarh",
+        "IN-CT": "Chhattisgarh",
+        "IN-DN": "Dadra and Nagar Haveli",
+        "IN-DD": "Daman and Diu",
+        "IN-DL": "Delhi",
+        "IN-GA": "Goa",
+        "IN-GJ": "Gujarat",
+        "IN-HR": "Haryana",
+        "IN-HP": "Himachal Pradesh",
+        "IN-JK": "Jammu and Kashmir",
+        "IN-JH": "Jharkhand",
+        "IN-KA": "Karnataka",
+        "IN-KL": "Kerala",
+        "IN-LA": "Ladakh",
+        "IN-LD": "Lakshadweep",
+        "IN-MP": "Madhya Pradesh",
+        "IN-MH": "Maharashtra",
+        "IN-MN": "Manipur",
+        "IN-ML": "Meghalaya",
+        "IN-MZ": "Mizoram",
+        "IN-NL": "Nagaland",
+        "IN-OR": "Odisha",
+        "IN-PY": "Puducherry",
+        "IN-PB": "Punjab",
+        "IN-RJ": "Rajasthan",
+        "IN-SK": "Sikkim",
+        "IN-TN": "Tamil Nadu",
+        "IN-TG": "Telangana",
+        "IN-TR": "Tripura",
+        "IN-UP": "Uttar Pradesh",
+        "IN-UT": "Uttarakhand",
+        "IN-WB": "West Bengal"
+    };
 
-// 
-const handleGeolocate = async () => {
-  if (!navigator.geolocation) {
-    alert("Geolocation is not supported by your browser");
-    return;
-  }
+    // 
+    const handleGeolocate = async () => {
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser");
+            return;
+        }
 
-  navigator.geolocation.getCurrentPosition(
-    async (position) => {
-      const { latitude, longitude } = position.coords;
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords;
 
-      // Reverse geocode to get location name
-      const res = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
-      );
-      const data = await res.json();
-      console.log(data)
+                // Reverse geocode to get location name
+                const res = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+                );
+                const data = await res.json();
+                console.log(data)
 
-      let stateName = data.address.state || data.address.city;
-      const districtName = data.address.city_district;
+                let stateName = data.address.state || data.address.city;
+                const districtName = data.address.city_district;
 
-      // Fallback using ISO code mapping if available
-      if (!stateName && data.address["ISO3166-2-lvl4"]) {
-        const isoCode = data.address["ISO3166-2-lvl4"];
-        stateName = indiaStateMap[isoCode] || isoCode.replace("IN-", "");
-      }
-      console.log("User location:", stateName, districtName);
+                // Fallback using ISO code mapping if available
+                if (!stateName && data.address["ISO3166-2-lvl4"]) {
+                    const isoCode = data.address["ISO3166-2-lvl4"];
+                    stateName = indiaStateMap[isoCode] || isoCode.replace("IN-", "");
+                }
+                console.log("User location:", stateName, districtName);
 
-      // Autofill matching state/district if they exist in your dropdowns
-      const matchedState = states.find(
-        (s) => s.state_name.toLowerCase() === stateName.toLowerCase()
-      );
+                // Autofill matching state/district if they exist in your dropdowns
+                const matchedState = states.find(
+                    (s) => s.state_name.toLowerCase() === stateName.toLowerCase()
+                );
 
-      if (matchedState) {
-        handleInputChange(
-          { question_id: 5, question: "State" },
-          matchedState.id
+                if (matchedState) {
+                    handleInputChange(
+                        { question_id: 5, question: "State" },
+                        matchedState.id
+                    );
+                }
+
+                // If you have district questions too:
+                // if (districtName) {
+                //   handleInputChange(
+                //     { question_id: /* district question id */, question: "District" },
+                //     districtName
+                //   );
+                // }
+            },
+            (error) => {
+                console.error(error);
+                alert("Unable to retrieve your location");
+            }
         );
-      }
-
-      // If you have district questions too:
-      // if (districtName) {
-      //   handleInputChange(
-      //     { question_id: /* district question id */, question: "District" },
-      //     districtName
-      //   );
-      // }
-    },
-    (error) => {
-      console.error(error);
-      alert("Unable to retrieve your location");
-    }
-  );
-};
+    };
 
     return (
         <div className="container relative w-full  lg:w-[95%] xl:max-w-[1300px] mx-auto mt-10 mb-6 px-6 sm:px-6">
@@ -508,10 +548,10 @@ const handleGeolocate = async () => {
                                             </span>
                                             <button className="cursor-pointer">Previous</button>
                                         </div>
-                                    ): (
+                                    ) : (
                                         <div className="w-[160px]"></div>
                                     )}
-                                    {currentStep < steps.length && currentStep < 4  ? selectedRisk !== 1 && (
+                                    {currentStep < steps.length && currentStep < 4 ? selectedRisk !== 1 && (
                                         <button
                                             disabled={currentStep === 0 && !isStep1Complete || selectedRisk === 1}
                                             onClick={() =>
@@ -716,7 +756,7 @@ const handleGeolocate = async () => {
                                 ) : (
                                     <div className="w-[160px]" />
                                 )}
-                                {currentStep < steps.length && currentStep < 4 ? selectedRisk !==1 && (
+                                {currentStep < steps.length && currentStep < 4 ? selectedRisk !== 1 && (
                                     <button
                                         disabled={currentStep === 0 && !isStep1Complete}
                                         onClick={() =>
