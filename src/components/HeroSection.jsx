@@ -50,7 +50,7 @@ const HeroSection = () => {
                 </div>
 
                 {/* Chat with AI bot */}
-                <div className="flex items-center gap-4 mt-4 ">
+                {/* <div className="flex items-center gap-4 mt-4 ">
                     <img src={chatbot} alt="Chatbot" className="rounded-full w-18 h-18" />
                     <div className="flex flex-col">
                         <span className="font-medium text-lg">Or Chat With Malini Didi</span>
@@ -58,12 +58,12 @@ const HeroSection = () => {
                             Use the AI powered Chat bot
                         </span>
                     </div>
-                </div>
+                </div> */}
 
-                <div className="flex justify-center p-0 xl:-mt-4">
+                {/* <div className="flex justify-center p-0 xl:-mt-4">
                     <div className="flex items-center justify-between  pl-4   bg-gray-200 rounded-full min-w-[300px] max-w-[600px] sm:min-w-[250px] sm:max-w-[500px] w-full">
                         <div className="flex flex-row items-center flex-1 ">
-                            {/* <img src={Vector1} alt="search" className="w-4 h-4" /> */}
+                           
                             < SearchIcon color='#838383'className='w-4 h-4'/>
                             <input
                                 type="text"
@@ -72,12 +72,11 @@ const HeroSection = () => {
                             />
                         </div>
                         <button className="bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white w-12 h-12 flex items-center justify-center rounded-full shrink-0">
-                            {/* <img src={Vector} alt="searchIcon" className="w-5 h-5" /> */}
-                            {/* < SearchIcon color='#ffffff' className='w-5 h-5 '/> */}
+                            
                             <Mic className='w-7 h-7'/>
                         </button>
                     </div>
-                </div>
+                </div> */}
             </div>
         </main>
     );
