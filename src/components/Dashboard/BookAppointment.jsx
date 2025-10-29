@@ -5,6 +5,24 @@ import { NavLink, useNavigate } from 'react-router';
 import { fetchServiceTypes } from '../../Api/fetchServiceTypes';
 import { useAuth } from '../../Context/AuthContext';
 
+const ToolTip = ({ text, children }) => {
+    const [visible, setVisible] = useState(false)
+    return (
+        <span className='relative'>
+            <span
+                onMouseEnter={() => setVisible(true)}
+                onMouseLeave={() => { setVisible(false) }}
+                onFocus={() => setVisible(true)}
+                tabIndex={0}
+                onBlur={() => { setVisible(false) }}
+                className='focus:outline-none'
+            >{children}</span>
+            {visible && (
+                <span className='absolute left-full top-1/2 -translate-y-1/2 ml-2 z-10 py-1 px-3 w-52 text-white shadow-lg rounded text-xs  bg-black '>{text}</span>
+            )}
+        </span>
+    );
+}
 const BookAppointment = () => {
     const { user } = useAuth();
     const [UserName, setUserName] = useState("");
@@ -22,12 +40,21 @@ const BookAppointment = () => {
         8: "Referral to TI services",
         7: "ART Linkages"
     };
+    const serviceDescriptionsMap = {
+        1: "An HIV test is a medical procedure to detect the presence of the human immunodeficiency virus in a person's bloodstream. (Should not repeat in next 3 month after 1st booking)",
+        2: "STI services refer to healthcare offerings related to the prevention, diagnosis, and treatment of sexually transmitted infections.",
+        4: "It's a medical treatment that can prevent HIV infection after potential exposure to the virus. PEP involves taking antiretroviral medications within 72 hours (3 days) of exposure to reduce the risk of HIV transmission.",
+        6: "Counselling is a therapeutic process where a counsellor provides guidance and support to help individuals address emotional issues and common concerns such as Depression, Anxiety etc.",
+        8: "Referral to TI and CBO/NGO Services - involves directing individuals to services provided by Targeted Interventions (TI) and Community-Based Organisations (CBO) or Non-Governmental Organisations (NGO) for additional support in addressing health and social needs.",
+        7: "ART Linkage -  is the process of connecting individuals who test positive for HIV to Antiretroviral Therapy (ART) for the management of the virus and related health services."
+    };
+
 
     // Auto-fill
     useEffect(() => {
-      if (user) {
-        setUserName(user.user?.name || "")
-      }
+        if (user) {
+            setUserName(user.user?.name || "")
+        }
     }, [user])
 
     useEffect(() => {
@@ -54,7 +81,7 @@ const BookAppointment = () => {
     };
     const handleLetsGo = () => {
         // Convert Set to Array, or send as preferred
-        console.log("selected service " , selectedServices)
+        console.log("selected service ", selectedServices)
 
         if (selectedServices.size === 0) {
             alert("Please select at least one service before continuing.");
@@ -105,12 +132,14 @@ const BookAppointment = () => {
                                                     </span>
                                                 </label>
                                             </div>
-                                            <button
-                                                type="button"
-                                                className="w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm italic"
-                                            >
-                                                i
-                                            </button>
+                                            <ToolTip text={serviceDescriptionsMap[service.service_type_id]}>
+                                                <button
+                                                    type="button"
+                                                    className="w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm italic"
+                                                >
+                                                    i
+                                                </button>
+                                            </ToolTip>
                                         </label>
                                     ))
                                 )}
@@ -146,9 +175,9 @@ const BookAppointment = () => {
 
                             <div className="mt-6">
                                 {/* <NavLink to={'/schedulesppointment'}> */}
-                                    <button onClick={handleLetsGo} className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-light shadow-md/20">
-                                        Let&apos;s Go
-                                    </button>
+                                <button onClick={handleLetsGo} className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-light shadow-md/20">
+                                    Let&apos;s Go
+                                </button>
                                 {/* </NavLink> */}
                             </div>
                         </div>
