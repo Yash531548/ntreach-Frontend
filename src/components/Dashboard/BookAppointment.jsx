@@ -28,6 +28,12 @@ const BookAppointment = () => {
     const [UserName, setUserName] = useState("");
     const [services, setServices] = useState([]);
     const [selectedServices, setSelectedServices] = useState(new Set());
+    const [expandedInfo, setExpandedInfo] = useState(null);
+
+    const handleToggleInfo = (serviceID) => {
+        setExpandedInfo(prev => prev === serviceID ? null : serviceID);
+    }
+
     const navigate = useNavigate();
     // Preserved service_type_ids in required order
     const filterOrder = [1, 2, 4, 6, 8, 7];
@@ -120,29 +126,36 @@ const BookAppointment = () => {
                                     <p>Loading services...</p>
                                 ) : (
                                     services.map(service => (
-                                        <label
-                                            key={service.service_type_id}
-                                            className="flex items-center justify-between bg-[#DAF3FF] rounded-full pl-4 pr-1.5 py-1 cursor-pointer"
-                                        >
-                                            <div className="flex items-center gap-3">
-                                                <label className="flex items-center gap-2 cursor-pointer">
-                                                    <input type="checkbox" className="" checked={selectedServices.has(service.service_type_id)} onChange={() => toggleService(service.service_type_id)} />
-                                                    <span className="text-black text-sm" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
-                                                        {serviceNamesMap[service.service_type_id]}
-                                                    </span>
-                                                </label>
-                                            </div>
-                                            <ToolTip text={serviceDescriptionsMap[service.service_type_id]}>
+                                        <div key={service.service_type_id}>
+                                            <label
+                                                key={service.service_type_id}
+                                                className="flex items-center justify-between bg-[#DAF3FF] rounded-full pl-4 pr-1.5 py-1 cursor-pointer"
+                                            >
+                                                <div className="flex items-center gap-3">
+                                                    <label className="flex items-center gap-2 cursor-pointer">
+                                                        <input type="checkbox" className="" checked={selectedServices.has(service.service_type_id)} onChange={() => toggleService(service.service_type_id)} />
+                                                        <span className="text-black text-sm" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+                                                            {serviceNamesMap[service.service_type_id]}
+                                                        </span>
+                                                    </label>
+                                                </div>
                                                 <button
                                                     type="button"
                                                     aria-label={`Info about ${serviceNamesMap[service.service_type_id]}`}
                                                     tabIndex={0}
-                                                    className="w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm italic"
+                                                    className="w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm italic cursor-pointer"
+                                                    onClick={() => handleToggleInfo(service.service_type_id)}
                                                 >
                                                     i
                                                 </button>
-                                            </ToolTip>
-                                        </label>
+                                            </label>
+                                            <div className={`overflow-hidden transition-all duration-300 rounded-3xl bg-[#DAF3FF] text-xs ${expandedInfo === service.service_type_id ? 'max-h-40 opacity-100 mt-2 mb-2 px-4 py-2 ':'max-h-0 opacity-0' }`}>
+                                                {expandedInfo === service.service_type_id && (
+                                                    <span className='block text-black'>{serviceDescriptionsMap[service.service_type_id]}</span>
+                                                )}
+                                            </div>
+                                        </div>
+
                                     ))
                                 )}
                                 {/* {[
