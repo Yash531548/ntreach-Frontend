@@ -135,6 +135,8 @@ const BookAppointment = () => {
                                             <ToolTip text={serviceDescriptionsMap[service.service_type_id]}>
                                                 <button
                                                     type="button"
+                                                    aria-label={`Info about ${serviceNamesMap[service.service_type_id]}`}
+                                                    tabIndex={0}
                                                     className="w-6 h-6 flex items-center justify-center rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white text-sm italic"
                                                 >
                                                     i
