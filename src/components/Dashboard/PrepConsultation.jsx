@@ -19,7 +19,7 @@ const PrepConsultation = () => {
     // Auto-fill
     useEffect(() => {
         if (user) {
-        setUserName(user.user?.name || "")
+            setUserName(user.user?.name || "")
         }
     }, [user])
 
@@ -29,6 +29,10 @@ const PrepConsultation = () => {
             const allServices = await fetchServiceTypes();
             const filtered = allServices.filter(s => s.service_type_id === 3);
             setServices(filtered);
+            // Default check the only service if exists
+            if (filtered.length === 1) {
+                setSelectedServices(new Set([filtered[0].service_type_id]))
+            }
         };
         getServices();
     }, []);
@@ -96,7 +100,9 @@ const PrepConsultation = () => {
                                                     <input
                                                         type="checkbox"
                                                         checked={selectedServices.has(service.service_type_id)}
-                                                        onChange={() => toggleService(service.service_type_id)}
+                                                        // onChange={() => toggleService(service.service_type_id)}
+                                                        readOnly
+                                                        disabled
                                                         className="w-4 h-4 text-[#1475A1] border-[#323FF7] rounded focus:ring-0"
                                                     />
                                                     <span className="text-black text-sm" style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
@@ -142,9 +148,9 @@ const PrepConsultation = () => {
                             <div className="mt-6">
                                 {/* <NavLink to={'/schedulesppointment'}> */}
 
-                                    <button onClick={handleLetsGo} disabled={selectedServices.size === 0} className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-medium shadow-md/20">
-                                        Let&apos;s Go
-                                    </button>
+                                <button onClick={handleLetsGo} disabled={selectedServices.size === 0} className="cursor-pointer w-[150px] py-2 rounded-full bg-gradient-to-b from-[#323FF7] to-[#33AEE5]  text-white font-medium shadow-md/20">
+                                    Let&apos;s Go
+                                </button>
                                 {/* </NavLink> */}
                             </div>
                         </div>
