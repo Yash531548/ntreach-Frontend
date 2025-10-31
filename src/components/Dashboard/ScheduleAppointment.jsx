@@ -129,7 +129,7 @@ const ScheduleAppointment = () => {
         setLoadingSubmit(true)
 
         const data = {
-            risk_assessment_id: Number(localStorage.getItem("risk_assessment_id")),
+            risk_assessment_id: Number(localStorage.getItem("risk_assessment_id")) || null,
             service: incomingServices,
             state: Number(state_code),
             district: Number(selectedDistrict),
