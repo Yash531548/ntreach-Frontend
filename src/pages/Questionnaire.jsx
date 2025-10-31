@@ -16,7 +16,8 @@ import { fetchStates } from "../Api/getState.js";
 import { useAuth } from '../Context/AuthContext';
 import { useProfile } from "../Context/ProfileContext.jsx";
 import QuestionsSection from "../components/QuestionsSection.jsx";
-
+import { selfRiskAssessmentMaster } from "../Api/selfRiskAssessmentMaster.js";
+import { selfRiskAssessmentItem } from "../Api/selfRiskAssessmentItem.js";
 
 
 
@@ -299,6 +300,80 @@ export default function Questionnaire() {
         );
     };
 
+    // console.log(currentStep, isStep1Complete, selectedRisk)
+    // console.log(answers)
+
+const handleNextClick = async () => {
+  try {
+    let riskId = localStorage.getItem("risk_assessment_id");
+
+    // If first step, call master API
+    if (currentStep === 0 && !riskId) {
+      const masterData = {
+        state: 24,
+        vn_id: null,
+        mobile_no: answers[1],
+        raw_answer_sheet: {
+          "mobile-number": answers[1],
+          age: answers[2],
+          gender: answers[3],
+          "have-you-ever-tested-for-hiv-before": answers[22],
+        },
+      };
+      const res = await selfRiskAssessmentMaster(masterData);
+      console.log("Master API Response:", res?.data);
+      riskId = res?.data?.data?.risk_assessment_id;
+      if (!riskId) throw new Error("No risk_assessment_id found");
+      localStorage.setItem("risk_assessment_id", riskId);
+      console.log("Saved risk_assessment_id:", riskId);
+    }
+
+    // Step-wise question mapping
+    const stepItems = {
+      0: [
+        { question_id: 3, answer_id: answers[3] },
+        { question_id: 22, answer_id: answers[22] },
+        { question_id: 2, answer_id: answers[3] },
+      ],
+      2: [
+        { question_id: 6, answer_id: answers[6] },
+        { question_id: 9, answer_id: answers[9] },
+        { question_id: 10, answer_id: answers[10] },
+        { question_id: 11, answer_id: answers[11]?.[0] },
+        { question_id: 12, answer_id: answers[12] },
+      ],
+      3: [
+        { question_id: 13, answer_id: answers[13] },
+        { question_id: 14, answer_id: answers[14] },
+        { question_id: 15, answer_id: answers[15] },
+        { question_id: 16, answer_id: answers[16] },
+        { question_id: 17, answer_id: answers[17] },
+        { question_id: 18, answer_id: answers[18] },
+      ],
+      4: [
+        { question_id: 19, answer_id: answers[19]?.[0] },
+        { question_id: 20, answer_id: answers[20]?.[0] },
+      ],
+    };
+
+    // Send item data if available
+    const items = stepItems[currentStep];
+    if (items?.length) {
+      const itemRes = await selfRiskAssessmentItem({
+        risk_assessment_id: riskId,
+        items,
+      });
+      console.log(`Item API Response (Step ${currentStep}):`, itemRes?.data);
+    }
+
+    // Move next
+    setCurrentStep((s) => Math.min(s + 1, steps.length - 1));
+  } catch (err) {
+    console.error("Error in handleNextClick:", err);
+    alert(err.message || "Something went wrong");
+  }
+};
+
     return (
         <div className="container relative w-full  lg:w-[95%] xl:max-w-[1300px] mx-auto mt-10 mb-6 px-6 sm:px-6">
 
@@ -554,9 +629,7 @@ export default function Questionnaire() {
                                     {currentStep < steps.length && currentStep < 4 ? selectedRisk !== 1 && (
                                         <button
                                             disabled={currentStep === 0 && !isStep1Complete || selectedRisk === 1}
-                                            onClick={() =>
-                                                setCurrentStep((s) => Math.min(s + 1, steps.length - 1))
-                                            }
+                                            onClick={handleNextClick}
                                             //                                 className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
                                             //    bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
                                             className={`relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
