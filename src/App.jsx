@@ -45,7 +45,7 @@ function App() {
           <Route path='/' element={<VnProvider><Layout /></VnProvider>}>
             {/* Nested routes inherit the layout */}
             <Route index element={<Home />} />
-            <Route path=":vnName" element={<Home />} />
+            <Route path="/sra/:vnName" element={<Home />} />
             <Route path="/questionnaire" element={
               <ProtectedRoute >
                 <Questionnaire />
