@@ -56,7 +56,7 @@ const SpeechToText = ({ src, onResult }) => {
   }
 
   return (
-    <button onClick={toggleListening} className="cursor-pointer">
+    <button onClick={toggleListening} className="cursor-pointer shrink-0">
       <img
         src={src}
         alt={listening ? 'Stop' : 'Start'}
