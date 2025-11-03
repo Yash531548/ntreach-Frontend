@@ -90,7 +90,7 @@ const Team = () => {
                         <div>Loading...</div>
                     ) : (
                         sortedVns
-                            .filter(vn => !vn.vncode.startsWith("PO") && ![53, 54, 72].includes(vn.id))
+                            .filter(vn => !vn.vncode.startsWith("PO") && ![53, 54].includes(vn.id))
                             .map((vn, i) => (
                                 <NavigatorCard
                                     key={i}
