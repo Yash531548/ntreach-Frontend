@@ -6,13 +6,16 @@ import { BrowserRouter } from 'react-router'
 import { AuthProvider } from './Context/AuthContext.jsx'
 import { ProfileProvider } from './Context/ProfileContext.jsx'
 import { AuthProviderUser } from './Context/AuthProviderUserContext'
+import { UserProfileProvider } from './Context/UserProfileContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
     <ProfileProvider>
       <BrowserRouter>
         <AuthProviderUser>
-          <App />
+          <UserProfileProvider>
+            <App />
+          </UserProfileProvider>
         </AuthProviderUser>
       </BrowserRouter>,
     </ProfileProvider>
