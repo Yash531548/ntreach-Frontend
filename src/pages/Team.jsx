@@ -90,7 +90,7 @@ const Team = () => {
                         <div>Loading...</div>
                     ) : (
                         sortedVns
-                            .filter(vn => vn.profile_photo)
+                            .filter(vn => !vn.vncode.startsWith("PO"))
                             .map((vn, i) => (
                                 <NavigatorCard
                                     key={i}
