@@ -51,7 +51,7 @@ const Login = () => {
     }, [error]);
 
     useEffect(() => {
-        if (user) {
+        if (user || userProfile) {
             // If user has complete profile, redirect to dashboard
             if (user.user?.name && user.user?.gender && user.user?.state && user.preferd_language) {
                 navigate("/dashboard");
@@ -218,8 +218,9 @@ const handleProfileSubmit = async (e) => {
 
     // Step 4: Prepare step item data
     const itemsToSubmit = [
-      { question_id: 3, answer_id: profile.age },
-      { question_id: 2, answer_id: profile.gender },
+      { question_id: 2, answer_id: profile.age },
+      { question_id: 3, answer_id: profile.gender },
+      { question_id: 5, answer_id: selectedStateId },
       { question_id: 22, answer_id: profile.tested_hiv_before },
     ];
 
