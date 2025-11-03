@@ -53,7 +53,7 @@ const Login = () => {
             } else {
                 // Auto-fill profile form
                 setProfile({
-                    name: user.user?.name || "",
+                    name: user.user?.name === "New User" ? "" : (user.user?.name || ""),
                     age: user.user?.age || "",
                     gender: user.user?.gender || "",
                     state: user.user?.state || "",
