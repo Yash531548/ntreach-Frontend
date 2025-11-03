@@ -16,6 +16,8 @@ const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { isAuthenticated, logout } = useAuth();
     const [search, setSearch] = useState('')
+    const [showSearch, setShowSearch] = useState(false);
+
 
     return (
         <>
@@ -156,9 +158,41 @@ const Header = () => {
                 </div>
 
                 {/* Mobile Right Section */}
-                <div className="flex lg:hidden items-start  space-x-2 text-black">
-                    <Search size={20} className="" />
-                    <Menu size={28} className=" cursor-pointer -mt-0.5" onClick={() => setIsMenuOpen(true)} />
+                <div className="flex lg:hidden items-center space-x-3 text-black relative">
+                    <Search
+                        size={22}
+                        className="cursor-pointer"
+                        onClick={() => setShowSearch(true)}
+                    />
+                    <Menu
+                        size={28}
+                        className="cursor-pointer"
+                        onClick={() => setIsMenuOpen(true)}
+                    />
+
+                    {/* Toggle Search Box */}
+                    {showSearch && (
+                        <div className="flex items-center border border-[#0B1E2A] rounded-full px-3 py-1 bg-white w-[70vw] absolute right-0 top-8">
+                            <input
+                                type="text"
+                                placeholder="Search"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                onKeyDown={(e) => (
+                                e.key === "Enter" &&
+                                navigate(`/search?q=${encodeURIComponent(e.target.value)}`)
+                                )}
+                                className="w-full outline-none border-none text-sm placeholder:text-[#838383]"
+                            />
+                            <SpeechToText src={SpeakerIcon} onResult={(text) => setSearch(text)} />
+                            <button
+                                onClick={() => setShowSearch(false)}
+                                className="text-gray-500 ml-2"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    )}
                 </div>
             </header>
 
