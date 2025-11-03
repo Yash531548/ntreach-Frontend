@@ -15,6 +15,7 @@ import { fetchQuestionSteps } from "../Api/Questionnaire/getQuestions.js";
 import { fetchStates } from "../Api/getState.js";
 import { useAuth } from '../Context/AuthContext';
 import { useProfile } from "../Context/ProfileContext.jsx";
+import { useUserProfile } from '../Context/UserProfileContext'
 import QuestionsSection from "../components/QuestionsSection.jsx";
 import { selfRiskAssessmentMaster } from "../Api/selfRiskAssessmentMaster.js";
 import { selfRiskAssessmentItem } from "../Api/selfRiskAssessmentItem.js";
@@ -25,6 +26,7 @@ export default function Questionnaire() {
     const navigate = useNavigate();
     const { user } = useAuth();
     const { profile: profileContext } = useProfile();
+    const { userProfile, refetchUserProfile } = useUserProfile()
     const stepImages = [step1, step2, step3, step4, step5];
     const stepImageClasses = [
         "w-[300px] h-[359px] object-contain ", // step1
@@ -303,11 +305,29 @@ export default function Questionnaire() {
     // console.log(currentStep, isStep1Complete, selectedRisk)
     // console.log(answers)
 
+useEffect(() => {
+  if (userProfile?.items?.length) {
+    const newAnswers = {};
+
+    userProfile.items.forEach(item => {
+      if (item?.question_id != null) {
+        newAnswers[item.question_id] = item.answer_id || "";
+      }
+
+      if ([11].includes(item?.question_id)) {
+        newAnswers[item.question_id] = [item.answer_id] || [];
+      }
+    });
+
+    setAnswers(prev => ({ ...prev, ...newAnswers }));
+  }
+}, [userProfile?.items]);
+
 const handleNextClick = async () => {
   try {
-    let riskId = localStorage.getItem("risk_assessment_id");
+    let riskId = userProfile?.risk_assessment?.risk_assessment_id;
 
-    // If first step, call master API
+    // Step 1: Create risk assessment if first step
     if (currentStep === 0 && !riskId) {
       const masterData = {
         state: 24,
@@ -321,14 +341,12 @@ const handleNextClick = async () => {
         },
       };
       const res = await selfRiskAssessmentMaster(masterData);
-      console.log("Master API Response:", res?.data);
       riskId = res?.data?.data?.risk_assessment_id;
       if (!riskId) throw new Error("No risk_assessment_id found");
       localStorage.setItem("risk_assessment_id", riskId);
-      console.log("Saved risk_assessment_id:", riskId);
     }
 
-    // Step-wise question mapping
+    // Step 2: Define question mapping
     const stepItems = {
       0: [
         { question_id: 3, answer_id: answers[3] },
@@ -356,17 +374,21 @@ const handleNextClick = async () => {
       ],
     };
 
-    // Send item data if available
+    // Step 3: Prepare items for current step
     const items = stepItems[currentStep];
+
+    // Step 4: Save current step items
     if (items?.length) {
-      const itemRes = await selfRiskAssessmentItem({
+      await selfRiskAssessmentItem({
         risk_assessment_id: riskId,
-        items,
+        items: [...(userProfile?.items || []), ...items],
       });
-      console.log(`Item API Response (Step ${currentStep}):`, itemRes?.data);
+
+      // Step 5: Refetch user profile to sync updates
+      await refetchUserProfile();
     }
 
-    // Move next
+    // Step 6: Move to next step
     setCurrentStep((s) => Math.min(s + 1, steps.length - 1));
   } catch (err) {
     console.error("Error in handleNextClick:", err);
