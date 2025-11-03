@@ -5,14 +5,18 @@ import Who from '../assets/login/Who.png'
 import { useNavigate } from 'react-router';
 import { ChevronDown } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
+import { useUserProfile } from '../Context/UserProfileContext'
 import { sendOtp, verifyOtp } from '../Api/Authentication/auth';
 import { updateUserProfile } from '../Api/user/updateUserProfile';
 
 import { fetchStates } from '../Api/getState';
 import { fetchDistrictsApi } from '../Api/fetchDistrictsApi';
+import { selfRiskAssessmentMaster } from "../Api/selfRiskAssessmentMaster.js";
+import { selfRiskAssessmentItem } from "../Api/selfRiskAssessmentItem.js";
 
 const Login = () => {
     const { user, login } = useAuth();
+    const { userProfile, refetchUserProfile } = useUserProfile()
     const [step, setStep] = useState(1); // track form step
     const [phoneNumber, setPhoneNumber] = useState("");
     const [otp, setOtp] = useState("");
@@ -25,7 +29,8 @@ const Login = () => {
         state: "",
         district: "",
         email: "",
-        preferd_language: ""
+        preferd_language: "",
+        tested_hiv_before: ""
     });
     const [states, setStates] = useState([]);
     const [districts, setDistricts] = useState([]);
@@ -48,23 +53,24 @@ const Login = () => {
     useEffect(() => {
         if (user) {
             // If user has complete profile, redirect to dashboard
-            if (user.user?.name && user.user?.gender && user.user?.state) {
+            if (user.user?.name && user.user?.gender && user.user?.state && user.preferd_language) {
                 navigate("/dashboard");
             } else {
                 // Auto-fill profile form
                 setProfile({
                     name: user.user?.name === "New User" ? "" : (user.user?.name || ""),
-                    age: user.user?.age || "",
-                    gender: user.user?.gender || "",
+                    age: userProfile?.items?.find(item => item.question_id == 2)?.answer_id || "",
+                    gender: userProfile?.items?.find(item => item.question_id == 3)?.answer_id || "",
                     state: user.user?.state || "",
                     district: user.user?.district || "",
                     email: user.user?.email || "",
                     preferd_language: user.user?.preferd_language || "",
+                    tested_hiv_before: userProfile?.items?.find(item => item.question_id == 22)?.answer_id || ""
                 });
                 setStep(3); // Move to profile step
             }
         }
-    }, [user, navigate]);
+    }, [user, userProfile, navigate]);
 
     useEffect(() => {
         const loadStates = async () => {
@@ -160,32 +166,86 @@ const Login = () => {
         }
     };
 
-    const handleProfileSubmit = async (e) => {
-        e.preventDefault()
+const handleProfileSubmit = async (e) => {
+  e.preventDefault();
 
-        console.log("Profile Data:", profile);
-        setLoading(true);
-        setError("");
+  console.log("Profile Data:", profile);
+  setLoading(true);
+  setError("");
 
-        try {
-            const response = await updateUserProfile(profile);
+  try {
+    // Step 1: Update user profile
+    const response = await updateUserProfile({
+      name: profile.name,
+      email: profile.email,
+      preferd_language: profile.preferd_language,
+    });
 
-            if (response.data?.status === "success") {
-                // Update auth context with latest user info
-                login({ token: localStorage.getItem("userToken"), user: response.data.user });
+    const data = response.data;
+    if (data?.status !== "success") {
+      setError(data?.message || "Profile update failed.");
+      return;
+    }
 
-                // Redirect to dashboard
-                navigate("/dashboard");
-            } else {
-                setError(response.data?.message || "Profile update failed.");
-            }
-        } catch (err) {
-            console.error(err);
-            setError("Something went wrong while updating profile.");
-        } finally {
-            setLoading(false);
-        }
-    };
+    // Step 2: Update auth context
+    const token = localStorage.getItem("userToken");
+    login({ token, user: data.user });
+
+    // Step 3: If risk assessment not created, call master API
+    let riskAssessmentId = userProfile?.risk_assessment?.risk_assessment_id;
+
+    if (!riskAssessmentId) {
+      const selectedState = states.find(s => s.state_name === profile.state);
+      const stateCode = selectedState ? Number(selectedState.state_code) : null;
+
+      const masterPayload = {
+        state: 24 || stateCode,
+        vn_id: null,
+        mobile_no: user.user?.phone_number,
+        raw_answer_sheet: {
+          "mobile-number": user.user?.phone_number,
+          age: profile.age,
+          gender: profile.gender,
+          "have-you-ever-tested-for-hiv-before": profile.tested_hiv_before,
+        },
+      };
+
+      const masterRes = await selfRiskAssessmentMaster(masterPayload);
+      console.log("Master API Response:", masterRes?.data);
+
+      riskAssessmentId = masterRes?.data?.data?.risk_assessment_id || null;
+    }
+
+    // Step 4: Prepare step item data
+    const itemsToSubmit = [
+      { question_id: 3, answer_id: profile.age },
+      { question_id: 2, answer_id: profile.gender },
+      { question_id: 22, answer_id: profile.tested_hiv_before },
+    ];
+
+    if (itemsToSubmit.length && riskAssessmentId) {
+      const itemPayload = {
+        risk_assessment_id: riskAssessmentId,
+        items: [...(userProfile?.items || []), ...itemsToSubmit],
+      };
+
+      const itemRes = await selfRiskAssessmentItem(itemPayload);
+      console.log("Item API Response:", itemRes?.data);
+    }
+
+    // Step 5: Refetch user profile to sync updates
+    await refetchUserProfile();
+
+    // Step 6: Redirect to dashboard
+    navigate("/dashboard");
+
+  } catch (error) {
+    console.error("Profile update error:", error);
+    setError("Something went wrong while updating profile.");
+  } finally {
+    setLoading(false);
+  }
+};
 
     return (
         <div className="  w-full mt-2 lg:min-h-[calc(100vh-64px-60px)]  2xl:min-h-[calc(100vh-64px-60px)] flex items-center justify-center  max-w-[1350px] mx-auto px-4 sm:px-6 lg:px-12 ">
@@ -297,24 +357,33 @@ const Login = () => {
 
                                 {/* Row 2: Age + Gender */}
                                 <div className="flex gap-4 w-full lg:w-[80%]">
-                                    <input
-                                        type="number"
-                                        value={profile.age}
-                                        onChange={(e) => setProfile({ ...profile, age: e.target.value })}
-                                        placeholder="Age"
-                                        className="outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-1/2 py-3 placeholder:text-[#A9A9A9]"
-                                    />
+                                    <div className='relative w-1/2'>
+                                        <select
+                                            value={profile.age}
+                                            onChange={(e) => setProfile({ ...profile, age: Number(e.target.value) })}
+                                            required
+                                            className={`outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full py-3 appearance-none ${!profile.age && 'text-[#A9A9A9]'}`}
+                                        >
+                                            <option value="" disabled>Age*</option>
+                                            <option value={2}>18-29</option>
+                                            <option value={3}>30-39</option>
+                                            <option value={4}>40-49</option>
+                                            <option value={5}>50+</option>
+                                        </select>
+                                        <ChevronDown className="absolute bottom-0 right-3 -translate-y-3 text-black pointer-events-none" width={15} />
+                                    </div>
                                     <div className='relative w-1/2'>
                                         <select
                                             value={profile.gender}
-                                            onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
+                                            onChange={(e) => setProfile({ ...profile, gender: Number(e.target.value) })}
                                             required
                                             className={`outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full py-3 appearance-none ${!profile.gender && 'text-[#A9A9A9]'}`}
                                         >
                                             <option value="" disabled>Gender*</option>
-                                            <option value="Male">Male</option>
-                                            <option value="Female">Female</option>
-                                            <option value="Other">Other</option>
+                                            <option value={6}>Male</option>
+                                            <option value={7}>Female</option>
+                                            <option value={8}>Transgender</option>
+                                            <option value={81}>Other</option>
                                         </select>
                                         <ChevronDown className="absolute bottom-0 right-3 -translate-y-3 text-black pointer-events-none" width={15} />
                                     </div>
@@ -379,6 +448,20 @@ const Login = () => {
                                     placeholder="Preferred language"
                                     className="outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full lg:w-[80%] py-3 placeholder:text-[#A9A9A9]"
                                 />
+
+                                <div className='relative w-full lg:w-[80%]'>
+                                    <select
+                                        value={profile.tested_hiv_before}
+                                        onChange={(e) => setProfile({ ...profile, tested_hiv_before: Number(e.target.value) })}
+                                        required
+                                        className={`outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full py-3 appearance-none ${!profile.tested_hiv_before && 'text-[#A9A9A9]'}`}
+                                    >
+                                        <option value="" disabled>Have you ever tested for HIV before?*</option>
+                                        <option value="83">Yes</option>
+                                        <option value="84">No</option>
+                                    </select>
+                                    <ChevronDown className="absolute bottom-0 right-3 -translate-y-3 text-black pointer-events-none" width={15} />
+                                </div>
 
                                 {/* Submit */}
 
