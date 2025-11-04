@@ -255,10 +255,10 @@ const handleProfileSubmit = async (e) => {
                    flex flex-col md:flex-row 
                    md:shadow-[0px_0px_13px_-5px_#00000026] md:rounded-4xl   ">
                 {/* LEFT SIDE - FORMS */}
-                <div className="w-full md:w-1/2 md:px-7 md:py-12 lg:p-12 lg:pl-16 py-6">
+                <div className="w-full md:w-1/2 md:px-7 md:py-12 lg:p-12 lg:pl-16 py-6" translate="no">
                     {step === 1 && (
                         <>
-                            <div className="text-black text-[28px]  md:text-3xl lg:text-4xl xl:text-[40px] font-normal md:font-medium " style={{ fontFamily: "Sofia Pro" }}>
+                            <div className="text-black text-[28px]  md:text-3xl lg:text-4xl xl:text-[40px] font-normal md:font-medium " style={{ fontFamily: "Sofia Pro" }} translate="yes">
                                 <h1>Login With  </h1>
                                 <h1 className='block md:mt-2'>Mobile Number</h1>
                             </div>
@@ -292,7 +292,7 @@ const handleProfileSubmit = async (e) => {
 
                     {step === 2 && (
                         <>
-                            <div className="text-black text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] font-normal md:font-medium " style={{ fontFamily: "Sofia Pro" }}>
+                            <div className="text-black text-3xl  md:text-3xl lg:text-4xl xl:text-[40px] font-normal md:font-medium " style={{ fontFamily: "Sofia Pro" }} translate="yes">
                                 <h1>Login With </h1>
                                 <h1 className='md:mt-2'>Mobile Number</h1>
                             </div>
@@ -340,7 +340,7 @@ const handleProfileSubmit = async (e) => {
 
                     {step === 3 && (
                         <>
-                            <div className="text-black text-3xl  md:text-3xl lg:text-4xl xl:text-[40px]        lg:whitespace-normal " style={{ fontFamily: "Sofia Pro", fontWeight: 500 }}>
+                            <div className="text-black text-3xl  md:text-3xl lg:text-4xl xl:text-[40px]        lg:whitespace-normal " style={{ fontFamily: "Sofia Pro", fontWeight: 500 }} translate="yes">
                                 <h1 className='whitespace-nowrap'>Complete Your  <span className='lg:hidden'>Profile</span> </h1>
                                 <h1 className='hidden lg:block md:mt-2 md:mr-0'>Profile</h1>
                             </div>
