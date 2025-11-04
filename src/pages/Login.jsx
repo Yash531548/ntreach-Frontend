@@ -51,9 +51,9 @@ const Login = () => {
     }, [error]);
 
     useEffect(() => {
-        if (user || userProfile) {
+        if (user) {
             // If user has complete profile, redirect to dashboard
-            if (user.user?.name && user.user?.gender && user.user?.state && user.preferd_language) {
+            if (user.user?.name && user.user?.gender && user.user?.state && user.user?.preferd_language) {
                 navigate("/dashboard");
             } else {
                 // Auto-fill profile form
