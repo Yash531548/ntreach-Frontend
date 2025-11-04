@@ -399,7 +399,7 @@ const handleNextClick = async () => {
     return (
         <div className="container relative w-full  lg:w-[95%] xl:max-w-[1300px] mx-auto mt-10 mb-6 px-6 sm:px-6">
 
-            <div className="relative">
+            <div className="relative" translate="no">
                 {/* ------------------ MOBILE + TABLET HEADER ------------------ */}
                 <div className="block md:hidden text-center mb-4">
                     <h2
@@ -443,7 +443,7 @@ const handleNextClick = async () => {
                     {/* <div className="hidden lg:grid grid-cols-12 gap-6 rounded-[2rem] shadow-[0px_0px_7.6px_-2px_#0000000F]  p-0 pr-8 lg:pr-2 xl:pr-8 mr-4 lg:w-[78%] xl:w-[80%]"> */}
                     <div className="flex lg:grid grid-cols-12 gap-6 md:rounded-[2rem] md:shadow-[0px_0px_7.6px_-2px_#0000000F] p-0 md:pr-8 lg:pr-2 xl:pr-8 md:mr-4 w-full lg:w-[78%] xl:w-[80%]">
                         {/* Left Section */}
-                        <div className="hidden  lg:col-span-5 xl:col-span-4 md:flex flex-col items-start justify-start gap-16 bg-[#FCFCFC] h-full rounded-l-[2rem] pt-8">
+                        <div className="hidden  lg:col-span-5 xl:col-span-4 md:flex flex-col items-start justify-start gap-16 bg-[#FCFCFC] h-full rounded-l-[2rem] pt-8" translate="yes">
                             <h2
                                 className="text-4xl leading-tight text-black font-normal mx-auto lg:text-center "
                                 style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
@@ -492,7 +492,7 @@ const handleNextClick = async () => {
                                     Loading Question....
                                 </div>
                             ) : (
-                                <div className="space-y-6 md:max-h-[350px] md:h-[350px] md:overflow-y-auto md:pr-2  md:pb-3" ref={scrollContainerRef}>
+                                <div className="space-y-6 md:max-h-[350px] md:h-[350px] md:overflow-y-auto md:pr-2  md:pb-3" ref={scrollContainerRef} translate="yes">
                                     {currentStep === 1 ? (
                                         <RiskOptionsStep
                                             selected={selectedRisk}
