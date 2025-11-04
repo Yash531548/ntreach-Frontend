@@ -90,7 +90,7 @@ const BookAppointment = () => {
         console.log("selected service ", selectedServices)
 
         if (!UserName?.trim()) {
-            alert("Name is required.");
+            alert("Name is mandatory.");
             return;
         }
 
