@@ -3,6 +3,7 @@ import ChatBot from '../ChatBot'
 import GetTested from '../../assets/Dashboard/GetTested.png'
 import { useLocation, useNavigate } from 'react-router'
 import { useVn } from '../../Context/VnContext'
+import { useUserProfile } from '../../Context/UserProfileContext'
 import { ChevronDown } from 'lucide-react'
 import { fetchStates } from '../../Api/getState'
 import { fetchPrepStates } from '../../Api/prepState'
@@ -31,6 +32,7 @@ const ScheduleAppointment = () => {
     const [loadingSubmit, setLoadingSubmit] = useState(false)
 
     const { vnData, loading } = useVn()
+    const { userProfile, refetchUserProfile } = useUserProfile()
 
     // If vnData is loaded and has a state_list, filter it. Otherwise, show all
     const displayedStates = !loading && vnData?.state_list?.length
@@ -128,8 +130,10 @@ const ScheduleAppointment = () => {
         }
         setLoadingSubmit(true)
 
+        let riskAssessmentId = userProfile?.risk_assessment?.risk_assessment_id;
+
         const data = {
-            risk_assessment_id: Number(localStorage.getItem("risk_assessment_id")) || null,
+            risk_assessment_id: Number(riskAssessmentId) || null,
             service: incomingServices,
             state: Number(state_code),
             district: Number(selectedDistrict),
@@ -156,7 +160,7 @@ const ScheduleAppointment = () => {
             }
         } catch (error) {
             console.error(error)
-            alert('An error occurred while booking appointment.')
+            alert(error?.response?.data?.errors?.toString() || error?.message || 'An error occurred while booking appointment.')
         }
         setLoadingSubmit(false)
         // const uniqueId = "NETREACH/HR/SELF/7464"
