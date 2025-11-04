@@ -89,6 +89,11 @@ const BookAppointment = () => {
         // Convert Set to Array, or send as preferred
         console.log("selected service ", selectedServices)
 
+        if (!UserName?.trim()) {
+            alert("Name is required.");
+            return;
+        }
+
         if (selectedServices.size === 0) {
             alert("Please select at least one service before continuing.");
             return;
