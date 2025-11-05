@@ -10,10 +10,10 @@ const UpcomingAppointMent = ({ setSubView, setData }) => {
         const response = await getBookingAppointment()
         if (response.data?.status === 'success') {
           const sortedAppointments = response.data?.user
-            // .filter(
-            //   (a) =>
-            //     new Date(a.appointment_date).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)
-            // )
+            .filter(
+              (a) =>
+                new Date(a.appointment_date).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0)
+            )
             .sort(
               (a, b) => new Date(b.created_at) - new Date(a.created_at) // descending
             )
