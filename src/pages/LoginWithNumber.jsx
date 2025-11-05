@@ -45,7 +45,7 @@ const LoginWithNumber = () => {
                 if (step !== 2) setStep(2);
             }
         } catch (err) {
-            setError('OTP failed, try again later.');
+            setError('Code failed, try again later.');
             // setStep(2); // still move forward
         } finally {
             setLoading(false);
@@ -55,7 +55,7 @@ const LoginWithNumber = () => {
     const handleOtpSubmit = async () => {
         console.log("OTP Submitted:", otp);
         if (!otp) {
-            setError("Please enter the OTP.");
+            setError("Please enter the Code.");
             return;
         }
         if (!/^\d{4}$/.test(otp)) {
@@ -72,11 +72,11 @@ const LoginWithNumber = () => {
                 login({ token: response.token, user: response.user });
                 navigate('/questionnaire');
             } else {
-                setError(response.message || "Invalid OTP or login failed");
+                setError(response.message || "Invalid Code or login failed");
             }
 
         } catch (error) {
-            setError('Login failed, check OTP and try again.');
+            setError('Login failed, check Code and try again.');
         } finally {
             setLoading(false);
         }
@@ -121,7 +121,7 @@ const LoginWithNumber = () => {
                                     className={`w-[50%] md:w-[65%] lg:w-[45%] xl:w-[30%] py-2 md:py-1.5 ml-[6px]  border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)] 
                          text-white rounded-4xl text-sm md:text-[13px]  cursor-pointer  shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040] ${loading ? "opacity-70 cursor-not-allowed" : ""} `}
                                 >
-                                    {loading ? "Sending OTP.." : "Verfiy"}
+                                    {loading ? "Sending Code.." : "Verfiy"}
                                 </button>
                             </div>
                         </>
@@ -161,7 +161,7 @@ const LoginWithNumber = () => {
                                         className={`w-[50%] md:w-[65%] lg:w-[45%] xl:w-[30%] py-2 md:py-1.5 ml-[6px]  border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)] 
                          text-white rounded-4xl text-sm md:text-[13px]  cursor-pointer  shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040] ${loading ? "opacity-70 cursor-not-allowed": ""}`}
                                     >
-                                        {loading ? "Sending OTP.." : "Verfiy"}
+                                        {loading ? "Sending Code.." : "Verfiy"}
                                     </button>
                                     <button disabled={loading} onClick={handlePhoneSubmit} className={`cursor-pointer text-[#5B5B5B] underline text-sm  md:text-[13px] ${loading ? "cursor-not-allowed opacity-50" : ""} `}>
                                         {loading ? "Resending..." : "Resend Login Code"}
