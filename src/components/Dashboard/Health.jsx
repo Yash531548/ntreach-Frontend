@@ -48,7 +48,7 @@ const Health = ({ setSubView, setActive, setData }) => {
               type: 'Appointment',
               unified_date: item.appointment_date
             }))
-            .sort((a, b) => new Date(b.unified_date) - new Date(a.unified_date))
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           setAppointments(sorted)
         }
       } catch (error) {
@@ -76,7 +76,7 @@ const Health = ({ setSubView, setActive, setData }) => {
               type: 'Teleconsultation',
               unified_date: item.date
             }))
-            .sort((a, b) => new Date(b.unified_date) - new Date(a.unified_date))
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
           setTeleconsultations(sorted)
         }
       } catch (error) {
@@ -94,7 +94,7 @@ const Health = ({ setSubView, setActive, setData }) => {
   // 🔹 Merge both appointments (clinic + teleconsultation)
   useEffect(() => {
     const all = [...appointments, ...teleconsultations].sort(
-      (a, b) => new Date(b.unified_date) - new Date(a.unified_date)
+      (a, b) => new Date(b.created_at) - new Date(a.created_at)
     )
     setMergedAppointments(all)
   }, [appointments, teleconsultations])
@@ -105,7 +105,8 @@ const Health = ({ setSubView, setActive, setData }) => {
       const merged = notifications.map((n) => {
         const match = mergedAppointments.find(
           (a) =>
-            String(a.id) === String(n.booking_id) || String(a.booking_id) === String(n.booking_id)
+            String(a.appointment_id) === String(n.booking_id) ||
+            String(a.id) === String(n.booking_id)
         )
         return { ...n, appointment: match || null }
       })
