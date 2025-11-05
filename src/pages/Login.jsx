@@ -128,7 +128,7 @@ const Login = () => {
                 if (step !== 2) setStep(2);
             }
         } catch (err) {
-            setError('OTP failed, try again later.');
+            setError('Code failed, try again later.');
             // setStep(2); // still move forward
         } finally {
             setLoading(false);
@@ -140,7 +140,7 @@ const Login = () => {
         console.log("Phone Submitted:", phoneNumber);
         // ✅ validation before calling API
         if (!otp) {
-            setError("Please enter the OTP.");
+            setError("Please enter the Code.");
             return;
         }
         if (!/^\d{4}$/.test(otp)) {
@@ -157,10 +157,10 @@ const Login = () => {
                 login({ token: response.token, user: response.user });
                 setStep(3); // next: profile fill step
             } else {
-                setError(response.message || 'Invalid OTP or login failed.');
+                setError(response.message || 'Invalid Code or login failed.');
             }
         } catch (err) {
-            setError('Login failed, check OTP and try again.');
+            setError('Login failed, check Code and try again.');
         } finally {
             setLoading(false);
         }
@@ -284,7 +284,7 @@ const handleProfileSubmit = async (e) => {
                                     className={`w-[50%] md:w-[65%] lg:w-[45%] xl:w-[30%] py-2 md:py-1.5 ml-[6px]  border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)] 
                             text-white rounded-4xl text-sm md:text-[13px]  cursor-pointer  shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040] ${loading ? "opacity-70 cursor-not-allowed" : ""} `}
                                 >
-                                    {loading ? "Sending OTP..." : "Send Login Code"}
+                                    {loading ? "Sending Code..." : "Send Login Code"}
                                 </button>
                             </div>
                         </>
@@ -325,7 +325,7 @@ const handleProfileSubmit = async (e) => {
                                         onClick={handleOtpSubmit}
                                         className={`w-[35%] lg:w-[28%]  ml-[6px] py-1.5 border border-[#566AFF] bg-[linear-gradient(180deg,_#323FF7_0%,_#33AEE5_100%)]  text-white rounded-3xl text-[13px]  cursor-pointer shadow-[0px_2px_5.6px_0px_#00000040] hover:shadow-[0px_2px_5.6px_5px_#00000040] ${loading ? "opacity-70 cursor-not-allowed" : ""}`}
                                     >
-                                        {loading ? "Verifying OTP..." : "Next"}
+                                        {loading ? "Verifying Code..." : "Next"}
                                     </button>
                                     <button onClick={handlePhoneSubmit} // ✅ reuse same function
                                         disabled={loading}
