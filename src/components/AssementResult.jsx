@@ -113,9 +113,14 @@ const AssementResult = () => {
                             </header>
                             <p className='font-semibold mt-3 text-lg mb-7 lg:mb-10'>Book an appointment to know your options</p>
                             <button
-                                onClick={() =>
-                                    navigate("/bookappointment")
-                                }
+                                onClick={() => {
+                                    const intent = localStorage.getItem('userIntent');
+                                    navigate(
+                                        intent === 'Start PrEP Consultation'
+                                        ? '/prepconsultation'
+                                        : '/bookappointment'
+                                    );
+                                }}
                                 className="relative flex items-center justify-between w-full max-w-[78%] px-2 pl-4 py-1 lg:py-1.5 xl:py-2 shadow-[0px_2px_14.6px_0px_#00000040] hover:shadow-[0px_2px_14.6px_5px_#00000040]   border border-[#566AFF]
                bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer font-normal"
                             >
