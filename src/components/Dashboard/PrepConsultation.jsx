@@ -19,7 +19,8 @@ const PrepConsultation = () => {
     // Auto-fill
     useEffect(() => {
         if (user) {
-            setUserName(user.user?.name || "")
+            const name = user.user?.name
+            setUserName(name && name !== "New User" ? name : "")
         }
     }, [user])
 
