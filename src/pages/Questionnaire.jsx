@@ -341,6 +341,7 @@ const handleNextClick = async () => {
         },
       };
       const res = await selfRiskAssessmentMaster(masterData);
+      console.log("Master API Response:", res?.data);
       riskId = res?.data?.data?.risk_assessment_id;
       if (!riskId) throw new Error("No risk_assessment_id found");
       localStorage.setItem("risk_assessment_id", riskId);
@@ -379,10 +380,11 @@ const handleNextClick = async () => {
 
     // Step 4: Save current step items
     if (items?.length) {
-      await selfRiskAssessmentItem({
+      const itemRes = await selfRiskAssessmentItem({
         risk_assessment_id: riskId,
         items: [...(userProfile?.items || []), ...items],
       });
+      console.log("Item API Response:", itemRes?.data);
 
       // Step 5: Refetch user profile to sync updates
       await refetchUserProfile();
