@@ -155,6 +155,7 @@ const Login = () => {
             if (response.status && response.token) {
                 console.log("user detail", response.user);
                 login({ token: response.token, user: response.user });
+                await refetchUserProfile();
                 setStep(3); // next: profile fill step
             } else {
                 setError(response.message || 'Invalid Code or login failed.');
