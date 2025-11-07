@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import ManAvatar from "../../assets/Dashboard/ManAvatar.jpg";
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 import { useAuth } from '../../Context/AuthContext';
+import { useUserProfile } from '../../Context/UserProfileContext'
 import { updateUserProfile } from '../../Api/user/updateUserProfile';
 import { fetchUserProfile } from '../../Api/user/fetchUserProfile';
 import { fetchStates } from '../../Api/getState';
@@ -23,6 +24,7 @@ const initialProfile = {
 };
 const UserProfile = ({ setSelectedView }) => {
     const { user } = useAuth(); // 👈 This has current user's latest details
+    const { userProfile, refetchUserProfile } = useUserProfile()
     // console.log("user details", user)
     // Profile context state with renaming to avoid conflict
     const { profile: profileContext, setProfile: setProfileContext } = useProfile();
@@ -80,6 +82,18 @@ const UserProfile = ({ setSelectedView }) => {
         loadUserProfile();
     }, [setProfileContext]);
 
+    useEffect(() => {
+      if (userProfile) {
+        setProfile({
+            name: userProfile.user?.name,
+            mobile: userProfile.user?.mobile,
+            email: userProfile.user?.email,
+            // gender: userProfile.items?.find(item => item.question_id === 3)?.answer_id,
+            // state: userProfile.items?.find(item => item.question_id === 5)?.answer_id
+        })
+      }
+    }, [userProfile])    
+
 
     // Handle form input changes
     const handleChange = (e) => {
@@ -110,6 +124,9 @@ const UserProfile = ({ setSelectedView }) => {
                 mobile: profile.mobile || prev.mobile,
             }));
             console.log("profile", profile)
+
+            // Refetch user profile to sync updates
+            await refetchUserProfile();
         } catch (error) {
             // Log detailed error info for debugging
             if (error.response) {
@@ -291,10 +308,10 @@ const UserProfile = ({ setSelectedView }) => {
                                 <input type="text" placeholder="Blood Group" name="blood_group" value={profile.blood_group} onChange={handleChange} className="w-[50%] md:w-1/2 border border-[#92C2D7] rounded-full px-4 py-0.5 outline-none bg-[#F4F4F4] placeholder-[#A9A9A9]" />
                                 <div className='relative w-[50%] md:w-1/2'>
                                     <select name="gender" value={profile.gender} onChange={handleChange} className="w-full bg-[#F4F4F4] border border-[#92C2D7] rounded-full px-4 py-0.5 pr-10 outline-none appearance-none">
-                                        <option value=""  >Gender</option>
-                                        <option>Male</option>
-                                        <option>Female</option>
-                                        <option>Other</option>
+                                        <option value="">Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
                                     </select>
                                     <ChevronDown
                                         size={17}
