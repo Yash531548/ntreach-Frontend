@@ -8,6 +8,7 @@ import LogoutIcon from "../../assets/Dashboard/Logout.svg";
 import UpcomingAppointmentIcon from "../../assets/Dashboard/Upcoming Appointments.svg";
 import TeleconsultationIcon from "../../assets/Dashboard/Book a Teleconsultation.svg";
 import { useAuth } from "../../Context/AuthContext";
+import { useUserProfile } from '../../Context/UserProfileContext'
 import { useNavigate } from "react-router";
 import { fetchUserProfile } from "../../Api/user/fetchUserProfile";
 import { fetchProfilePhoto } from "../../Api/user/fetchProfilePhoto";
@@ -37,6 +38,7 @@ const Sidebar = ({ active, setActive }) => {
 
     const navigate = useNavigate();
     const { user, logout } = useAuth();
+    const { userProfile, refetchUserProfile } = useUserProfile()
     // const [userName, setUserName] = useState("Loading...");
     // const [phone, setPhone] = useState("");
     // const [avatarUrl, setAvatarUrl] = useState(ManAvatar);
@@ -46,11 +48,9 @@ const Sidebar = ({ active, setActive }) => {
     // const avatarUrl = user.user?.profile_photo ? `${BASE_URL}/storage/${user.user?.profile_photo}` : ManAvatar;
     // const userName = user.user?.name || "Unknown User";
     const avatarUrl = profile.avatarUrl;
-    const userName = profile.name 
-        ? `${profile.name}`
-        : "Unknown User";
+    const userName = userProfile?.user?.name || "Unknown User";
 
-    const phone = user.user?.phone_number || "";
+    const phone = userProfile?.user?.mobile || "";
 
     console.log("username on sidebar", userName)
     // useEffect(() => {
