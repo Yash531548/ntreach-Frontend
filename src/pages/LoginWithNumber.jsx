@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Hand from '../assets/login/Hand.png'
 import { useNavigate } from 'react-router';
 import { useAuth } from '../Context/AuthContext';
+import { useUserProfile } from '../Context/UserProfileContext'
 import { sendOtp, verifyOtp } from '../Api/Authentication/auth';
 
 const LoginWithNumber = () => {
     const { login } = useAuth();
+    const { userProfile, refetchUserProfile } = useUserProfile()
     const [step, setStep] = useState(1); // track form step
     const [phoneNumber, setPhoneNumber] = useState("");
     const [otp, setOtp] = useState("");
@@ -70,6 +72,7 @@ const LoginWithNumber = () => {
             if (response.token && response.status) {
                 console.log("user detail", response.user);
                 login({ token: response.token, user: response.user });
+                await refetchUserProfile();
                 navigate('/questionnaire');
             } else {
                 setError(response.message || "Invalid Code or login failed");
