@@ -19,6 +19,9 @@ const ServiceButtons = ({ buttons }) => {
         setSelectedService(button);
         setChecked(false);
         setShowModal(true);
+
+        // Store the selected option in localStorage
+        localStorage.setItem('userIntent', button.label);
     };
 
     const handleProceed = () => {
