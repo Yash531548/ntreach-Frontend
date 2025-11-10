@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import ChatBot from '../ChatBot';
-import stopAid from '../../assets/Dashboard/stopAid.png'
+// import stopAid from '../../assets/Dashboard/stopAid.png'
+import stopAid from '../../assets/question/ShareYourInformation.jpg'
 import { NavLink, useNavigate } from 'react-router';
 import { fetchServiceTypes } from '../../Api/fetchServiceTypes';
 import { useAuth } from '../../Context/AuthContext';
@@ -158,7 +159,8 @@ const PrepConsultation = () => {
                     </div>
                 </div>
                 <div className='container max-w-[500px]  min-h-[calc(100vh-64px-100px)]  hidden md:flex justify-center items-center  '>
-                    <img src={stopAid} alt="getTested Image" className='w-[68%]  lg:w-[48%]' />
+                    {/* <img src={stopAid} alt="getTested Image" className='w-[68%]  lg:w-[48%]' /> */}
+                    <img src={stopAid} alt="getTested Image" className='w-[80%]' />
                 </div>
                 {/* <div className='hidden md:block'>
                     <ChatBot />

@@ -4,9 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import tell1 from "../assets/question/tell1.png";
 import chatbot from "../assets/chatbot.png";
 import { ArrowLeft, ArrowRight, Mic, SearchIcon } from "lucide-react";
-import step1 from "../assets/question/step1.png";
-import step2 from "../assets/question/step2.png";
-import step3 from "../assets/question/step3.png";
+// import step1 from "../assets/question/step1.png";
+import step1 from "../assets/question/Tellusaboutyourself.jpg";
+// import step2 from "../assets/question/step2.png";
+import step2 from "../assets/question/Tellusaboutyourself2.jpg";
+// import step3 from "../assets/question/step3.png";
+import step3 from "../assets/question/Tellusaboutyourself3.jpg";
 import step4 from "../assets/question/step4.png";
 import step5 from "../assets/question/step5.png";
 import RiskOptionsStep from "../components/RiskOptionsStep";
@@ -29,9 +32,10 @@ export default function Questionnaire() {
     const { userProfile, refetchUserProfile } = useUserProfile()
     const stepImages = [step1, step2, step3, step4, step5];
     const stepImageClasses = [
-        "w-[300px] h-[359px] object-contain ", // step1
-        "w-[230px] h-[230px]  rounded-lg mx-auto object-contain", // step2
-        "w-[250px] h-[250px]  rounded-lg mx-auto object-contain ", // step3
+        // "w-[300px] h-[359px] object-contain ", // step1
+        "w-[450px]  rounded-lg mx-auto object-contain ", // step1
+        "w-[450px]   rounded-lg mx-auto object-contain", // step2
+        "w-[450px]  rounded-lg mx-auto object-contain ", // step3
         "w-[230px] h-[230px]  rounded-lg ml-14 object-contain  ", // step4
         "w-[230px] h-[230px]  rounded-lg ml-12 object-contain ", // step5
     ];
