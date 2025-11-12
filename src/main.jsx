@@ -7,6 +7,7 @@ import { AuthProvider } from './Context/AuthContext.jsx'
 import { ProfileProvider } from './Context/ProfileContext.jsx'
 import { AuthProviderUser } from './Context/AuthProviderUserContext'
 import { UserProfileProvider } from './Context/UserProfileContext.jsx'
+import { BlogProvider } from './Context/BlogContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
@@ -14,10 +15,12 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <AuthProviderUser>
           <UserProfileProvider>
-            <App />
+            <BlogProvider>
+              <App />
+            </BlogProvider>
           </UserProfileProvider>
         </AuthProviderUser>
-      </BrowserRouter>,
+      </BrowserRouter>
     </ProfileProvider>
   </AuthProvider>
 )

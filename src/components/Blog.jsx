@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router'
 const BASE_URL = import.meta.env.VITE_API_URL
 
 function Blog({ post }) {
@@ -27,16 +28,18 @@ function Blog({ post }) {
           ></p>
 
           <div className="flex mt-auto">
-            <button
-              className="flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1.5 pt-1.5 pb-1.5 pl-4 border border-[#566AFF] 
-            bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
-            text-white rounded-full cursor-pointer w-[190px] font-light text-sm"
-            >
-              Read Article
-              <span className="text-black bg-white flex items-center justify-center w-6 h-6 rounded-full">
-                <ArrowRight width={17} />
-              </span>
-            </button>
+            <Link to={`/blog/${post.blog_id}`}>
+              <button
+                className="flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1.5 pt-1.5 pb-1.5 pl-4 border border-[#566AFF] 
+              bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
+              text-white rounded-full cursor-pointer w-[190px] font-light text-sm"
+              >
+                Read Article
+                <span className="text-black bg-white flex items-center justify-center w-6 h-6 rounded-full">
+                  <ArrowRight width={17} />
+                </span>
+              </button>
+            </Link>
           </div>
         </div>
       </div>
