@@ -30,6 +30,7 @@ import ProviderMySlots from './components/SP/ProviderMySlots'
 import ProviderProfile from './pages/SP/ProviderProfile'
 import ProviderUpcomingAppointments from './components/SP/ProviderUpcomingAppointments'
 import ProviderPastAppointments from './components/SP/ProviderPastAppointments'
+import BlogDetail from './components/Blog/BlogDetail.jsx'
 
 function App() {
   const { pathname } = useLocation();
@@ -52,11 +53,12 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path='/about' element={<About />} />
-            <Route path='/contact' element={<Contact />} />
+            <Route path='/contact-us' element={<Contact />} />
             <Route path='/team' element={<Team />} />
             <Route path='/faqs' element={<FAQs />} />
             <Route path='/risk' element={<Risk />} />
             <Route path='/blog' element={<Blogs />} />
+            <Route path='/blog/:blogId' element={<BlogDetail />} />
             <Route path='/login' element={<Login />} />
             <Route path='/loginwithnumber' element={<LoginWithNumber />} />
             <Route path='/dashboard' element={

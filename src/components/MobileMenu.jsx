@@ -14,7 +14,7 @@ const MobileMenu = ({ isOpen, onClose }) => {
         { name: "Team", path: "/team" },
         { name: "Know your Risk", path: "/risk" },
         { name: "Blog", path: "/blog" },
-        { name: "Contact Us", path: "/contact" },
+        { name: "Contact Us", path: "/contact-us" },
     ];
 
     const handleLogout = () => {

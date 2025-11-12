@@ -5,6 +5,7 @@ import BlogCards from '../components/Blog/BlogsCards';
 import PPSBlog from '../assets/Static/PPSBlog.png'
 import { getBlog } from '../Api/getBlog';
 import Blog from '../components/Blog';
+import { useBlogs } from '../Context/BlogContext';
 
 const BlogSearchBar = ({ query, setQuery }) => (
     <div className="relative w-full max-w-3xl  mb-8 ">
@@ -52,10 +53,12 @@ const BlogCard = () => (
 );
 
 const Blogs = () => {
-    const [posts, setPosts] = useState([]);
+    const {blogs ,loading} = useBlogs();
+    // console.log(blogs)
+    // const [posts, setPosts] = useState([]);
     const [filteredPosts, setFilteredPosts] = useState([]);
     const [query, setQuery] = useState('');
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
 
     // Fetch all posts
     // const fetchPosts = async () => {
@@ -74,75 +77,42 @@ const Blogs = () => {
     //         setLoading(false)
     //     }
     // }
-    useEffect(() => {
-        const fetchPosts = async () => {
-            setLoading(true);
-            try {
-                const response = await getBlog();
-                if (response.data.status === 'success') {
-                    setPosts(response.data.data);
-                    setFilteredPosts(response.data.data);
-                }
-            } catch (error) {
-                console.error('Error fetching posts:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchPosts();
-    }, []);
+
 
     useEffect(() => {
         if (query.trim() === '') {
-            setFilteredPosts(posts);
+            // setFilteredPosts(posts);
+            setFilteredPosts(blogs);
         } else {
             const lower = query.toLowerCase();
             setFilteredPosts(
-                posts.filter(
+                // posts.filter(
+                blogs.filter(
                     (post) =>
                         post.title?.toLowerCase().includes(lower) ||
                         post.meta_description?.toLowerCase().includes(lower)
                 )
             );
         }
-    }, [query, posts]);
+    }, [query, blogs]);
+    // }, [query, posts]);
 
-    // Run only on first load
-    // useEffect(() => {
-    //     fetchPosts()
-    //     console.log("post", posts)
-    // }, [])
 
-    // Filter posts when query changes
-    // useEffect(() => {
-    //     if (query.trim() === '') {
-    //         setFilteredPosts(posts)
-    //     } else {
-    //         const lower = query.toLowerCase()
-    //         setFilteredPosts(
-    //             posts.filter(
-    //                 (post) =>
-    //                     post.title?.toLowerCase().includes(lower) ||
-    //                     post.meta_description?.toLowerCase().includes(lower)
-    //             )
-    //         )
-    //     }
-    // }, [query, posts])
 
     // Separate first post and rest
     const firstPost = filteredPosts.length > 0 ? filteredPosts[0] : null;
     const restPosts = filteredPosts.length > 1 ? filteredPosts.slice(1) : [];
     // console.log("restposts", restPosts)
-    const blogs = [
-        {
-            image: PPSBlog, // Replace with actual image path
-            alt: 'Party and Play can be risky!',
-            headline: 'Party and Play Safely This Holiday Season!',
-            snippet: 'Essential tips for staying safe during holiday celebrations and social gatherings.',
-            ctaLink: '/blog/party-and-play-safely',
-        },
-        // Add more blog objects as needed
-    ];
+    // const blogs = [
+    //     {
+    //         image: PPSBlog, // Replace with actual image path
+    //         alt: 'Party and Play can be risky!',
+    //         headline: 'Party and Play Safely This Holiday Season!',
+    //         snippet: 'Essential tips for staying safe during holiday celebrations and social gatherings.',
+    //         ctaLink: '/blog/party-and-play-safely',
+    //     },
+    //     // Add more blog objects as needed
+    // ];
     return (
         <div className="container w-full mx-auto flex items-center px-4 md:mb-8 sm:px-4 lg:px-10 xl:px-0 mt-9 2xl:ml-0">
             <main
@@ -168,10 +138,12 @@ const Blogs = () => {
 
                                     <BlogCards
                                         key={post.blog_id || post.id}
-                                        image={`${import.meta.env.VITE_API_URL}/storage/blog/${post.image}`} // dynamic image URL
-                                        alt={post.title}
-                                        headline={post.title}
-                                        snippet={post.meta_description} />
+                                        post={post}
+                                        // image={`${import.meta.env.VITE_API_URL}/storage/blog/${post.image}`} // dynamic image URL
+                                        // alt={post.title}
+                                        // headline={post.title}
+                                        // snippet={post.meta_description} 
+                                        />
                                 )
                             })}
                             {/* {blogs.map((blog, idx) => (
