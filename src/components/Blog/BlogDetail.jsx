@@ -19,7 +19,7 @@ const BlogDetail = () => {
 
 
     return (
-        <div className='max-w-[850px] mx-auto rounded-3xl bg-white' style={{ fontFamily: "Sofia Pro" }}>
+        <div className='max-w-[850px] mx-auto rounded-3xl bg-white px-4 md:px-8' style={{ fontFamily: "Sofia Pro" }}>
             {loading ? (
                 <div className='text-4xl mx-auto text-center'>Loading...</div>
             ) : (

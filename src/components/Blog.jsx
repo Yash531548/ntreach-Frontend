@@ -3,6 +3,15 @@ import { Link } from 'react-router'
 const BASE_URL = import.meta.env.VITE_API_URL
 
 function Blog({ post }) {
+  function slugify(text) {
+    return text
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '') // Remove non-alphanumeric except space & hyphen
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/--+/g, '-'); // Collapse multiple hyphens
+  }
+
   return (
     <>
       <div className="max-w-[98%] mx-auto min-h-64 flex flex-row gap-10 p-6 mb-5 rounded-3xl shadow-[0px_0px_25px_-1px_#00000026]">
@@ -28,7 +37,7 @@ function Blog({ post }) {
           ></p>
 
           <div className="flex mt-auto">
-            <Link to={`/blog/${post.blog_id}`}>
+            <Link to={`/blog/${post.blog_id}/${slugify(post.title)}`}>
               <button
                 className="flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1.5 pt-1.5 pb-1.5 pl-4 border border-[#566AFF] 
               bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] 
