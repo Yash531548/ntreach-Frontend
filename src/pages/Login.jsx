@@ -29,7 +29,7 @@ const Login = () => {
         state: "",
         district: "",
         email: "",
-        preferd_language: "",
+        language: "",
         tested_hiv_before: ""
     });
     const [states, setStates] = useState([]);
@@ -53,7 +53,7 @@ const Login = () => {
     useEffect(() => {
         if (user) {
             // If user has complete profile, redirect to dashboard
-            if (user.user?.name && user.user?.gender && user.user?.state && user.user?.preferd_language) {
+            if (user.user?.name && user.user?.gender && user.user?.state && user.user?.language && user.user?.x) {
                 navigate("/dashboard");
             } else {
                 // Auto-fill profile form
@@ -64,7 +64,7 @@ const Login = () => {
                     state: user.user?.state || "",
                     district: user.user?.district || "",
                     email: user.user?.email || "",
-                    preferd_language: user.user?.preferd_language || "",
+                    language: user.user?.language || "",
                     tested_hiv_before: userProfile?.items?.find(item => item.question_id == 22)?.answer_id || ""
                 });
                 setStep(3); // Move to profile step
@@ -179,7 +179,9 @@ const handleProfileSubmit = async (e) => {
     const response = await updateUserProfile({
       name: profile.name,
       email: profile.email,
-      preferd_language: profile.preferd_language,
+      language: profile.language,
+      state: profile.state,
+      district: profile.district,
     });
 
     const data = response.data;
@@ -195,12 +197,12 @@ const handleProfileSubmit = async (e) => {
     // Step 3: If risk assessment not created, call master API
     let riskAssessmentId = userProfile?.risk_assessment?.risk_assessment_id;
 
-    if (!riskAssessmentId) {
-      const selectedState = states.find(s => s.state_name === profile.state);
-      const stateCode = selectedState ? Number(selectedState.state_code) : null;
+    const selectedState = states.find(s => s.state_name === profile.state);
+    const stateCode = selectedState ? Number(selectedState.state_code) : null;
 
+    if (!riskAssessmentId) {
       const masterPayload = {
-        state: 24 || stateCode,
+        state: stateCode,
         vn_id: null,
         mobile_no: user.user?.phone_number,
         raw_answer_sheet: {
@@ -221,7 +223,7 @@ const handleProfileSubmit = async (e) => {
     const itemsToSubmit = [
       { question_id: 2, answer_id: profile.age },
       { question_id: 3, answer_id: profile.gender },
-      { question_id: 5, answer_id: selectedStateId },
+      { question_id: 5, answer_id: stateCode },
       { question_id: 22, answer_id: profile.tested_hiv_before },
     ];
 
@@ -445,8 +447,8 @@ const handleProfileSubmit = async (e) => {
                                 {/* Row 5: Preferred Language */}
                                 <input
                                     type="text"
-                                    value={profile.preferd_language || ""}
-                                    onChange={(e) => setProfile({ ...profile, preferd_language: e.target.value })}
+                                    value={profile.language || ""}
+                                    onChange={(e) => setProfile({ ...profile, language: e.target.value })}
                                     placeholder="Preferred language"
                                     className="outline-none bg-[#F4F4F4] px-6 rounded-[30px] w-full lg:w-[80%] py-3 placeholder:text-[#A9A9A9]"
                                 />
