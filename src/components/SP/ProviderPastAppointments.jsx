@@ -113,12 +113,7 @@ const ProviderPastAppointments = () => {
     formData.append('transcript', file)
 
     try {
-      const res = await api.post('/sp/upload_transcript', formData, {
-        headers: {
-          Authorization: 'Bearer 100|GN8ovDTbu2T3qvKtBPy9vNdxDrvSfHQWDrmrQF8M73637613',
-          Accept: 'application/json'
-        }
-      })
+      const res = await api.post('/sp/upload_transcript', formData)
 
       setUploadedTranscripts((prev) => ({
         ...prev,
