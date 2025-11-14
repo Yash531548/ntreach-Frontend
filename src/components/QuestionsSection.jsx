@@ -63,7 +63,7 @@ export default function QuestionsSection({
                                 <option value="">Select</option>
                                 {q.question === "State" && states.length > 0 ?
                                     states.map(state => (
-                                        <option key={state.id} value={state.id}>
+                                        <option key={state.id} value={state.state_code}>
                                             {state.state_name}
                                         </option>
                                     )) :
