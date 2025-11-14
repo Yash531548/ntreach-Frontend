@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Hand from '../assets/login/Hand.png'
+// import Hand from '../assets/login/Hand.png'
+import Hand from '../assets/login/LoginwithMobileNumber.jpg'
 import { useNavigate } from 'react-router';
 import { useAuth } from '../Context/AuthContext';
 import { useUserProfile } from '../Context/UserProfileContext'
