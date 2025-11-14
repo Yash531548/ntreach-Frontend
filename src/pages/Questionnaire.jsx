@@ -354,9 +354,9 @@ const handleNextClick = async () => {
     // Step 2: Define question mapping
     const stepItems = {
       0: [
+        { question_id: 2, answer_id: answers[2] },
         { question_id: 3, answer_id: answers[3] },
         { question_id: 22, answer_id: answers[22] },
-        { question_id: 2, answer_id: answers[3] },
       ],
       2: [
         { question_id: 6, answer_id: answers[6] },
