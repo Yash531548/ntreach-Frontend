@@ -334,7 +334,7 @@ const handleNextClick = async () => {
     // Step 1: Create risk assessment if first step
     if (currentStep === 0 && !riskId) {
       const masterData = {
-        state: 24,
+        state: answers[5],
         vn_id: null,
         mobile_no: answers[1],
         raw_answer_sheet: {
@@ -356,6 +356,7 @@ const handleNextClick = async () => {
       0: [
         { question_id: 2, answer_id: answers[2] },
         { question_id: 3, answer_id: answers[3] },
+        { question_id: 5, answer_id: answers[5] },
         { question_id: 22, answer_id: answers[22] },
       ],
       2: [
