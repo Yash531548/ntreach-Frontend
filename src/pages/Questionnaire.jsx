@@ -19,6 +19,7 @@ import { fetchStates } from "../Api/getState.js";
 import { useAuth } from '../Context/AuthContext';
 import { useProfile } from "../Context/ProfileContext.jsx";
 import { useUserProfile } from '../Context/UserProfileContext'
+import { useVn } from '../Context/VnContext'
 import QuestionsSection from "../components/QuestionsSection.jsx";
 import { selfRiskAssessmentMaster } from "../Api/selfRiskAssessmentMaster.js";
 import { selfRiskAssessmentItem } from "../Api/selfRiskAssessmentItem.js";
@@ -30,6 +31,7 @@ export default function Questionnaire() {
     const { user } = useAuth();
     const { profile: profileContext } = useProfile();
     const { userProfile, refetchUserProfile } = useUserProfile()
+    const { vnData } = useVn()
     const stepImages = [step1, step2, step3, step4, step5];
     const stepImageClasses = [
         // "w-[300px] h-[359px] object-contain ", // step1
@@ -332,10 +334,10 @@ const handleNextClick = async () => {
     let riskId = userProfile?.risk_assessment?.risk_assessment_id;
 
     // Step 1: Create risk assessment if first step
-    if (currentStep === 0 && !riskId) {
+    // if (currentStep === 0 && !riskId) {
       const masterData = {
         state: answers[5],
-        vn_id: null,
+        vn_id: vnData?.id || null,
         mobile_no: answers[1],
         raw_answer_sheet: {
           "mobile-number": answers[1],
@@ -349,7 +351,7 @@ const handleNextClick = async () => {
       riskId = res?.data?.data?.risk_assessment_id;
       if (!riskId) throw new Error("No risk_assessment_id found");
       localStorage.setItem("risk_assessment_id", riskId);
-    }
+    // }
 
     // Step 2: Define question mapping
     const stepItems = {
