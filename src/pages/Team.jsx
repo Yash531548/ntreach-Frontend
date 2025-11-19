@@ -96,7 +96,7 @@ const Team = () => {
                                     key={i}
                                     VnImage={vn.profile_photo}
                                     VnName={vn.name}
-                                    VnStateList={vn.state_list?.slice(0, 2)}
+                                    VnStateList={vn.state_list}
                                     VnMobile={vn.mobile_number}
                                     vnInstagram={vn.instagram_url}
                                     vnFacebook={vn.facebook_url}
