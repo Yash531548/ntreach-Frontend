@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { ChevronDown } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
 import { useUserProfile } from '../Context/UserProfileContext'
+import { useVn } from '../Context/VnContext'
 import { sendOtp, verifyOtp } from '../Api/Authentication/auth';
 import { updateUserProfile } from '../Api/user/updateUserProfile';
 
@@ -17,6 +18,7 @@ import { selfRiskAssessmentItem } from "../Api/selfRiskAssessmentItem.js";
 const Login = () => {
     const { user, login } = useAuth();
     const { userProfile, refetchUserProfile } = useUserProfile()
+    const { vnData } = useVn()
     const [step, setStep] = useState(1); // track form step
     const [phoneNumber, setPhoneNumber] = useState("");
     const [otp, setOtp] = useState("");
@@ -200,10 +202,10 @@ const handleProfileSubmit = async (e) => {
     const selectedState = states.find(s => s.state_name === profile.state);
     const stateCode = selectedState ? Number(selectedState.state_code) : null;
 
-    if (!riskAssessmentId) {
+    // if (!riskAssessmentId) {
       const masterPayload = {
         state: stateCode,
-        vn_id: null,
+        vn_id: vnData?.id || null,
         mobile_no: user.user?.phone_number,
         raw_answer_sheet: {
           "mobile-number": user.user?.phone_number,
@@ -217,7 +219,7 @@ const handleProfileSubmit = async (e) => {
       console.log("Master API Response:", masterRes?.data);
 
       riskAssessmentId = masterRes?.data?.data?.risk_assessment_id || null;
-    }
+    // }
 
     // Step 4: Prepare step item data
     const itemsToSubmit = [
