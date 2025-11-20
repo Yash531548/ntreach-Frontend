@@ -14,7 +14,7 @@ function Blog({ post }) {
 
   return (
     <>
-      <div className="max-w-[98%] mx-auto min-h-64 flex flex-row gap-10 p-6 mb-5 rounded-3xl shadow-[0px_0px_25px_-1px_#00000026]">
+      <div className="max-w-[98%] mx-auto min-h-64 flex flex-col md:flex-row gap-10 p-6 mb-5 rounded-3xl shadow-[0px_0px_25px_-1px_#00000026]">
         {/* Left: Blog Image or Graphic */}
         <div className="flex-shrink-0 w-[230px] rounded-2xl">
           {post.image && (
