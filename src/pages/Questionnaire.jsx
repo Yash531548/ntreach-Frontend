@@ -385,16 +385,37 @@ const handleNextClick = async () => {
     // Step 3: Prepare items for current step
     const items = stepItems[currentStep];
 
+    // Calculate totalWeight
+    let totalWeight = 0;
+    Object.entries(answers).forEach(([qid, value]) => {
+      const question = steps.flat().find(q => q.question_id === Number(qid));
+      if (!question) return;
+
+      const arr = Array.isArray(value) ? value : [value];
+      arr.forEach(val => {
+        const option = question.options.find(o => o.answer_id === val);
+        if (option) totalWeight += option.weight || 0;
+      });
+    });
+
     // Step 4: Save current step items
     if (items?.length) {
       const itemRes = await selfRiskAssessmentItem({
         risk_assessment_id: riskId,
         items: [...(userProfile?.items || []), ...items],
+        risk_score: totalWeight,
       });
       console.log("Item API Response:", itemRes?.data);
 
       // Step 5: Refetch user profile to sync updates
       await refetchUserProfile();
+    }
+
+    // If LAST STEP → call handleGetResult()
+    const lastStepIndex = 4;
+    if (currentStep === lastStepIndex) {
+      await handleGetResult();  // <-- THIS TRIGGERS navigate()
+      return; // stop here
     }
 
     // Step 6: Move to next step
@@ -677,7 +698,7 @@ const handleNextClick = async () => {
                                         </button>
                                     ) : (
                                         <button
-                                            onClick={handleGetResult}
+                                            onClick={handleNextClick}
                                             className="relative flex items-center justify-between shadow-lg hover:shadow-lg/30 pr-1 pt-1 pb-1 pl-3 border border-[#566AFF]
                bg-[linear-gradient(to_bottom,_#323FF7_0%,_#323FF7_20%,_#33AEE5_100%)] text-white rounded-full cursor-pointer"
                                         >
