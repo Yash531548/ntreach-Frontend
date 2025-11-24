@@ -21,9 +21,9 @@ const Contact = () => {
                     <div >
                         <p className='text-xl md:text-2xl mb-2'>Our Social Media</p>
                         <div className="flex flex-row gap-3 md:gap-2 ">
-                            <SocialIcon url="https://facebook.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
-                            <SocialIcon url="https://youtube.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
-                            <SocialIcon url="https://instagram.com" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
+                            <SocialIcon url="https://www.facebook.com/NETREACHofficial/?_rdr" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
+                            <SocialIcon url="https://www.youtube.com/@netreachofficial" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
+                            <SocialIcon url="https://www.instagram.com/netreachofficial/" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
                             <SocialIcon url="https://x.com/" target="_blank" fgColor="#ffffff" bgColor="#1475A1" style={{ height: 30, width: 30 }} />
                         </div>
                     </div>
