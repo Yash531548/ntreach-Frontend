@@ -98,6 +98,12 @@ const ScheduleAppointment = () => {
                 });
                 // console.log("data", data)
                 setCenters(data.length > 0 ? data : []);
+
+                const activeCenters = Array.isArray(data)
+                    ? data.filter(center => center.status === 1)
+                    : [];
+
+                setCenters(activeCenters);
                 setSelectedCenter('');
             } catch (error) {
                 setCenters([]);
