@@ -365,7 +365,7 @@ const handleNextClick = async () => {
         { question_id: 6, answer_id: answers[6] },
         { question_id: 9, answer_id: answers[9] },
         { question_id: 10, answer_id: answers[10] },
-        { question_id: 11, answer_id: answers[11]?.[0] },
+        { question_id: 11, answer_id: answers[11] },
         { question_id: 12, answer_id: answers[12] },
       ],
       3: [
@@ -377,8 +377,8 @@ const handleNextClick = async () => {
         { question_id: 18, answer_id: answers[18] },
       ],
       4: [
-        { question_id: 19, answer_id: answers[19]?.[0] },
-        { question_id: 20, answer_id: answers[20]?.[0] },
+        { question_id: 19, answer_id: answers[19] },
+        { question_id: 20, answer_id: answers[20] },
       ],
     };
 
