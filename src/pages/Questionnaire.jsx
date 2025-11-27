@@ -334,7 +334,7 @@ const handleNextClick = async () => {
     let riskId = userProfile?.risk_assessment?.risk_assessment_id;
 
     // Step 1: Create risk assessment if first step
-    // if (currentStep === 0 && !riskId) {
+    if (currentStep === 0 && !riskId) {
       const masterData = {
         state: answers[5],
         vn_id: vnData?.id || null,
@@ -351,7 +351,7 @@ const handleNextClick = async () => {
       riskId = res?.data?.data?.risk_assessment_id;
       if (!riskId) throw new Error("No risk_assessment_id found");
       localStorage.setItem("risk_assessment_id", riskId);
-    // }
+    }
 
     // Step 2: Define question mapping
     const stepItems = {
