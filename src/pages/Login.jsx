@@ -202,7 +202,7 @@ const handleProfileSubmit = async (e) => {
     const selectedState = states.find(s => s.state_name === profile.state);
     const stateCode = selectedState ? Number(selectedState.state_code) : null;
 
-    // if (!riskAssessmentId) {
+    if (!riskAssessmentId) {
       const masterPayload = {
         state: stateCode,
         vn_id: vnData?.id || null,
@@ -219,7 +219,7 @@ const handleProfileSubmit = async (e) => {
       console.log("Master API Response:", masterRes?.data);
 
       riskAssessmentId = masterRes?.data?.data?.risk_assessment_id || null;
-    // }
+    }
 
     // Step 4: Prepare step item data
     const itemsToSubmit = [
