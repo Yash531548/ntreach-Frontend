@@ -400,9 +400,26 @@ const handleNextClick = async () => {
 
     // Step 4: Save current step items
     if (items?.length) {
+      const existingItems = userProfile?.items || [];
+
+      // Remove old items for the current step
+      const filteredOldItems = existingItems.filter(
+        (item) => !items.some(stepItem => stepItem.question_id === item.question_id)
+      );
+
+      const cleanedOldItems = filteredOldItems.map(item => ({
+        question_id: item.question_id,
+        answer_id: item.answer_id
+      }));
+
+      const cleanedNewItems = items.map(item => ({
+        question_id: item.question_id,
+        answer_id: item.answer_id
+      }));
+
       const itemRes = await selfRiskAssessmentItem({
         risk_assessment_id: riskId,
-        items: [...(userProfile?.items || []), ...items],
+        items: [...cleanedOldItems, ...cleanedNewItems],
         risk_score: totalWeight,
       });
       console.log("Item API Response:", itemRes?.data);
