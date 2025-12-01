@@ -32,7 +32,7 @@ const ProviderPastAppointments = () => {
   const [sortBy, setSortBy] = useState('date')
   const [filterBy, setFilterBy] = useState('all')
   const [modal, setModal] = useState({ open: false, mode: '', appt: null })
-  const [transcript, setTranscript] = useState('')
+  const [transcript, setTranscript] = useState(null)
   const [loading, setLoading] = useState(false)
   const [uploadedTranscripts, setUploadedTranscripts] = useState({})
 
@@ -98,19 +98,16 @@ const ProviderPastAppointments = () => {
 
   const uploadTranscript = async () => {
     if (!modal.appt || !transcript) {
-      alert('Transcript is empty!')
+      alert('Upload a transcript file!')
       return
     }
 
     setLoading(true) // start loading
 
-    const blob = new Blob([transcript], { type: 'text/plain' })
-    const file = new File([blob], 'transcript.txt', { type: 'text/plain' })
-
     const formData = new FormData()
     formData.append('booking_id', modal.appt.booking_id)
     formData.append('language', 'English')
-    formData.append('transcript', file)
+    formData.append('transcript', transcript)
 
     try {
       const res = await api.post('/sp/upload_transcript', formData)
@@ -274,12 +271,12 @@ const ProviderPastAppointments = () => {
           <div>
             <h3 className="text-lg font-semibold mb-2">Get Summary</h3>
             <hr className="mb-4" />
-            <textarea
-              rows={8}
+            <input
+              type="file"
+              // accept=".txt,.pdf"
+              onChange={(e) => setTranscript(e.target.files[0])}
+              required
               className="w-full border border-gray-300 rounded-md p-2 mb-3"
-              value={transcript}
-              onChange={(e) => setTranscript(e.target.value)}
-              placeholder="Paste transcript here"
             />
             <button
               className={`px-6 py-2 rounded-md text-white cursor-pointer ${
