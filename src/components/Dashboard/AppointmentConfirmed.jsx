@@ -16,17 +16,54 @@ const AppointmentConfirmed = () => {
 
     const { vnData, loading } = useVn();
     const [vnDetails, setVnDetails] = useState([]); // Array of VNs if context VN not available
+    const STATE_VP_NAMES = {
+        7: "Rupa",
+        24: "Sanjeev",
+        27: "Ravi",
+        19: "Manas",
+        23: "Sadiq",
+        29: "???"
+    };
 
     useEffect(() => {
+        // const fetchVnsForState = async () => {
+        //     if (!vnData) { // fetch only if vnData is not available
+        //         try {
+        //             const response = await getVns();
+        //             if (response.data.status === 'success') {
+        //                 const vns = response.data.data;
+        //                 const stateId = appointmentData.appointment_data.state_id.toString();
+        //                 const matchedVns = vns.filter(vn => vn.state_list.includes(stateId) && !vn.vncode.startsWith("PO"));
+        //                 setVnDetails(matchedVns); // array of matching VNs
+        //             }
+        //         } catch (error) {
+        //             console.error('Error fetching VNs:', error.message);
+        //         }
+        //     }
+        // };
         const fetchVnsForState = async () => {
-            if (!vnData) { // fetch only if vnData is not available
+            if (!vnData) {
                 try {
                     const response = await getVns();
                     if (response.data.status === 'success') {
+
                         const vns = response.data.data;
+
                         const stateId = appointmentData.appointment_data.state_id.toString();
-                        const matchedVns = vns.filter(vn => vn.state_list.includes(stateId) && !vn.vncode.startsWith("PO"));
-                        setVnDetails(matchedVns); // array of matching VNs
+                        const vpName = STATE_VP_NAMES[appointmentData.appointment_data.state_id];
+
+                        // 1) Filter VNs for the state
+                        const stateVns = vns.filter(vn =>
+                            vn.state_list.includes(stateId) &&
+                            !vn.vncode.startsWith("PO")
+                        );
+
+                        // 2) Find the EXACT VP inside those VNs
+                        const vpDetails = stateVns.find(vn =>
+                            vn.name.toLowerCase() === vpName.toLowerCase()
+                        );
+                        console.log("vpdetails", vpDetails)
+                        setVnDetails(vpDetails ? [vpDetails] : []); // Always array for consistency
                     }
                 } catch (error) {
                     console.error('Error fetching VNs:', error.message);
@@ -75,10 +112,10 @@ const AppointmentConfirmed = () => {
                         </p>
                         <p className='text-xl md:text-2xl lg:text-2xl xl:text-3xl text-[#1475A1] break-all'>{appointmentData?.unique_id}</p>
                     </div>
-                    <a
-                        href={appointmentData.booking_slip_url}
-                        target="_blank"
-                        // onClick={() => handleClick()}
+                    <div
+                        // href={appointmentData.booking_slip_url}
+                        // target="_blank"
+                        onClick={() => handleClick()}
                         className="
               mt-4
               w-full
@@ -91,11 +128,23 @@ const AppointmentConfirmed = () => {
             "
                     >
                         Download Receipt
-                    </a>
+                    </div>
 
                     {/* VN Cards */}
                     <div className="w-full mt-5 flex flex-wrap">
-                        {!loading && vnsToDisplay.length > 0 && vnsToDisplay.map((vn, index) => (
+                        {/* { vnsToDisplay.length > 0 && vnsToDisplay.map((vn, index) => (
+                            <NavigatorCard
+                                key={index}
+                                VnImage={vn.profile_photo}
+                                VnName={vn.name}
+                                VnStateList={[appointmentData.appointment_data.state_id]}
+                                VnMobile={vn.mobile_number}
+                                vnInstagram={vn.instagram_url}
+                                vnFacebook={vn.facebook_url}
+                                vnLinkedin={vn.linkedin_url}
+                            />
+                        ))} */}
+                        {vnDetails.length > 0 && vnDetails.map((vn, index) => (
                             <NavigatorCard
                                 key={index}
                                 VnImage={vn.profile_photo}
@@ -107,6 +156,7 @@ const AppointmentConfirmed = () => {
                                 vnLinkedin={vn.linkedin_url}
                             />
                         ))}
+
                     </div>
 
                     {/* Only show on desktop/laptop */}

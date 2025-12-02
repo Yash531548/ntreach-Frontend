@@ -38,6 +38,32 @@ const ScheduleAppointment = () => {
     const displayedStates = !loading && vnData?.state_list?.length
         ? states.filter(state => vnData.state_list.map(String).includes(String(state.state_code)))
         : states;
+    const DUMMY_STATE_CENTERS = {
+        "Gujarat": [
+            { id: 101, name: "PrEPARED Nilesh - 8956924537", status: 1 },
+        ],
+        "Karnataka": [
+            { id: 201, name: "PrEPARED Dil Faraz - 8956924539", status: 1 },
+        ],
+        "Maharashtra": [
+            { id: 301, name: "PrEPARED Mayur - 8956924529", status: 1 },
+            { id: 302, name: "The Humsafar Trust - 9892940966", status: 1 },
+            { id: 303, name: "Dr. Safe Hands Center - 9013005151", status: 1 },
+        ],
+        "Madhya Pradesh": [
+            { id: 401, name: "PrEPARED Narendra - 8956924536", status: 1 },
+            { id: 402, name: "PrEPARED Avinash - 8956924543", status: 1 },
+        ],
+        "Delhi": [
+            { id: 501, name: "PrEPARED Abhishek - 8956924530", status: 1 },
+            { id: 502, name: "PrEPARED Prashant - 8956924540", status: 1 },
+            { id: 503, name: "The Humsafar Trust - 011-46016699", status: 1 },
+            { id: 504, name: "Dr. Safe Hands Center - 09013161616", status: 1 },
+        ],
+        "West Bengal": [
+            { id: 601, name: "PrEPARED Aparna - 8956924542", status: 1 },
+        ],
+    };
 
     // Fetch states once on mount
     useEffect(() => {
@@ -52,67 +78,67 @@ const ScheduleAppointment = () => {
         getState();
     }, [])
     // // Fetch districts whenever selectedState changes
-    useEffect(() => {
-        if (!selectedState) {
-            setDistricts([]);
-            setSelectedDistrict('');
-            return;
-        }
-        async function loadDistricts() {
-            setDistrictLoading(true);
-            try {
-                const data = await fetchDistrictsApi(selectedState);
-                setDistricts(data);
-            } catch (error) {
-                console.error("Failed to fetch districts", error);
-                setDistricts([]);
-            }
-            setDistrictLoading(false);
-        }
-        loadDistricts()
-    }, [selectedState]);
+    // useEffect(() => {
+    //     if (!selectedState) {
+    //         setDistricts([]);
+    //         setSelectedDistrict('');
+    //         return;
+    //     }
+    //     async function loadDistricts() {
+    //         setDistrictLoading(true);
+    //         try {
+    //             const data = await fetchDistrictsApi(selectedState);
+    //             setDistricts(data);
+    //         } catch (error) {
+    //             console.error("Failed to fetch districts", error);
+    //             setDistricts([]);
+    //         }
+    //         setDistrictLoading(false);
+    //     }
+    //     loadDistricts()
+    // }, [selectedState]);
     // Fetch testing centers on selectedDistrict change
-    useEffect(() => {
-        if (!selectedState && !selectedDistrict) {
-            setCenters([]);
-            setSelectedCenter('');
-            return;
-        }
+    // useEffect(() => {
+    //     if (!selectedState && !selectedDistrict) {
+    //         setCenters([]);
+    //         setSelectedCenter('');
+    //         return;
+    //     }
 
-        // Find the matching state object's code
-        const stateObj = states.find(s => String(s.id) === String(selectedState));
-        const state_code = stateObj ? stateObj.state_code : '';
-        // console.log("state_code", state_code)
-        // console.log("selected district", selectedDistrict)
-        if (!state_code) {
-            setCenters([]);
-            setSelectedCenter('');
-            return;
-        }
-        const fetchCenters = async () => {
-            setCenterLoading(true);
-            try {
-                const data = await fetchTestingCentersApi({
-                    district_id: selectedDistrict,
-                    state_code: state_code,
-                });
-                // console.log("data", data)
-                setCenters(data.length > 0 ? data : []);
+    //     // Find the matching state object's code
+    //     const stateObj = states.find(s => String(s.id) === String(selectedState));
+    //     const state_code = stateObj ? stateObj.state_code : '';
+    //     // console.log("state_code", state_code)
+    //     // console.log("selected district", selectedDistrict)
+    //     if (!state_code) {
+    //         setCenters([]);
+    //         setSelectedCenter('');
+    //         return;
+    //     }
+    //     const fetchCenters = async () => {
+    //         setCenterLoading(true);
+    //         try {
+    //             const data = await fetchTestingCentersApi({
+    //                 district_id: selectedDistrict,
+    //                 state_code: state_code,
+    //             });
+    //             // console.log("data", data)
+    //             setCenters(data.length > 0 ? data : []);
 
-                const activeCenters = Array.isArray(data)
-                    ? data.filter(center => center.status === 1)
-                    : [];
+    //             const activeCenters = Array.isArray(data)
+    //                 ? data.filter(center => center.status === 1)
+    //                 : [];
 
-                setCenters(activeCenters);
-                setSelectedCenter('');
-            } catch (error) {
-                setCenters([]);
-                setSelectedCenter('');
-            }
-            setCenterLoading(false);
-        }
-        fetchCenters();
-    }, [selectedDistrict])
+    //             setCenters(activeCenters);
+    //             setSelectedCenter('');
+    //         } catch (error) {
+    //             setCenters([]);
+    //             setSelectedCenter('');
+    //         }
+    //         setCenterLoading(false);
+    //     }
+    //     fetchCenters();
+    // }, [selectedDistrict])
     // Convert the date from YYYY-MM-DD to DD-MM-YYYY before sending API:
     const formatDateForAPI = (dateStr) => {
         const [year, month, day] = dateStr.split('-');
@@ -124,7 +150,11 @@ const ScheduleAppointment = () => {
             alert('Please select at least one service.')
             return
         }
-        if (!selectedState || !selectedDistrict || !selectedCenter || !appointmentDate) {
+        // if (!selectedState || !selectedDistrict || !selectedCenter || !appointmentDate) {
+        //     alert('Please complete all fields.')
+        //     return
+        // }
+        if (!selectedState || !selectedCenter || !appointmentDate) {
             alert('Please complete all fields.')
             return
         }
@@ -142,7 +172,7 @@ const ScheduleAppointment = () => {
             risk_assessment_id: Number(riskAssessmentId) || null,
             service: incomingServices,
             state: Number(state_code),
-            district: Number(selectedDistrict),
+            // district: Number(selectedDistrict),
             testing_center: Number(selectedCenter),
             appointment_date: formatDateForAPI(appointmentDate),
             type: "Upcoming",
@@ -157,13 +187,17 @@ const ScheduleAppointment = () => {
 
         console.log("data to send on book an appointment", data);
         try {
-            const response = await bookAppointment(data)
-            if (response.data.status) {
-                const uniqueId = response.data.unique_id
-                navigate('/appointmentconfirmed', { state: response.data })
-            } else {
-                alert('Failed to book appointment: ' + response.data.message)
-            }
+            // const response = await bookAppointment(data)
+            const uniqueId = `NETREACH/${data.state}/${data.booking_type}/9806`
+            data.unique_id = uniqueId;
+            // console.log("Generated Unique ID:", uniqueId);
+            navigate('/appointmentconfirmed', { state: data})
+            // if (response.data.status) {
+            //     // const uniqueId = response.data.unique_id
+            //     // navigate('/appointmentconfirmed', { state: response.data })
+            // } else {
+            //     alert('Failed to book appointment: ' + response.data.message)
+            // }
         } catch (error) {
             console.error(error)
             alert(error?.response?.data?.errors?.toString() || error?.message || 'An error occurred while booking appointment.')
@@ -213,6 +247,14 @@ const ScheduleAppointment = () => {
                                     const state = states.find((s) => s.id == e.target.value)
                                     setSelectedState(e.target.value)
                                     setSelectedName(state ? state.state_name : '')
+
+                                    if(state){
+                                        // console.log("state prep",state);
+                                        const dummyCenters = DUMMY_STATE_CENTERS[state.state_name] || [];
+                                        // console.log("dummydata",dummyCenters)
+                                        setCenters(dummyCenters);
+                                        setSelectedCenter("");
+                                    }
                                 }}
                             >
                                 <option >Select State</option>
@@ -224,7 +266,7 @@ const ScheduleAppointment = () => {
                             <ChevronDown className="absolute right-2 top-3/4 -translate-y-1/2 text-gray-500 pointer-events-none" />
                         </div>
                         {/* District */}
-                        <div className="relative">
+                        {/* <div className="relative">
                             <label htmlFor="District" className='text-[#11688F] text-lg'>District</label>
                             <select
 
@@ -248,7 +290,7 @@ const ScheduleAppointment = () => {
                                 }
                             </select>
                             <ChevronDown className="absolute right-2 top-3/4 -translate-y-1/2 text-gray-500 pointer-events-none" />
-                        </div>
+                        </div> */}
                         {/* Testing Centre */}
                         <div className="relative">
                             <label htmlFor="Testing centre" className='text-[#11688F] text-lg'>Testing Centre</label>
@@ -263,7 +305,7 @@ const ScheduleAppointment = () => {
                                     setSelectedCenter(e.target.value)
                                     setSelectedName(center ? center.name : '')
                                 }}
-                                disabled={!selectedDistrict || centerLoading}
+                            // disabled={!selectedDistrict || centerLoading}
 
                             >
                                 <option >Select Center</option>
@@ -286,7 +328,7 @@ const ScheduleAppointment = () => {
                                 min={new Date().toISOString().split("T")[0]}   // ✅ prevents past dates
                                 // max={new Date(new Date().setDate(new Date().getDate() + 7)).toISOString().split("T")[0]}
                                 // Easier Version : Deal with Millisecond instead of setDate
-                                max={new Date(Date.now() + 7 * 24 * 60 * 60 *1000).toISOString().split("T")[0]}
+                                max={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]}
                                 value={appointmentDate}
                                 onChange={(e) => setAppointmentDate(e.target.value)}
                             />
