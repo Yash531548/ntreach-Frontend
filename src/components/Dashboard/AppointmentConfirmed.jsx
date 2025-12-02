@@ -48,8 +48,8 @@ const AppointmentConfirmed = () => {
                     if (response.data.status === 'success') {
 
                         const vns = response.data.data;
-
-                        const stateId = appointmentData.appointment_data.state_id.toString();
+                        console.log("vns",vns)
+                        const stateId = appointmentData.state.toString();
                         const vpName = STATE_VP_NAMES[appointmentData.appointment_data.state_id];
 
                         // 1) Filter VNs for the state
