@@ -24,6 +24,15 @@ const AppointmentConfirmed = () => {
         23: "Sadiq",
         29: "???"
     };
+    const STATE_CODE_TO_NAME = {
+    7: "Delhi",
+    24: "Gujarat",
+    27: "Maharashtra",
+    19: "West Bengal",
+    23: "Madhya Pradesh",
+    29: "Karnataka"
+};
+    const [stateName, setStateName] = useState("");
 
     useEffect(() => {
         // const fetchVnsForState = async () => {
@@ -48,22 +57,23 @@ const AppointmentConfirmed = () => {
                     if (response.data.status === 'success') {
 
                         const vns = response.data.data;
-                        console.log("vns",vns)
+                        // console.log("vns",vns)
                         const stateId = appointmentData.state.toString();
-                        const vpName = STATE_VP_NAMES[appointmentData.appointment_data.state_id];
-
-                        // 1) Filter VNs for the state
+                        // console.log("stateId",stateId);
+                        const vpName = STATE_VP_NAMES[stateId];
+                        // console.log("vpName",vpName);
+                        setStateName(STATE_CODE_TO_NAME[stateId]);
+                        console.log("statename",stateName);
                         const stateVns = vns.filter(vn =>
-                            vn.state_list.includes(stateId) &&
+                            vn.link_name.includes(vpName) &&
                             !vn.vncode.startsWith("PO")
                         );
 
-                        // 2) Find the EXACT VP inside those VNs
                         const vpDetails = stateVns.find(vn =>
                             vn.name.toLowerCase() === vpName.toLowerCase()
                         );
-                        console.log("vpdetails", vpDetails)
-                        setVnDetails(vpDetails ? [vpDetails] : []); // Always array for consistency
+                        // console.log("vpdetails", vpDetails)
+                        setVnDetails(vpDetails ? [vpDetails] : []);
                     }
                 } catch (error) {
                     console.error('Error fetching VNs:', error.message);
@@ -149,7 +159,8 @@ const AppointmentConfirmed = () => {
                                 key={index}
                                 VnImage={vn.profile_photo}
                                 VnName={vn.name}
-                                VnStateList={[appointmentData.appointment_data.state_id]}
+                                // VnStateList={[stateName]}
+                                StateName={stateName}
                                 VnMobile={vn.mobile_number}
                                 vnInstagram={vn.instagram_url}
                                 vnFacebook={vn.facebook_url}

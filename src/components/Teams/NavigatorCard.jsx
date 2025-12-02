@@ -6,7 +6,7 @@ import WhatsappIcon from '../../assets/Static/WhatsApp.png';
 import FacebookIcon from '../../assets/Static/Facebook.png';
 import InstagramIcon1 from "../../assets/Static/Instagram1.png";
 
-const NavigatorCard = ({ VnImage = "", VnName = "", VnStateList = [], VnMobile = "" ,vnInstagram = "", vnFacebook = "", vnLinkedin = ""}) => {
+const NavigatorCard = ({ VnImage = "", VnName = "", VnStateList = [], VnMobile = "" ,vnInstagram = "", vnFacebook = "", vnLinkedin = "",StateName}) => {
   const [states, setStates] = useState([]);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const NavigatorCard = ({ VnImage = "", VnName = "", VnStateList = [], VnMobile =
     : null;
   // Phone number link (using tel: protocol)
   const phoneLink = `tel:${VnMobile.replace(/\D/g, '')}`; // Ensures the phone number is numeric only
-
+  // console.log("vnstatename",StateName)
   return (
     <div
       className="
@@ -77,22 +77,23 @@ const NavigatorCard = ({ VnImage = "", VnName = "", VnStateList = [], VnMobile =
         {VnName}
       </div>
 
-      {!!decodedStates.length && (
+      {/* {!!decodedStates.length && ( */}
         <div className="flex items-center mt-1 text-xs sm:text-sm w-full justify-center grow">
           <MapPin className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 mr-1 text-[#FF5593]" />
           <div
             className="max-w-[110px] sm:max-w-[160px] break-words text-center"
-            title={decodedStates.join(', ')}
+            // title={decodedStates.join(', ')}
           >
-            {decodedStates.map((name, index) => (
+            <div className="ml-1">{StateName}</div>
+            {/* {decodedStates.map((name, index) => (
               <span key={index}>
                 {name}
                 {index < decodedStates.length - 1 && ', '}
               </span>
-            ))}
+            ))} */}
           </div>
         </div>
-      )}
+      {/* )} */}
 
       <div className=" mt-2 text-black font-bold text-sm sm:text-base">
         <a href={phoneLink} className='flex gap-2 '>
