@@ -63,7 +63,7 @@ const AppointmentConfirmed = () => {
                         const vpName = STATE_VP_NAMES[stateId];
                         // console.log("vpName",vpName);
                         setStateName(STATE_CODE_TO_NAME[stateId]);
-                        console.log("statename",stateName);
+                        // console.log("statename",stateName);
                         const stateVns = vns.filter(vn =>
                             vn.link_name.includes(vpName) &&
                             !vn.vncode.startsWith("PO")
@@ -86,7 +86,8 @@ const AppointmentConfirmed = () => {
 
     // Use context VN if available; otherwise, use fetched VNs
     const vnsToDisplay = vnData ? [vnData] : vnDetails;
-
+    const vnToReceipt = vnsToDisplay.length > 0 ? vnsToDisplay[0] : {}
+    console.log("vnToReceipt", vnToReceipt)
     return (
         <>
             <div
@@ -181,7 +182,7 @@ const AppointmentConfirmed = () => {
                     onClick={() => setShowModal(false)}
                 >
                     <div onClick={(e) => e.stopPropagation()} className="bg-white shadow-lg w-full max-w-lg min-h-[95%]">
-                        <Receipt appointment={appointmentData} />
+                        <Receipt appointment={appointmentData} VnMobile={vnToReceipt?.mobile} VnName={vnToReceipt?.name}/>
                     </div>
                 </div>
             )}

@@ -64,6 +64,14 @@ const ScheduleAppointment = () => {
             { id: 601, name: "PrEPARED Aparna - 8956924542", status: 1 },
         ],
     };
+    const STATE_CODE_TO_ABBREVIATION = {
+        7: "DL",
+        24: "GJ",
+        27: "MH",
+        19: "WB",
+        23: "MP",
+        29: "KA"
+    };
 
     // Fetch states once on mount
     useEffect(() => {
@@ -188,10 +196,11 @@ const ScheduleAppointment = () => {
         console.log("data to send on book an appointment", data);
         try {
             // const response = await bookAppointment(data)
-            const uniqueId = `NETREACH/${data.state}/${data.booking_type}/9806`
+            const stateAbbreivation = STATE_CODE_TO_ABBREVIATION[data.state];
+            const uniqueId = `NETREACH/${stateAbbreivation}/${data.booking_type}/9806`
             data.unique_id = uniqueId;
             // console.log("Generated Unique ID:", uniqueId);
-            navigate('/appointmentconfirmed', { state: data})
+            navigate('/appointmentconfirmed', { state: data })
             // if (response.data.status) {
             //     // const uniqueId = response.data.unique_id
             //     // navigate('/appointmentconfirmed', { state: response.data })
@@ -248,7 +257,7 @@ const ScheduleAppointment = () => {
                                     setSelectedState(e.target.value)
                                     setSelectedName(state ? state.state_name : '')
 
-                                    if(state){
+                                    if (state) {
                                         // console.log("state prep",state);
                                         const dummyCenters = DUMMY_STATE_CENTERS[state.state_name] || [];
                                         // console.log("dummydata",dummyCenters)

@@ -6,7 +6,7 @@ import logoBac from "../../assets/logo-bac.png";
 import ReceiptImage from "../../assets/Dashboard/Receipt.png";
 // import humsafarLogo from '../../assets/humsafar_logo.png'
 import humsafarLogo from '../../assets/HumsafarLogo1.png'
-const Receipt = ({ appointment }) => {
+const Receipt = ({ appointment ,VnMobile, VnName }) => {
     const componentRef = useRef();
     const handleDownload = async () => {
         const element = componentRef.current;
@@ -139,10 +139,10 @@ const Receipt = ({ appointment }) => {
             {/* Contact & Slip Info */}
             <div className="flex justify-between items-center mt-2 px-6 text-sm">
                 <div>
-                    <span className="">VN Name:</span> {appointment?.vn_details?.name || 'Rupa'}
+                    <span className="">VN Name:</span> {VnName || 'Rupa'}
                 </div>
                 <div>
-                    <span className="">VN Mobile:</span> {appointment?.vn_details?.mobile_number || '8812853117'}
+                    <span className="">VN Mobile:</span> {VnMobile || '8812853117'}
                 </div>
             </div>
             <div className="mt-2 px-6 text-sm">
