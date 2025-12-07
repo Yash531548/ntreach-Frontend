@@ -178,7 +178,7 @@ const ScheduleAppointment = () => {
         container w-full min-h-[calc(100vh-64px-60px)] flex items-center justify-center
         px-4 sm:px-4
         lg:px-10
-        xl:px-0  
+        xl:px-0
       "
             style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}
         >
@@ -270,7 +270,7 @@ const ScheduleAppointment = () => {
                                 {centerLoading ? <option disabled>Loading center...</option> : null}
                                 {centers.length === 0 && !centerLoading && <option disabled>No testing center available here</option>}
                                 {centers.map(center => (
-                                    <option value={center.id} key={center.id}>{center.name}</option>
+                                   <option value={center.id} key={center.id}>{center.name} {center.address}</option>
                                 ))}
                             </select>
                             <ChevronDown className="cursor-pointer absolute right-2 top-3/4 -translate-y-1/2 text-gray-500 pointer-events-none" />
