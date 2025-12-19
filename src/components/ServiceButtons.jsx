@@ -3,11 +3,14 @@ import { ArrowRight } from "lucide-react"; // still used for service button arro
 import { useNavigate } from "react-router";
 import Arrowvector from "../assets/Vector.svg";
 
+
 const ServiceButtons = ({ buttons }) => {
     const [showModal, setShowModal] = useState(false);
     const [selectedService, setSelectedService] = useState(null);
     const [checked, setChecked] = useState(false);
     const navigate = useNavigate();
+    const [isFetchingLocation, setIsFetchingLocation] = useState(false);
+
 
     // Fallback to default buttons if none provided
     const buttonData = buttons || [
@@ -29,6 +32,34 @@ const ServiceButtons = ({ buttons }) => {
             setShowModal(false);
             navigate(selectedService.action);
         }
+    };
+
+    const fetchUserLocation = async () => {
+        setIsFetchingLocation(true);
+
+        try {
+            const res = await fetch("https://ipapi.co/json/");
+            const data = await res.json();
+            console.log("data ip",data);
+            const ipInfo =  {
+                ip: data.ip,
+                country: data.country_name,
+                state: data.region,
+                city: data.city,
+            }
+            console.log("User Info:", ipInfo);
+
+            return true;
+        } catch (error) {
+            console.error("Failed to fetch user location", error);
+            return false;
+        } finally {
+            setIsFetchingLocation(false);
+        }
+    };
+    const handleCheckboxClick = async () => {
+        if (checked) return setChecked(false);
+        await fetchUserLocation() && setChecked(true);
     };
 
     return (
@@ -60,15 +91,16 @@ const ServiceButtons = ({ buttons }) => {
             {/* Confirmation Modal */}
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 px-4"
-                 onClick={() => setShowModal(false)}  // close modal when clicking outside
+                    onClick={() => setShowModal(false)}  // close modal when clicking outside
                 >
                     <div onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside modal 
-                     className="bg-white border border-[#2684AE] p-5 rounded-xl shadow-lg w-full max-w-sm">
+                        className="bg-white border border-[#2684AE] p-5 rounded-xl shadow-lg w-full max-w-sm">
 
                         {/* Checkbox + Text */}
                         <label
                             className="flex items-start gap-3 cursor-pointer text-left"
-                            onClick={() => setChecked(!checked)}
+                            // onClick={() => setChecked(!checked)}
+                            onClick={handleCheckboxClick}
                         >
                             <div
                                 className={`w-6 h-6 flex items-center justify-center border-2 rounded-md mt-1
@@ -90,7 +122,7 @@ const ServiceButtons = ({ buttons }) => {
 
                         {/* Proceed Button */}
                         <button
-                            disabled={!checked}
+                            disabled={!checked || isFetchingLocation}
                             onClick={handleProceed}
                             className={`mt-6 w-full py-2 rounded-full text-white font-medium
               ${checked ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-400 cursor-not-allowed"}`}
