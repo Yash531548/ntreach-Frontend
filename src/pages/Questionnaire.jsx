@@ -13,7 +13,7 @@ import step3 from "../assets/question/Tellusaboutyourself3.jpg";
 import step4 from "../assets/question/step4.png";
 import step5 from "../assets/question/step5.png";
 import RiskOptionsStep from "../components/RiskOptionsStep";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import { fetchQuestionSteps } from "../Api/Questionnaire/getQuestions.js";
 import { fetchStates } from "../Api/getState.js";
 import { useAuth } from '../Context/AuthContext';
@@ -28,6 +28,7 @@ import { selfRiskAssessmentItem } from "../Api/selfRiskAssessmentItem.js";
 
 export default function Questionnaire() {
     const navigate = useNavigate();
+    const location = useLocation();
     const { user } = useAuth();
     const { profile: profileContext } = useProfile();
     const { userProfile, refetchUserProfile } = useUserProfile()
@@ -289,7 +290,7 @@ export default function Questionnaire() {
                 if (matchedState) {
                     handleInputChange(
                         { question_id: 5, question: "State" },
-                        matchedState.id
+                        matchedState.state_code
                     );
                 }
 
@@ -345,6 +346,8 @@ const handleNextClick = async () => {
           gender: answers[3],
           "have-you-ever-tested-for-hiv-before": answers[22],
         },
+        ip: location.state?.ipInfo?.ip,
+        country: location.state?.ipInfo?.country,
       };
       const res = await selfRiskAssessmentMaster(masterData);
       console.log("Master API Response:", res?.data);
