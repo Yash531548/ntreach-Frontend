@@ -37,11 +37,11 @@ const ResultData = ({ setSubView, setSelectedView }) => {
   }, [])
 
   //
-  const handleFileUpload = async (file) => {
+  const handleFileUpload = async (files) => {
     try {
-      const response = await uploadReport(file, bookingId)
+      const response = await uploadReport(files, bookingId)
       if (response.data.status === 'success') {
-        alert('Report uploaded successfully')
+        alert('Report(s) uploaded successfully')
         setOpenModal(false)
 
         // Refetch after upload
@@ -99,7 +99,7 @@ const ResultData = ({ setSubView, setSelectedView }) => {
           <tbody>
             {appointments.map((appointment) => (
               <tr
-                key={appointment.id}
+                key={appointment.appointment_id}
                 className="text-xs text-left hover:bg-[#E9F8FF] hover:border-0 border-b border-b-[#DEDEDE] whitespace-nowrap"
               >
                 <td className="px-4 py-3 rounded-l-4xl">
@@ -108,33 +108,48 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                 <td className="px-4 py-3">{appointment.service_names.join(', ')}</td>
                 <td className="px-4 py-3 text-center">{appointment.status}</td>
                 <td className="px-4 py-3 rounded-r-4xl text-[#323FF7]">
-                  {!appointment.report_file ? (
-                    <span
-                      onClick={() => {
-                        setBookingId(appointment.id)
-                        setOpenModal(true)
-                      }}
-                      className="cursor-pointer hover:underline"
-                    >
-                      Upload Report
-                    </span>
-                  ) : (
-                    appointment.report_status !== null && (
-                      <span className="text-red-500 cursor-pointer hover:underline flex items-center gap-1 -ml-3">
-                        <span className="h-2 w-2 rounded-full bg-red-500"></span>
-                        Re-upload Report
-                      </span>
+                  {(() => {
+                    const evidenceFiles = [
+                      appointment.evidence_path,
+                      appointment.evidence_path_2,
+                      appointment.evidence_path_3,
+                      appointment.evidence_path_4,
+                      appointment.evidence_path_5
+                    ].filter(Boolean) // remove null
+
+                    // No evidence uploaded
+                    if (evidenceFiles.length === 0) {
+                      return (
+                        <span
+                          onClick={() => {
+                            setBookingId(appointment.appointment_id)
+                            setOpenModal(true)
+                          }}
+                          className="cursor-pointer hover:underline"
+                        >
+                          Upload Report
+                        </span>
+                      )
+                    }
+
+                    // Evidence exists
+                    return (
+                      <div className="flex items-center gap-1 text-[#323FF7]">
+                        <span className="text-[#626262]">Uploaded</span>
+                        {evidenceFiles.map((file, index) => (
+                          <a
+                            key={index}
+                            href={`${BASE_URL}/storage/${file}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:underline"
+                          >
+                            | Evidence {index + 1}
+                          </a>
+                        ))}
+                      </div>
                     )
-                  )}
-                  {appointment.report_file && (
-                    <a
-                      href={`${BASE_URL}/storage/${appointment.report_file}`}
-                      target="_blank"
-                      className="cursor-pointer hover:underline ml-2"
-                    >
-                      View Report
-                    </a>
-                  )}
+                  })()}
                 </td>
               </tr>
             ))}
