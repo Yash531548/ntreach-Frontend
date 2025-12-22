@@ -5,7 +5,9 @@ export const uploadReport = async (files, bookingId) => {
   const token = localStorage.getItem('userToken')
 
   const formData = new FormData()
-  formData.append('evidence_files', files)
+  files.forEach((file) => {
+    formData.append('evidence_files[]', file)
+  })
   formData.append('appointment_id', bookingId)
 
   const response = await axios.post(`${BASE_URL}api/user/upload-report`, formData, {
