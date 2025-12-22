@@ -10,6 +10,7 @@ const ServiceButtons = ({ buttons }) => {
     const [checked, setChecked] = useState(false);
     const navigate = useNavigate();
     const [isFetchingLocation, setIsFetchingLocation] = useState(false);
+    const [ipInfo, setIpInfo] = useState(null);
 
 
     // Fallback to default buttons if none provided
@@ -30,7 +31,9 @@ const ServiceButtons = ({ buttons }) => {
     const handleProceed = () => {
         if (checked && selectedService) {
             setShowModal(false);
-            navigate(selectedService.action);
+            navigate(selectedService.action, {
+                state: { ipInfo }
+            });
         }
     };
 
@@ -49,6 +52,7 @@ const ServiceButtons = ({ buttons }) => {
             }
             console.log("User Info:", ipInfo);
 
+            setIpInfo(ipInfo);
             return true;
         } catch (error) {
             console.error("Failed to fetch user location", error);
