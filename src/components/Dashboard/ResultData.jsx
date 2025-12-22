@@ -109,13 +109,7 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                 <td className="px-4 py-3 text-center">{appointment.status}</td>
                 <td className="px-4 py-3 rounded-r-4xl text-[#323FF7]">
                   {(() => {
-                    const evidenceFiles = [
-                      appointment.evidence_path,
-                      appointment.evidence_path_2,
-                      appointment.evidence_path_3,
-                      appointment.evidence_path_4,
-                      appointment.evidence_path_5
-                    ].filter(Boolean) // remove null
+                    const evidenceFiles = appointment.user_updated_evidences || []
 
                     // No evidence uploaded
                     if (evidenceFiles.length === 0) {
@@ -139,7 +133,7 @@ const ResultData = ({ setSubView, setSelectedView }) => {
                         {evidenceFiles.map((file, index) => (
                           <a
                             key={index}
-                            href={`${BASE_URL}/storage/${file}`}
+                            href={file}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:underline"
