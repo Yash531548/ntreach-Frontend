@@ -333,6 +333,7 @@ useEffect(() => {
 const handleNextClick = async () => {
   try {
     let riskId = userProfile?.risk_assessment?.risk_assessment_id;
+    const ipInfo = JSON.parse(localStorage.getItem("ipInfo") || "{}");
 
     // Step 1: Create risk assessment if first step
     if (currentStep === 0 && !riskId) {
@@ -346,8 +347,8 @@ const handleNextClick = async () => {
           gender: answers[3],
           "have-you-ever-tested-for-hiv-before": answers[22],
         },
-        ip: location.state?.ipInfo?.ip,
-        country: location.state?.ipInfo?.country,
+        ip: ipInfo.ip || "0.0.0.0",
+        country: ipInfo.country || "India",
       };
       const res = await selfRiskAssessmentMaster(masterData);
       console.log("Master API Response:", res?.data);
