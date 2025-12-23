@@ -347,8 +347,7 @@ const handleNextClick = async () => {
           gender: answers[3],
           "have-you-ever-tested-for-hiv-before": answers[22],
         },
-        ip: ipInfo.ip || "0.0.0.0",
-        country: ipInfo.country || "India",
+        ip_info: ipInfo
       };
       const res = await selfRiskAssessmentMaster(masterData);
       console.log("Master API Response:", res?.data);
