@@ -52,6 +52,8 @@ const ServiceButtons = ({ buttons }) => {
             }
             console.log("User Info:", ipInfo);
 
+            // Save to localStorage
+            localStorage.setItem("ipInfo", JSON.stringify(ipInfo));
             setIpInfo(ipInfo);
             return true;
         } catch (error) {
