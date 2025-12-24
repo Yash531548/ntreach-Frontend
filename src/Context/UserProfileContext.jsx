@@ -19,9 +19,20 @@ export const UserProfileProvider = ({ children }) => {
       setError(null)
     } catch (err) {
       console.error('Profile fetch failed:', err)
+
+      if (err.response?.status === 401) {
+      // invalid / expired token
+      localStorage.removeItem('user')
+      localStorage.removeItem('userToken')
+      localStorage.removeItem('userProfile')
+      setUserProfile(null)
+      setError('Session expired. Please log in again.')
+    } else {
       setError(err.response?.data?.message || err.message)
+      // fallback only for non-auth errors
       const stored = localStorage.getItem('userProfile')
       if (stored) setUserProfile(JSON.parse(stored))
+      }
     } finally {
       setLoading(false)
     }
