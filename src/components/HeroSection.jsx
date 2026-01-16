@@ -5,10 +5,11 @@ import indian_common_man2 from '../assets/indian_common_man2.png';
 import RotatingWords from './RotatingWords';
 import { Mic, SearchIcon } from 'lucide-react';
 import RotatingWord from './RotatingWord.jsx';
+import tollFreeIcon from '../assets/tollFreeNumber.png'
 
 const HeroSection = () => {
     return (
-        <main className="flex flex-col md:flex-row items-center justify-center gap-1 px-4 md:gap-5 xl:gap-0  lg:px-14 lg:py-13 xl:px-16 xl:py-18 py-6 xl:ml-[-3.8rem]  ">
+        <main className="flex flex-col md:flex-row items-start justify-center gap-1 px-4 md:gap-5 xl:gap-0  lg:px-14 lg:py-13 xl:px-16 xl:py-18 py-6 xl:ml-[-3.8rem]  ">
             {/* Left side - Desktop only */}
 
             <div className="hidden lg:flex  justify-start xl:h-[28.75rem]  lg:w-[45%] xl:w-[500px] sm:hidden">
@@ -49,34 +50,7 @@ const HeroSection = () => {
                     <ServiceButtons />
                 </div>
 
-                {/* Chat with AI bot */}
-                {/* <div className="flex items-center gap-4 mt-4 ">
-                    <img src={chatbot} alt="Chatbot" className="rounded-full w-18 h-18" />
-                    <div className="flex flex-col">
-                        <span className="font-medium text-lg">Or Chat With Malini Didi</span>
-                        <span className="text-xs text-[#0B1E2A] italic" style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}>
-                            Use the AI powered Chat bot
-                        </span>
-                    </div>
-                </div> */}
-
-                {/* <div className="flex justify-center p-0 xl:-mt-4">
-                    <div className="flex items-center justify-between  pl-4   bg-gray-200 rounded-full min-w-[300px] max-w-[600px] sm:min-w-[250px] sm:max-w-[500px] w-full">
-                        <div className="flex flex-row items-center flex-1 ">
-                           
-                            < SearchIcon color='#838383'className='w-4 h-4'/>
-                            <input
-                                type="text"
-                                placeholder="Ask a question"
-                                className="pl-4 text-gray-700 outline-none text-xs w-full  py-4"
-                            />
-                        </div>
-                        <button className="bg-gradient-to-b from-[#323FF7] to-[#33AEE5] text-white w-12 h-12 flex items-center justify-center rounded-full shrink-0">
-                            
-                            <Mic className='w-7 h-7'/>
-                        </button>
-                    </div>
-                </div> */}
+                <img src={tollFreeIcon} alt="" className=' w-full '/>
             </div>
         </main>
     );
