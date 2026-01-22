@@ -50,7 +50,9 @@ const HeroSection = () => {
                     <ServiceButtons />
                 </div>
 
-                <img src={tollFreeIcon} alt="" className=' w-full '/>
+                <a href="tel:18002672490" className='inline-block cursor-pointer'>
+                    <img src={tollFreeIcon} alt="" className=' w-full ' />
+                </a>
             </div>
         </main>
     );
