@@ -31,6 +31,7 @@ import ProviderProfile from './pages/SP/ProviderProfile'
 import ProviderUpcomingAppointments from './components/SP/ProviderUpcomingAppointments'
 import ProviderPastAppointments from './components/SP/ProviderPastAppointments'
 import BlogDetail from './components/Blog/BlogDetail.jsx'
+import { RouteTracker } from './Utility/RouteTracker'
 
 function App() {
   const { pathname } = useLocation();
@@ -40,6 +41,8 @@ function App() {
   return (
     <>
       <ScrollToTop />
+      <RouteTracker />
+
       <div className={`bg-white ${isProviderPath ? "" : "h-screen"}  `}>
         <Routes >
           {/* Parent route uses Layout */}
