@@ -11,6 +11,7 @@ import { fetchDistrictsApi } from '../../Api/fetchDistrictsApi'
 import { fetchTestingCentersApi } from '../../Api/fetchTestingCentersApi'
 import { bookAppointment } from '../../Api/bookAppointment'
 import DynamicMap from './DynamicMap'
+import { NearestTestingCenters } from './NearestTestingCenters'
 
 const ScheduleAppointment = () => {
     const location = useLocation();
@@ -27,17 +28,18 @@ const ScheduleAppointment = () => {
     const [centers, setCenters] = useState([]);
     const [selectedCenter, setSelectedCenter] = useState('');
     const [centerLoading, setCenterLoading] = useState(false);
+    const [pendingCenterId, setPendingCenterId] = useState(null);
 
     const [appointmentDate, setAppointmentDate] = useState('')
     const [loadingSubmit, setLoadingSubmit] = useState(false)
 
-    const { vnData, loading } = useVn()
-    const { userProfile, refetchUserProfile } = useUserProfile()
+    const { vnData } = useVn()
+    const { userProfile } = useUserProfile()
 
     // If vnData is loaded and has a state_list, filter it. Otherwise, show all
-    const displayedStates = !loading && vnData?.state_list?.length
-        ? states.filter(state => vnData.state_list.map(String).includes(String(state.state_code)))
-        : states;
+    // const displayedStates = !loading && vnData?.state_list?.length
+    //     ? states.filter(state => vnData.state_list.map(String).includes(String(state.state_code)))
+    //     : states;
 
     // Fetch states once on mount
     useEffect(() => {
@@ -46,11 +48,11 @@ const ScheduleAppointment = () => {
                 const data = incomingServices.includes(3) ? await fetchPrepStates() : await fetchStates();
                 setStates(data)
             } catch (error) {
-                console.error("error");
+                console.error(error);
             }
         }
         getState();
-    }, [])
+    }, [incomingServices])
     // // Fetch districts whenever selectedState changes
     useEffect(() => {
         if (!selectedState) {
@@ -104,15 +106,24 @@ const ScheduleAppointment = () => {
                     : [];
 
                 setCenters(activeCenters);
-                setSelectedCenter('');
+
+                // If we have a pending ID from a card click, check if it's in the new list
+                if (pendingCenterId && activeCenters.some(c => String(c.id) === String(pendingCenterId))) {
+                  setSelectedCenter(pendingCenterId);
+                  setPendingCenterId(null); // Clear it once used
+                } else if (!pendingCenterId) {
+                  // Only reset to empty if we aren't trying to auto-select from a card
+                  setSelectedCenter('');
+                }
             } catch (error) {
                 setCenters([]);
                 setSelectedCenter('');
+                console.log(error)
             }
             setCenterLoading(false);
         }
         fetchCenters();
-    }, [selectedDistrict])
+    }, [selectedDistrict, selectedState, states])
     // Convert the date from YYYY-MM-DD to DD-MM-YYYY before sending API:
     const formatDateForAPI = (dateStr) => {
         const [year, month, day] = dateStr.split('-');
@@ -159,7 +170,7 @@ const ScheduleAppointment = () => {
         try {
             const response = await bookAppointment(data)
             if (response.data.status) {
-                const uniqueId = response.data.unique_id
+                // const uniqueId = response.data.unique_id
                 navigate('/appointmentconfirmed', { state: response.data })
             } else {
                 alert('Failed to book appointment: ' + response.data.message)
@@ -172,6 +183,25 @@ const ScheduleAppointment = () => {
         // const uniqueId = "NETREACH/HR/SELF/7464"
         // navigate('/appointmentconfirmed', { state: { uniqueId } })
     }
+
+
+    const handleSelectCenterFromCard = (center) => {
+        // State ID from the states list based on the center's state_code
+        const matchingState = states.find(s => String(s.state_code) === String(center.state_code));
+        
+        if (matchingState) {
+            setSelectedState(matchingState.id);
+            setSelectedDistrict(center.district_id);
+
+            // setSelectedCenter(center.id);
+            setPendingCenterId(center.id);
+            setSelectedName(center.name);
+
+            // Scroll to the form
+            document.getElementById('State')?.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <div
             className="
@@ -198,6 +228,12 @@ const ScheduleAppointment = () => {
                             Schedule Appointment
                         </h1>
                     </div>
+
+                    <NearestTestingCenters 
+                      onSelectCenter={handleSelectCenterFromCard} 
+                      selectedServices={incomingServices}
+                    />
+
                     <div className="container rounded-4xl w-full max-w-md min-h-[55vh] shadow-sm p-6 bg-white flex flex-col gap-4">
                         {/* State */}
                         <div className="relative">
@@ -301,7 +337,7 @@ const ScheduleAppointment = () => {
                         </button>
                     </div>
                 </div>
-                <div className='container max-w-[500px] w-[400px] xl:w-[500px] flex flex-col justify-center'>
+                <div className='container max-w-[500px] w-[400px] xl:w-[500px] flex flex-col justify-end'>
                     <DynamicMap selected={selectedName} />
 
                     {/* <iframe
