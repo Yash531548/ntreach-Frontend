@@ -49,6 +49,8 @@ const ServiceButtons = ({ buttons }) => {
                 country: data.country_name,
                 state: data.region,
                 city: data.city,
+                latitude: data.latitude,
+                longitude: data.longitude,
             }
             console.log("User Info:", ipInfo);
 
