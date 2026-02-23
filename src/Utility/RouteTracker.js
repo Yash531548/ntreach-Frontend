@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 import ReactGA from "react-ga4";
 
 // Initialize GA4 once
-ReactGA.initialize("GTM-NH35NXQW"); 
+ReactGA.initialize("G-HLKKNQK0NY"); 
 
 export const RouteTracker = () => {
   const location = useLocation();
