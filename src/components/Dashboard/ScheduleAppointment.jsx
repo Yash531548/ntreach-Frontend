@@ -12,6 +12,7 @@ import { fetchTestingCentersApi } from '../../Api/fetchTestingCentersApi'
 import { bookAppointment } from '../../Api/bookAppointment'
 import DynamicMap from './DynamicMap'
 import { NearestTestingCenters } from './NearestTestingCenters'
+import { useSticky } from '../../hooks/useSticky'
 
 const ScheduleAppointment = () => {
     const location = useLocation();
@@ -35,6 +36,8 @@ const ScheduleAppointment = () => {
 
     const { vnData } = useVn()
     const { userProfile } = useUserProfile()
+
+    const { elementRef, placeholderRef, isSticky, width } = useSticky(20);
 
     // If vnData is loaded and has a state_list, filter it. Otherwise, show all
     // const displayedStates = !loading && vnData?.state_list?.length
@@ -337,8 +340,30 @@ const ScheduleAppointment = () => {
                         </button>
                     </div>
                 </div>
-                <div className='container max-w-[500px] w-[400px] xl:w-[500px] flex flex-col justify-end'>
-                    <DynamicMap selected={selectedName} />
+
+                <div className='container max-w-[500px] w-[400px] xl:w-[500px] flex flex-col pt-36'>
+                    {/* Placeholder with same dimensions as sticky element */}
+                    <div 
+                        ref={placeholderRef} 
+                        className="w-full"
+                        style={{ height: isSticky ? '45vw' : 'auto' }}
+                    />
+                    
+                    {/* Sticky container */}
+                    <div
+                        ref={elementRef}
+                        className={`transition-all duration-300 ${
+                        isSticky 
+                            ? 'fixed top-[20px] z-10' 
+                            : 'relative'
+                        }`}
+                        style={{
+                        width: isSticky ? width : '100%',
+                        maxWidth: '500px',
+                        }}
+                    >
+                        <DynamicMap selected={selectedName} />
+                    </div>
 
                     {/* <iframe
                         title="Google Map"
