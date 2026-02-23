@@ -174,6 +174,7 @@ const ProviderProfile = () => {
               {/* Services Dropdown */}
               <div className="relative">
                 <button
+                  type="button"
                   className="w-full bg-black text-white px-4 py-3 rounded-md flex justify-between items-center"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                 >
