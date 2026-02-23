@@ -4,6 +4,19 @@ import api from '../../Api/api'
 const ProviderMySlots = () => {
   const [slots, setSlots] = useState([]) // form slots
   const [savedSlots, setSavedSlots] = useState([]) // fetched or saved slots
+  const [userServices, setUserServices] = useState([])
+
+  // Fetch the Provider's specific services from their profile
+  const getProviderProfile = useCallback(async () => {
+    try {
+      const response = await api.get('/sp/get_profile')
+      // Extract service_names which contains name and id
+      const services = response.data?.service_provider?.service_names || []
+      setUserServices(services)
+    } catch (error) {
+      console.error('Error fetching provider services:', error)
+    }
+  }, [])
 
   // Fetch slots (flattened for UI)
   const getSlots = useCallback(async () => {
@@ -37,10 +50,12 @@ const ProviderMySlots = () => {
 
   useEffect(() => {
     getSlots()
-  }, [getSlots])
+    getProviderProfile()
+  }, [getSlots, getProviderProfile])
 
   // Add new slot
-  const addSlot = () => setSlots([...slots, { date: '', startTime: '', endTime: '', meetLink: '' }])
+  const addSlot = () =>
+    setSlots([...slots, { date: '', startTime: '', endTime: '', service_id: '' }])
 
   // Handle field change
   // Update handleChange
@@ -70,12 +85,12 @@ const ProviderMySlots = () => {
     try {
       // Group slots by date
       const grouped = slots.reduce((acc, slot) => {
-        const { date, startTime, endTime, meetLink, availability_id } = slot
+        const { date, startTime, endTime, service_id } = slot
         if (!acc[date]) acc[date] = []
         acc[date].push({
           start_time: startTime,
           end_time: endTime,
-          meet_link: meetLink // if your API accepts this
+          service_id: service_id
         })
         return acc
       }, {})
@@ -106,7 +121,7 @@ const ProviderMySlots = () => {
       alert('Slots saved successfully!')
       getSlots()
     } catch (err) {
-      console.error(err.response?.data?.message || err.message)
+      console.error(err.response?.data?.message || err)
       alert(err.response?.data?.message || err.message)
     }
   }
@@ -163,16 +178,22 @@ const ProviderMySlots = () => {
               </div>
             </div>
 
-            {/* Meeting Link */}
-            <label className="block text-sm font-medium mt-3 mb-1">Meeting Link</label>
-            <input
-              type="url"
-              placeholder="Paste link here"
-              value={slot.meetLink}
-              onChange={(e) => handleChange(i, 'meetLink', e.target.value)}
-              required
-              className="border border-gray-300 px-2 py-1 rounded w-full"
-            />
+            <div>
+              <label className="block text-sm font-medium mb-1">Select Service</label>
+              <select
+                value={slot.service_id}
+                onChange={(e) => handleChange(i, 'service_id', e.target.value)}
+                required
+                className="border border-gray-300 px-2 py-1 rounded w-full"
+              >
+                <option value=""></option>
+                {userServices.map((service) => (
+                  <option key={service.id} value={service.id}>
+                    {service.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         ))}
 
