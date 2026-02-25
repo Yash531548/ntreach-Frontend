@@ -90,7 +90,7 @@ const ProviderMySlots = () => {
         acc[date].push({
           start_time: startTime,
           end_time: endTime,
-          service_id: service_id
+          service_id: service_id ? [Number(service_id)] : []
         })
         return acc
       }, {})
