@@ -29,10 +29,11 @@ const ProviderMySlots = () => {
       const flattened = res.data.data
         .flatMap((day) =>
           day.time_slots.map((slot) => ({
+            specialization: slot.specialization_names?.map((s) => s.name).join(', '),
             date: day.date,
             startTime: slot.start_time,
             endTime: slot.end_time,
-            meetLink: ''
+            meeting_link: slot.meeting_link
           }))
         )
         .filter((slot) => {
@@ -86,11 +87,17 @@ const ProviderMySlots = () => {
       // Group slots by date
       const grouped = slots.reduce((acc, slot) => {
         const { date, startTime, endTime, service_id } = slot
+
+        // Basic validation: skip if date or service is missing
+        if (!date || !service_id) return acc
+
         if (!acc[date]) acc[date] = []
+
         acc[date].push({
+          // The API expects these keys
+          service_id: [Number(service_id)],
           start_time: startTime,
-          end_time: endTime,
-          service_id: service_id ? [Number(service_id)] : []
+          end_time: endTime
         })
         return acc
       }, {})
@@ -102,27 +109,17 @@ const ProviderMySlots = () => {
           time_slots
         }))
       }
-      // console.log(payload)
+      console.log('Final Payload:', JSON.stringify(payload, null, 2))
 
-      const res = await api.post('add_time_slot', payload)
+      await api.post('add_time_slot', payload)
       // console.log(res.data)
 
-      // Flatten response safely
-      const updatedSlots = (res.data.days || []).flatMap((day) =>
-        day.time_slots.map((slot) => ({
-          date: day.date,
-          startTime: slot.start_time,
-          endTime: slot.end_time,
-          meetLink: slot.meet_link
-        }))
-      )
-      setSlots(updatedSlots)
-
       alert('Slots saved successfully!')
+      setSlots([])
       getSlots()
     } catch (err) {
-      console.error(err.response?.data?.message || err)
-      alert(err.response?.data?.message || err.message)
+      console.error('Server Validation Error:', err.response?.data)
+      alert(err.response?.data?.message || 'Check console for validation errors')
     }
   }
 
@@ -140,6 +137,23 @@ const ProviderMySlots = () => {
 
         {slots.map((slot, i) => (
           <div key={i} className="border border-gray-200 p-4 mt-3 rounded-md bg-gray-50">
+            <div>
+              <label className="block text-sm font-medium mb-1">Select Service</label>
+              <select
+                value={slot.service_id}
+                onChange={(e) => handleChange(i, 'service_id', e.target.value)}
+                required
+                className="border border-gray-300 px-2 py-1 rounded w-full"
+              >
+                <option value=""></option>
+                {userServices.map((service) => (
+                  <option key={service.id} value={service.id}>
+                    {service.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* Date */}
             <label className="block text-sm font-medium mb-1">Select Date</label>
             <input
@@ -177,23 +191,6 @@ const ProviderMySlots = () => {
                 />
               </div>
             </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">Select Service</label>
-              <select
-                value={slot.service_id}
-                onChange={(e) => handleChange(i, 'service_id', e.target.value)}
-                required
-                className="border border-gray-300 px-2 py-1 rounded w-full"
-              >
-                <option value=""></option>
-                {userServices.map((service) => (
-                  <option key={service.id} value={service.id}>
-                    {service.name}
-                  </option>
-                ))}
-              </select>
-            </div>
           </div>
         ))}
 
@@ -212,6 +209,7 @@ const ProviderMySlots = () => {
         <table className="min-w-full border border-gray-200 rounded-lg">
           <thead className="bg-gray-100">
             <tr>
+              <th className="px-4 py-2 text-left border-b border-b-gray-300">Specialization</th>
               <th className="px-4 py-2 text-left border-b border-b-gray-300">Date</th>
               <th className="px-4 py-2 text-left border-b border-b-gray-300">Start Time</th>
               <th className="px-4 py-2 text-left border-b border-b-gray-300">End Time</th>
@@ -221,13 +219,14 @@ const ProviderMySlots = () => {
           <tbody>
             {savedSlots.map((slot, index) => (
               <tr key={index} className="border-b border-b-gray-300 hover:bg-gray-50">
+                <td className="px-4 py-2 italic text-gray-600">{slot.specialization || '-'}</td>
                 <td className="px-4 py-2">{slot.date || '-'}</td>
                 <td className="px-4 py-2">{slot.startTime || '-'}</td>
                 <td className="px-4 py-2">{slot.endTime || '-'}</td>
                 <td className="px-4 py-2 text-blue-600 truncate max-w-[200px]">
-                  {slot.meetLink ? (
-                    <a href={slot.meetLink} target="_blank" rel="noopener noreferrer">
-                      {slot.meetLink}
+                  {slot.meeting_link ? (
+                    <a href={slot.meeting_link} target="_blank" rel="noopener noreferrer">
+                      {slot.meeting_link}
                     </a>
                   ) : (
                     '-'
