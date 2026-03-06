@@ -232,7 +232,7 @@ const ScheduleAppointment = () => {
     if (outreachId) {
       // Outreach booking
       data.booking_type = 'Outreach'
-      data.out_id = outreachId // Send the out_id from URL
+      data.outreach_id = outreachId // Send the out_id from URL
     }
 
     // Conditionally add vn_id only if vnData is available
