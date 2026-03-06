@@ -100,7 +100,7 @@ const Footer = () => {
     // console.log("pathname", pathname);
     // console.log("isdashboard", isDashboard)
     return (
-        <footer className={`bg-[#DAF4FF] ${isDashboard ? "pb-[5rem]" : "pb-[1rem]" }  pt-[1rem] md:pb-[2rem] md:pt-[2rem] lg:pt-[1.5rem] lg:pb-[1.5rem] px-1  mt-[3rem] `}>
+        <footer className={`bg-[#DAF4FF] ${isDashboard ? "pb-[5rem]" : "pb-[1rem]" }  pt-[1rem] md:pb-[2rem] md:pt-[2rem] lg:pt-[1.5rem] lg:pb-[1.5rem] px-1  mt-[3rem] relative z-10`}>
 
             {/* Desktop Layout */}
             <div className="hidden lg:flex flex-col gap-12 items-center justify-center text-sm">
