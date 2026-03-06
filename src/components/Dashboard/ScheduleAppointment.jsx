@@ -4,6 +4,7 @@ import { ChevronDown } from 'lucide-react'
 
 import { useVn } from '../../Context/VnContext'
 import { useUserProfile } from '../../Context/UserProfileContext'
+import { useOutreach } from '../../Context/OutreachContext'
 
 import { fetchStates } from '../../Api/getState'
 import { fetchPrepStates } from '../../Api/prepState'
@@ -39,6 +40,7 @@ const ScheduleAppointment = () => {
 
   const { vnData } = useVn()
   const { userProfile } = useUserProfile()
+  const { outreachId } = useOutreach()
 
   const { elementRef, placeholderRef, isSticky, width } = useSticky(20)
 
@@ -209,9 +211,16 @@ const ScheduleAppointment = () => {
 
     // Add conditional fields based on booking type
     if (hasService3) {
-      // Prep booking
-      data.booking_type = 'Prep'
-      data.risk_score = riskScore
+      // Check if outreachId exists (from URL parameter)
+      if (outreachId) {
+        // Outreach booking
+        data.booking_type = 'Outreach'
+        data.out_id = outreachId // Send the out_id from URL
+      } else {
+        // Regular Prep booking
+        data.booking_type = 'Prep'
+        data.risk_score = riskScore
+      }
       // District is not required for Prep bookings
     } else {
       // Self booking
