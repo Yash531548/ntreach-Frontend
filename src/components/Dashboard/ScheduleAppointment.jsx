@@ -148,7 +148,14 @@ const ScheduleAppointment = () => {
         ) {
           setSelectedCenter(pendingCenterId)
           setPendingCenterId(null) // Clear it once used
-        } else if (!pendingCenterId) {
+        } else if (
+          selectedCenter &&
+          activeCenters.some((c) => String(c.id) === String(selectedCenter))
+        ) {
+          // If there's already a selected center that still exists, keep it selected
+          console.log('Keeping existing center selection:', selectedCenter)
+          // Do nothing - keep the current selectedCenter
+        } else if (!pendingCenterId && !selectedCenter) {
           // Only reset to empty if we aren't trying to auto-select from a card
           setSelectedCenter('')
         }
@@ -160,7 +167,7 @@ const ScheduleAppointment = () => {
       setCenterLoading(false)
     }
     fetchCenters()
-  }, [selectedDistrict, selectedState, states, pendingCenterId, hasService3])
+  }, [selectedDistrict, selectedState, states, pendingCenterId, hasService3, selectedCenter])
 
   // Convert the date from YYYY-MM-DD to DD-MM-YYYY before sending API:
   const formatDateForAPI = (dateStr) => {
@@ -211,21 +218,21 @@ const ScheduleAppointment = () => {
 
     // Add conditional fields based on booking type
     if (hasService3) {
-      // Check if outreachId exists (from URL parameter)
-      if (outreachId) {
-        // Outreach booking
-        data.booking_type = 'Outreach'
-        data.out_id = outreachId // Send the out_id from URL
-      } else {
-        // Regular Prep booking
-        data.booking_type = 'Prep'
-        data.risk_score = riskScore
-      }
+      // Prep booking
+      data.booking_type = 'Prep'
+      data.risk_score = riskScore
       // District is not required for Prep bookings
     } else {
       // Self booking
       data.booking_type = 'SELF'
       data.district = Number(selectedDistrict)
+    }
+
+    // Check if outreachId exists (from URL parameter)
+    if (outreachId) {
+      // Outreach booking
+      data.booking_type = 'Outreach'
+      data.out_id = outreachId // Send the out_id from URL
     }
 
     // Conditionally add vn_id only if vnData is available
