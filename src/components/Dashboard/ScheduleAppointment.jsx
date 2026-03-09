@@ -219,7 +219,7 @@ const ScheduleAppointment = () => {
     // Add conditional fields based on booking type
     if (hasService3) {
       // Prep booking
-      data.booking_type = 'Prep'
+      data.booking_type = 'PrEP'
       data.risk_score = riskScore
       // District is not required for Prep bookings
     } else {
