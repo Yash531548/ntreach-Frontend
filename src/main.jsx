@@ -8,6 +8,7 @@ import { ProfileProvider } from './Context/ProfileContext.jsx'
 import { AuthProviderUser } from './Context/AuthProviderUserContext'
 import { UserProfileProvider } from './Context/UserProfileContext.jsx'
 import { OutreachProvider } from './Context/OutreachContext.jsx'
+import { VNCodeProvider } from './Context/VNCodeContext.jsx'
 import { BlogProvider } from './Context/BlogContext.jsx'
 
 createRoot(document.getElementById('root')).render(
@@ -17,9 +18,11 @@ createRoot(document.getElementById('root')).render(
         <AuthProviderUser>
           <UserProfileProvider>
             <OutreachProvider>
+              <VNCodeProvider>
               <BlogProvider>
                 <App />
               </BlogProvider>
+              </VNCodeProvider>
             </OutreachProvider>
           </UserProfileProvider>
         </AuthProviderUser>

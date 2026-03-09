@@ -5,6 +5,7 @@ import { ChevronDown } from 'lucide-react'
 import { useVn } from '../../Context/VnContext'
 import { useUserProfile } from '../../Context/UserProfileContext'
 import { useOutreach } from '../../Context/OutreachContext'
+import { useVNCode } from '../../Context/VNCodeContext'
 
 import { fetchStates } from '../../Api/getState'
 import { fetchPrepStates } from '../../Api/prepState'
@@ -41,6 +42,7 @@ const ScheduleAppointment = () => {
   const { vnData } = useVn()
   const { userProfile } = useUserProfile()
   const { outreachId } = useOutreach()
+  const { vnId } = useVNCode()
 
   const { elementRef, placeholderRef, isSticky, width } = useSticky(20)
 
@@ -233,6 +235,12 @@ const ScheduleAppointment = () => {
       // Outreach booking
       data.booking_type = 'Outreach'
       data.outreach_id = outreachId // Send the out_id from URL
+    }
+
+    // Check if vnId exists
+    if (typeof vnId === 'number' && !isNaN(vnId)) {
+      data.vn_id = vnId
+      data.booking_type = 'Manual'
     }
 
     // Conditionally add vn_id only if vnData is available
