@@ -17,6 +17,7 @@ import { bookAppointment } from '../../Api/bookAppointment'
 import { useSticky } from '../../hooks/useSticky'
 
 import { NearestTestingCenters } from './NearestTestingCenters'
+import { NearestPrepTestingCenters } from './NearestPrepTestingCenters'
 import DynamicMap from './DynamicMap'
 
 const ScheduleAppointment = () => {
@@ -314,8 +315,13 @@ const ScheduleAppointment = () => {
             </h1>
           </div>
 
-          {/* Nearest Testing Centers - Only show if NOT service 3 */}
-          {!hasService3 && (
+          {/* Nearest Testing Centers */}
+          {hasService3 ? (
+            <NearestPrepTestingCenters
+              onSelectCenter={handleSelectCenterFromCard}
+              selectedServices={incomingServices}
+            />
+          ) : (
             <NearestTestingCenters
               onSelectCenter={handleSelectCenterFromCard}
               selectedServices={incomingServices}
