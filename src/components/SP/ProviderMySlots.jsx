@@ -29,7 +29,7 @@ const ProviderMySlots = () => {
       const flattened = res.data.data
         .flatMap((day) =>
           day.time_slots.map((slot) => ({
-            specialization: slot.specialization_names?.map((s) => s.name).join(', '),
+            specialization: slot.specialization_names?.join(', '),
             date: day.date,
             startTime: slot.start_time,
             endTime: slot.end_time,
@@ -219,7 +219,7 @@ const ProviderMySlots = () => {
           <tbody>
             {savedSlots.map((slot, index) => (
               <tr key={index} className="border-b border-b-gray-300 hover:bg-gray-50">
-                <td className="px-4 py-2 italic text-gray-600">{slot.specialization || '-'}</td>
+                <td className="px-4 py-2">{slot.specialization || '-'}</td>
                 <td className="px-4 py-2">{slot.date || '-'}</td>
                 <td className="px-4 py-2">{slot.startTime || '-'}</td>
                 <td className="px-4 py-2">{slot.endTime || '-'}</td>
