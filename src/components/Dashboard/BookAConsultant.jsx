@@ -105,9 +105,15 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
     e.preventDefault()
     setLoading(true)
 
+    // Look through the services list to find the one matching the current 'service' ID
+    const selectedServiceData = services.find((s) => String(s.service_type_id) === String(service))
+    const serviceName = selectedServiceData ? selectedServiceData.service_type : ''
+
     const data = {
       type,
-      service,
+      service: Number(service), // The ID
+      service_id: Number(service),
+      service_name: serviceName,
       date, // YYYY-MM-DD
       time, // HH:mm
       language,
