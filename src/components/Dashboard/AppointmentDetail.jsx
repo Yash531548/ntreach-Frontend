@@ -26,7 +26,7 @@ const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
                     <span className="lg:hidden absolute top-[3px] right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
                 </div>
             </div>
-            <div className='w-full rounded-2xl shadow-sm xl:h-[32vh] mt-[2rem] mb-[1rem] pt-6 p-8' style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
+            <div className='w-full rounded-2xl shadow-sm mt-[2rem] mb-[1rem] pt-6 p-8' style={{ fontFamily: "Sofia Pro", fontWeight: 300 }}>
                 {/* Responsive Grid Layout */}
                 <div className="
       grid 
@@ -100,10 +100,10 @@ const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
                     </div>
 
                     {/* Row 3 (Joining Info + Location together on mobile, split desktop) */}
-                    <div className="flex flex-row gap-13 w-full md:flex-col md:gap-0 col-span-1">
+                    <div className="flex flex-row gap-13 w-full md:flex-col md:gap-0 col-span-3">
                         <div className="flex-1">
                             <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Joining Info</p>
-                            <a href={appointment.joiningInfo} className="whitespace-nowrap mt-1">{appointment.joiningInfo}</a>
+                            <a href={appointment.joiningInfo} className="break-all mt-1">{appointment.joiningInfo}</a>
                         </div>
                         <div className="flex-1 md:hidden">
                             <p className="text-[#11688F] font-medium" style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>Location</p>
