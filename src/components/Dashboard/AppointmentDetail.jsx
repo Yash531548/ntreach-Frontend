@@ -2,15 +2,36 @@ import { ArrowRight, CircleArrowLeft } from 'lucide-react'
 import React from 'react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 const AppointmentDetail = ({ setSubView, setSelectedView, data, setData }) => {
-    console.log(data)
+    console.log("Data:", data);
+
+    // --- Helper function to safely format the Service Type ---
+    const getServiceType = () => {
+        const rawService = data?.data?.service || data?.service || data?.service_names;
+        
+        if (!rawService) return '-';
+        
+        // If it's an array, join it into a string first
+        if (Array.isArray(rawService)) {
+            return rawService.join(', ').replace(/_/g, ' ');
+        }
+        
+        // If it's a string, replace underscores
+        if (typeof rawService === 'string') {
+            return rawService.replace(/_/g, ' ');
+        }
+        
+        return String(rawService);
+    };
+
     const appointment = {
         appointmentType: data?.data?.type || data?.type || '-',
-        serviceType: data?.data?.service?.replace(/_/g, ' ') || data?.service?.replace(/_/g, ' ') || data?.service_names?.toString() || '-',
+        serviceType: getServiceType(),
         date: data?.data?.date || data?.date || data?.appointment_date,
         time: data?.data?.time || data?.time,
         language: data?.data?.language || data?.language || '-',
         joiningInfo: data?.meet_link || data?.meet_link || '-',
     };
+
     return (
         <div className='rounded-r-4xl w-full md:border md:border-gray-300 md:border-l-0 md:shadow-sm pt-5 md:px-5 xl:pt-8 xl:px-10'>
             <div className='flex justify-between items-center '>
