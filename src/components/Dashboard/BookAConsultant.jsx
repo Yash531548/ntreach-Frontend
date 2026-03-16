@@ -69,16 +69,14 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
   // Update available times when date changes
   useEffect(() => {
     if (date) {
-      const selected = slots.find(slot => slot.date === date)
+      const selected = slots.find((slot) => slot.date === date)
       if (selected) {
         const now = new Date()
         const today = new Date().toISOString().split('T')[0] // "YYYY-MM-DD"
-        
+
         setAvailableTimes(
           selected.time_slots.filter(
-            t =>
-              !t.is_booked &&
-              (date !== today || new Date(`${date}T${t.start_time}`) > now)
+            (t) => !t.is_booked && (date !== today || new Date(`${date}T${t.start_time}`) > now)
           )
         )
       } else setAvailableTimes([])
@@ -228,9 +226,10 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
                 <option value="">Select Date</option>
                 {slots
                   // only show dates that have at least one unbooked slot
-                  .filter((slot) => 
-                    new Date(slot.date) >= new Date(new Date().setHours(0, 0, 0, 0)) &&
-                    slot.time_slots.some((t) => !t.is_booked)
+                  .filter(
+                    (slot) =>
+                      new Date(slot.date) >= new Date(new Date().setHours(0, 0, 0, 0)) &&
+                      slot.time_slots.some((t) => !t.is_booked)
                   )
                   .map((slot) => (
                     <option key={slot.date} value={slot.date}>
