@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react'
 import NotificationMobileIcon from '../../assets/Dashboard/Mobile/NotificationMobileIcon.svg'
 import { bookTeleconsultation } from '../../Api/bookTeleconsultation'
 import { getServiceType } from '../../Api/getServiceType' // API import
-import { getTimeSlot } from '../../Api/getTimeSlot' // API import
+import { getAllTimeSlotsByService } from '../../Api/getTimeSlot' // API import
 
 const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
   const [type, setType] = useState('')
@@ -17,54 +17,53 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
   const [slots, setSlots] = useState([]) // store API slots
   const [availableTimes, setAvailableTimes] = useState([]) // filtered times for chosen date
 
-  // Fetch services on mount
+  // Fetch all available services on mount
   useEffect(() => {
     const fetchServices = async () => {
       try {
         const response = await getServiceType()
         if (response.data.status === 'success') {
-          setServices(response.data.data) // ✅ store services list
-          console.log(response.data.data)
-        } else {
-          console.error('Error fetching services:', response.data.message)
-          alert(`Error fetching services: ${response.data.message}`)
+          setServices(response.data.data)
         }
       } catch (error) {
-        if (error.response?.data?.message) {
-          console.error('Error fetching services:', error.response.data.message)
-          alert(`Error fetching services: ${error.response.data.message}`)
-        } else {
-          console.error('Error fetching services:', error.message)
-          alert(`Error fetching services: ${error.message}`)
-        }
+        console.error('Error fetching services:', error)
       }
     }
     fetchServices()
   }, [])
 
-  // Fetch slots on mount
+  // Fetch slots whenever the "service" selection changes
   useEffect(() => {
-    const fetchSlots = async () => {
+    const fetchSlotsByService = async () => {
+      if (!service) {
+        setSlots([])
+        return
+      }
+
       try {
-        const response = await getTimeSlot()
+        setLoading(true)
+        // Assuming the API takes the service slug/id as a parameter
+        const response = await getAllTimeSlotsByService(service)
+
         if (response.data.status === 'success') {
           setSlots(response.data.data)
         } else {
-          console.error('Error fetching slots:', response.data.message)
-          alert(`Error fetching slots: ${response.data.message}`)
+          setSlots([])
         }
       } catch (error) {
-        if (error.response && error.response.data && error.response.data.message) {
-          console.error('Error fetching slots:', error.response.data.message)
-          alert(`Error fetching slots: ${error.response.data.message}`)
-        } else {
-          console.error('Error fetching slots:', error.message)
-          alert(`Error fetching slots: ${error.message}`)
-        }
+        console.error('Error fetching service slots:', error)
+        setSlots([])
+      } finally {
+        setLoading(false)
       }
     }
-    fetchSlots()
-  }, [])
+
+    fetchSlotsByService()
+    // Reset date/time when service changes
+    setDate('')
+    setTime('')
+    setAvailableTimes([])
+  }, [service])
 
   // Update available times when date changes
   useEffect(() => {
@@ -203,7 +202,7 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
             >
               <option value="">Select Service</option>
               {services.map((s) => (
-                <option key={s.service_type_id} value={s.service_type_slug}>
+                <option key={s.service_type_id} value={s.service_type_id}>
                   {s.service_type}
                 </option>
               ))}
@@ -253,7 +252,6 @@ const BookAConsultant = ({ setSubView, setSelectedView, setData }) => {
                 <option value="">Select Language</option>
                 <option value="English">English</option>
                 <option value="Hindi">Hindi</option>
-                <option value="Other">Other</option>
               </select>
             </div>
           </div>
