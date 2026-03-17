@@ -188,29 +188,37 @@ const ProviderPastAppointments = () => {
                 <td className="py-2 px-3">
                   {a.start_time}–{a.end_time}
                 </td>
-                <td className="py-2 px-3 flex flex-col md:flex-row gap-1">
-                  {!a.transcript && !uploadedTranscripts[a.booking_id] ? (
-                    <button
+                <td className="py-2 px-3 flex flex-col md:flex-row gap-2">
+                  {/* Check if summary PDF exists */}
+                  {a.summary_pdf_url ? (
+                    <a
+                      href={a.summary_pdf_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="hover:underline cursor-pointer"
-                      onClick={() => openModal('get_summary', a)}
                     >
-                      Get Summary
-                    </button>
+                      View Details
+                    </a>
                   ) : (
-                    <></>
+                    /* If no PDF and not recently uploaded, show Get Summary */
+                    !uploadedTranscripts[a.booking_id] && (
+                      <>
+                        {/* <button
+                          className="hover:underline cursor-pointer"
+                          onClick={() => openModal('get_summary', a)}
+                        >
+                          Get Summary
+                        </button> */}
+                      </>
+                    )
                   )}
+
                   {/* <button
-                    className="hover:underline cursor-pointer"
-                    onClick={() => openModal(a.summary ? 'view_summary' : 'get_summary', a)}
-                  >
-                    {a.summary ? 'View Summary' : 'Get Summary'}
-                  </button> */}
-                  <button
                     className="hover:underline cursor-pointer"
                     onClick={() => openModal('view_detail', a)}
                   >
                     View Details
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}
