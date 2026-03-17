@@ -181,13 +181,13 @@ const PastConsultation = ({ setSubView }) => {
                                         >
                                             <td className="py-3 px-4 rounded-l-full">{formatDate(item.date)}</td>
                                             <td className="py-3 px-4">{formatTime(item.time)}</td>
-                                            <td className="py-3 px-4 text-center xl:text-left capitalize">{getServiceDisplay(item.service)}</td>
+                                            <td className="py-3 px-4 text-center xl:text-left capitalize">{item.service_name || getServiceDisplay(item.service)}</td>
                                             {/* Filler for duration - random for now */}
                                             <td className="py-3 px-4">{getRandomDuration()}</td>
                                             {/* Placeholder for recommendations */}
                                             <td className="py-3 px-4 text-[#0078D4] cursor-pointer rounded-r-full">
-                                                {item.summary_pdf_path && (
-                                                    <a href={`${BASE_URL}storage/${item.summary_pdf_path}`}target="_blank" className="text-[#323FF7] underline cursor-pointer whitespace-nowrap">{getRecommendationText()}</a>
+                                                {item.summary_pdf_url && (
+                                                    <a href={item.summary_pdf_url} target="_blank" className="text-[#323FF7] underline cursor-pointer whitespace-nowrap">{getRecommendationText()}</a>
                                                 )}
                                             </td>
                                         </tr>
