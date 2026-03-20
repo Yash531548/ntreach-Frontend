@@ -19,6 +19,7 @@ import { fetchStates } from "../Api/getState.js";
 import { useAuth } from '../Context/AuthContext';
 import { useProfile } from "../Context/ProfileContext.jsx";
 import { useUserProfile } from '../Context/UserProfileContext'
+import { useOutreach } from '../Context/OutreachContext'
 import { useVn } from '../Context/VnContext'
 import QuestionsSection from "../components/QuestionsSection.jsx";
 import { selfRiskAssessmentMaster } from "../Api/selfRiskAssessmentMaster.js";
@@ -32,6 +33,7 @@ export default function Questionnaire() {
     const { user } = useAuth();
     const { profile: profileContext } = useProfile();
     const { userProfile, refetchUserProfile } = useUserProfile()
+    const { outreachId } = useOutreach()
     const { vnData } = useVn()
     const stepImages = [step1, step2, step3, step4, step5];
     const stepImageClasses = [
@@ -338,6 +340,7 @@ const handleNextClick = async () => {
     // Step 1: Create risk assessment if first step
     if (currentStep === 0 && !riskId) {
       const masterData = {
+        out_id: outreachId,
         state: answers[5],
         vn_id: vnData?.id || null,
         mobile_no: answers[1],
