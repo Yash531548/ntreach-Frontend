@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import { ChevronDown } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext';
 import { useUserProfile } from '../Context/UserProfileContext'
+import { useOutreach } from '../Context/OutreachContext'
 import { useVn } from '../Context/VnContext'
 import { sendOtp, verifyOtp } from '../Api/Authentication/auth';
 import { updateUserProfile } from '../Api/user/updateUserProfile';
@@ -18,6 +19,7 @@ import { selfRiskAssessmentItem } from "../Api/selfRiskAssessmentItem.js";
 const Login = () => {
     const { user, login } = useAuth();
     const { userProfile, refetchUserProfile } = useUserProfile()
+    const { outreachId } = useOutreach()
     const { vnData } = useVn()
     const [step, setStep] = useState(1); // track form step
     const [phoneNumber, setPhoneNumber] = useState("");
@@ -69,7 +71,12 @@ const Login = () => {
                     language: user.user?.language || "",
                     tested_hiv_before: userProfile?.items?.find(item => item.question_id == 22)?.answer_id || ""
                 });
-                setStep(3); // Move to profile step
+                // Redirect logic based on outreachId
+                if (outreachId) {
+                    navigate("/", { replace: true }); 
+                } else {
+                    setStep(3); // Move to profile step
+                }
             }
         }
     }, [user, userProfile, navigate]);
@@ -158,7 +165,12 @@ const Login = () => {
                 console.log("user detail", response.user);
                 login({ token: response.token, user: response.user });
                 await refetchUserProfile();
-                setStep(3); // next: profile fill step
+                // Redirect logic based on outreachId
+                if (outreachId) {
+                    navigate("/", { replace: true }); 
+                } else {
+                    setStep(3); // next: profile fill step
+                }
             } else {
                 setError(response.message || 'Invalid Code or login failed.');
             }
