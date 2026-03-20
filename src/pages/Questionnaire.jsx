@@ -429,7 +429,7 @@ const handleNextClick = async () => {
 
       const itemRes = await selfRiskAssessmentItem({
         risk_assessment_id: riskId,
-        items: [...cleanedOldItems, ...cleanedNewItems],
+        items: [...cleanedNewItems],
         risk_score: totalWeight,
       });
       console.log("Item API Response:", itemRes?.data);
