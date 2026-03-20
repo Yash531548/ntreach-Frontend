@@ -337,8 +337,12 @@ const handleNextClick = async () => {
     let riskId = userProfile?.risk_assessment?.risk_assessment_id;
     const ipInfo = JSON.parse(localStorage.getItem("ipInfo") || "{}");
 
-    // Step 1: Create risk assessment if first step
-    if (currentStep === 0 && !riskId) {
+    // Step 1: On first step, create risk assessment if:
+    // - riskId is missing
+    // - OR outreachId exists and is different from the stored out_id
+    if (currentStep === 0 && (
+      !riskId || (outreachId != null && outreachId !== userProfile?.risk_assessment?.out_id)
+    )) {
       const masterData = {
         out_id: outreachId,
         state: answers[5],
