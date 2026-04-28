@@ -28,7 +28,7 @@ export function NearestTestingCenters({ onSelectCenter }) {
   // Filter the centers based on the services they offer
   // const filteredCenters = useMemo(() => {
   //   const allCenters = response?.data || []
-    
+
   //   // If no specific services were passed, show all nearby centers
   //   if (!selectedServices || selectedServices.length === 0) {
   //     return allCenters
@@ -37,7 +37,7 @@ export function NearestTestingCenters({ onSelectCenter }) {
   //   return allCenters.filter((center) => {
   //     // center_services from your API is an array of strings like ["1", "2"]
   //     const availableServices = center.center_services || []
-      
+
   //     // Match center if it provides AT LEAST ONE of the selected services
   //     return selectedServices.some((serviceId) =>
   //       availableServices.map(String).includes(String(serviceId))
@@ -82,10 +82,13 @@ export function NearestTestingCenters({ onSelectCenter }) {
             <span className="text-sm">
               {location?.city && location?.region ? (
                 <>
-                  Showing results for <span className="font-semibold text-gray-700">{location.city}, {location.region}</span>
+                  Showing results for{' '}
+                  <span className="font-semibold text-gray-700">
+                    {location.city}, {location.region}
+                  </span>
                 </>
               ) : (
-                "Showing results for your current area"
+                'Showing results for your current area'
               )}
             </span>
           </div>
@@ -118,7 +121,12 @@ export function NearestTestingCenters({ onSelectCenter }) {
                 </span>
               </div>
 
-              <h3 className="text-lg font-bold text-gray-900 mb-1 leading-snug">{center.name}</h3>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="text-lg font-bold text-gray-900 leading-snug">{center.name}</h3>
+                <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                  {center.free_paid}
+                </span>
+              </div>
 
               <address className="not-italic text-sm text-gray-500 mb-4">
                 {center.address}

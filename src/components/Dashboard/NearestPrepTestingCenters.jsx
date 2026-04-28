@@ -121,7 +121,12 @@ export function NearestPrepTestingCenters({ onSelectCenter }) {
                 </span>
               </div>
 
-              <h3 className="text-lg font-bold text-gray-900 mb-1 leading-snug">{center.name}</h3>
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className="text-lg font-bold text-gray-900 leading-snug">{center.name}</h3>
+                <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+                  {center.free_paid}
+                </span>
+              </div>
 
               <address className="not-italic text-sm text-gray-500 mb-4">
                 {center.address}
