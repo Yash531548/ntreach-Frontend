@@ -410,7 +410,7 @@ const ScheduleAppointment = () => {
                 )}
                 {centers.map((center) => (
                   <option value={center.id} key={center.id}>
-                    {center.name} {center.address}
+                    {center.name} - {center.address} ({center.free_paid})
                   </option>
                 ))}
               </select>
