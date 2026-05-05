@@ -4,10 +4,10 @@ import contact_us from '../assets/Static/contact_us.png'
 import ChatBot from '../components/ChatBot';
 const Contact = () => {
     return (
-        <div className='container w-full  mx-auto flex items-center justify-center px-4  md:mb-8 sm:px-4
+        <div className='container w-full  mx-auto flex items-center justify-center px-4  md:mb-8 sm:px-4 
         lg:px-10 
         xl:px-0 mt-9
-        2xl:ml-0 '>
+         '>
             <main className='container max-w-[1200px] mx-auto  flex flex-col md:flex-row  lg:max-w-[850px]  
             xl:max-w-[1250px] gap-3 md:gap-12 xl:gap-38 md:mt-8' style={{ fontFamily: "Sofia Pro", fontWeight: 400 }}>
                 <div className='w-full md:w-[50%]  flex flex-col gap-8'>
@@ -15,8 +15,16 @@ const Contact = () => {
                         <h2 className=' text-3xl lg:text-4xl xl:text-[2.625rem] mb-9 md:mb-0'>Contact Us</h2>
                         <p className='text-xl md:text-2xl '>For collaboration and official engagement </p>
                     </div>
-                    <div className='text-xl md:text-2xl '>
-                        <p>Email:<span className='text-[#1475A1]'> info.netreach@humsafar.org</span></p>
+                    <div className="text-xl md:text-2xl">
+                        <p>
+                            Email:
+                            <a
+                                href="mailto:info.netreach@humsafar.org"
+                                className="text-[#1475A1]"
+                            >
+                                info.netreach@humsafar.org
+                            </a>
+                        </p>
                     </div>
                     <div >
                         <p className='text-xl md:text-2xl mb-2'>Our Social Media</p>
