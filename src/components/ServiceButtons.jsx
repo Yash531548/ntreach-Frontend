@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ArrowRight } from "lucide-react"; // still used for service button arrow
 import { useNavigate } from "react-router";
 import Arrowvector from "../assets/Vector.svg";
+import axios from 'axios'
 
 
 const ServiceButtons = ({ buttons }) => {
@@ -38,33 +39,75 @@ const ServiceButtons = ({ buttons }) => {
     };
 
     const fetchUserLocation = async () => {
+        const cached = localStorage.getItem('ipInfo');
+
+        if (cached) {
+            const parsed = JSON.parse(cached);
+            setIpInfo(parsed);
+            return true;
+        }
+
         setIsFetchingLocation(true);
 
         try {
-            const res = await fetch("https://ipapi.co/json/");
-            const data = await res.json();
-            console.log("data ip",data);
-            const ipInfo =  {
-                ip: data.ip,
-                country: data.country_name,
-                state: data.region,
-                city: data.city,
-                latitude: data.latitude,
-                longitude: data.longitude,
-            }
-            console.log("User Info:", ipInfo);
+            const position = await new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
 
-            // Save to localStorage
-            localStorage.setItem("ipInfo", JSON.stringify(ipInfo));
+            const { latitude, longitude } = position.coords;
+
+            // Get public IP
+            const { data: ipData } = await axios.get(
+                'https://api.ipify.org?format=json'
+            );
+
+            // Reverse geocode coordinates
+            const { data: locationData } = await axios.get(
+                'https://nominatim.openstreetmap.org/reverse',
+                {
+                    params: {
+                        format: 'json',
+                        lat: latitude,
+                        lon: longitude
+                    }
+                }
+            );
+
+            const ipInfo = {
+                ip: ipData.ip,
+                latitude,
+                longitude,
+                country: locationData.address?.country || '',
+                state:
+                    locationData.address?.state ||
+                    locationData.address?.['ISO3166-2-lvl4']?.replace('IN-', '') ||
+                    '',
+                city:
+                    locationData.address?.city ||
+                    locationData.address?.town ||
+                    locationData.address?.village ||
+                    '',
+                district:
+                    locationData.address?.city_district ||
+                    locationData.address?.county ||
+                    '',
+                pincode: locationData.address?.postcode || ''
+            };
+
+            console.log('User Info:', ipInfo);
+
+            localStorage.setItem('ipInfo', JSON.stringify(ipInfo));
             setIpInfo(ipInfo);
+
             return true;
         } catch (error) {
-            console.error("Failed to fetch user location", error);
+            console.error('Failed to fetch user location', error);
             return false;
         } finally {
             setIsFetchingLocation(false);
         }
     };
+
     const handleCheckboxClick = async () => {
         if (checked) return setChecked(false);
         await fetchUserLocation() && setChecked(true);
