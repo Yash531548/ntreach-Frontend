@@ -89,16 +89,48 @@ const Announcement = () => {
     useEffect(() => {
         async function getAnnouncements() {
             setLoading(true);
+
             try {
-                const data = await fetchAnnouncementsApi(); // Fetches from your announcement API
-                setAnnouncements(data);
+                const data = await fetchAnnouncementsApi();
+
+                const now = new Date();
+
+                // console.log("Current Time:", now);
+                // console.log("Total announcements received:", data.length);
+
+                const activeAnnouncements = data.filter((item) => {
+                    const start = new Date(item.start_date);
+                    const end = new Date(item.end_date);
+
+                    const isVisible = start <= now && now <= end;
+
+                    // console.log("--------------------------------");
+                    // console.log("Title:", item.title);
+                    // console.log("Start Date:", start);
+                    // console.log("End Date:", end);
+                    // console.log("Current Time:", now);
+                    // console.log("Start <= Now:", start <= now);
+                    // console.log("Now <= End:", now <= end);
+                    // console.log("Visible:", isVisible);
+
+                    return isVisible;
+                });
+
+                // console.log("Visible announcements:", activeAnnouncements.length);
+                // console.log("Filtered announcements:", activeAnnouncements);
+
+                setAnnouncements(activeAnnouncements);
             } catch (error) {
+                console.error("Failed to fetch announcements:", error);
                 setAnnouncements([]);
             }
+
             setLoading(false);
         }
+
         getAnnouncements();
     }, []);
+
     function formatTimeRangeUI(startHours, endHours) {
         const to12Hour = h => {
             const hour12 = h % 12 || 12;
