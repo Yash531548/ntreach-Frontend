@@ -99,18 +99,15 @@ const Announcement = () => {
                 // console.log("Total announcements received:", data.length);
 
                 const activeAnnouncements = data.filter((item) => {
-                    const start = new Date(item.start_date);
                     const end = new Date(item.end_date);
 
-                    const isVisible = start <= now && now <= end;
+                    const isVisible = end >= now;
 
                     // console.log("--------------------------------");
                     // console.log("Title:", item.title);
-                    // console.log("Start Date:", start);
                     // console.log("End Date:", end);
                     // console.log("Current Time:", now);
-                    // console.log("Start <= Now:", start <= now);
-                    // console.log("Now <= End:", now <= end);
+                    // console.log("End >= Now:", end >= now);
                     // console.log("Visible:", isVisible);
 
                     return isVisible;
