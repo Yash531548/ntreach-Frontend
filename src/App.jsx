@@ -32,6 +32,7 @@ import ProviderUpcomingAppointments from './components/SP/ProviderUpcomingAppoin
 import ProviderPastAppointments from './components/SP/ProviderPastAppointments'
 import BlogDetail from './components/Blog/BlogDetail.jsx'
 import { RouteTracker } from './Utility/RouteTracker'
+import GoogleTranslateProvider from "./components/GoogleTranslateProvider";
 
 function App() {
   const { pathname } = useLocation();
@@ -40,6 +41,8 @@ function App() {
   const isProviderPath = pathname.startsWith('/provider');
   return (
     <>
+      <GoogleTranslateProvider />
+
       <ScrollToTop />
       <RouteTracker />
 
