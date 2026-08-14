@@ -10,6 +10,7 @@ import { UserProfileProvider } from './Context/UserProfileContext.jsx'
 import { OutreachProvider } from './Context/OutreachContext.jsx'
 import { VNCodeProvider } from './Context/VNCodeContext.jsx'
 import { BlogProvider } from './Context/BlogContext.jsx'
+import { UrlTokenAuthProvider } from "./Context/UrlTokenAuthContext.jsx";
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>
@@ -20,7 +21,9 @@ createRoot(document.getElementById('root')).render(
             <OutreachProvider>
               <VNCodeProvider>
               <BlogProvider>
-                <App />
+                <UrlTokenAuthProvider>
+                  <App />
+                </UrlTokenAuthProvider>
               </BlogProvider>
               </VNCodeProvider>
             </OutreachProvider>

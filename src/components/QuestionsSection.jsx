@@ -39,7 +39,7 @@ export default function QuestionsSection({
                     {q.answer_input_type === "text" && q.question_id === 1 ? (
                         <input
                             type="text"
-                            value={user?.phone_number || ""}
+                            value={answers[q.question_id] || user?.phone_number || ""}
                             readOnly
                             className="p-2 w-full border rounded-2xl text-[13px] px-1.5 border-[#A9A9A9] bg-[#F4F4F4]"
                         />
