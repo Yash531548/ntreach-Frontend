@@ -33,6 +33,8 @@ import ProviderPastAppointments from './components/SP/ProviderPastAppointments'
 import BlogDetail from './components/Blog/BlogDetail.jsx'
 import { RouteTracker } from './Utility/RouteTracker'
 import GoogleTranslateProvider from "./components/GoogleTranslateProvider";
+import FeedbackWidget from './components/FeedbackWidget'
+import Feedback from './pages/Feedback'
 
 function App() {
   const { pathname } = useLocation();
@@ -86,6 +88,7 @@ function App() {
             <Route path='/appointmentconfirmed' element={<AppointmentConfirmed />} />
 
             <Route path="/search" element={<Search />} />
+            <Route path='/feedback' element={<Feedback />} />
           </Route>
           <Route path="/provider">
             <Route path="login" element={<ProviderLogin />} />
@@ -101,6 +104,8 @@ function App() {
           </Route>
         </Routes>
       </div>
+
+      <FeedbackWidget />
     </>
   )
 }
