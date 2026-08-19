@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { getVns } from "../Api/getVns";
+import { saveFeedbackDetails } from "../Api/saveFeedbackDetails";
 
 const questions = [
   {
@@ -246,7 +247,7 @@ export default function Feedback() {
       console.log("Feedback payload:", payload);
 
       // Submit only after the payload has been prepared successfully.
-      // await axios.post("/api/feedback", payload);
+      await saveFeedbackDetails(payload);
 
       setIsSubmitted(true);
     } catch (error) {
