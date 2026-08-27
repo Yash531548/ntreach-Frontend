@@ -304,6 +304,18 @@ const ScheduleAppointment = () => {
     String(minAppointmentDate.getDate()).padStart(2, '0')
   ].join('-')
 
+  const maxAppointmentDate = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() + 7
+  )
+
+  const maxDate = [
+    maxAppointmentDate.getFullYear(),
+    String(maxAppointmentDate.getMonth() + 1).padStart(2, '0'),
+    String(maxAppointmentDate.getDate()).padStart(2, '0')
+  ].join('-')
+
   return (
     <div
       className="
@@ -446,7 +458,7 @@ const ScheduleAppointment = () => {
                 id="Appointment Date"
                 style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}
                 min={minDate}
-                max={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
+                max={maxDate}
                 value={appointmentDate}
                 onChange={(e) => setAppointmentDate(e.target.value)}
               />
