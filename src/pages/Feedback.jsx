@@ -151,6 +151,7 @@ export default function Feedback() {
   const [answers, setAnswers] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [consent, setConsent] = useState(false);
 
   useEffect(() => {
     setMobile(userProfile?.user?.mobile || "");
@@ -328,37 +329,8 @@ export default function Feedback() {
               </p>
 
               <form onSubmit={handleSubmit} className="mt-8 space-y-8">
-                {/* Mobile number */}
-                <div>
-                  <label
-                    htmlFor="mobile"
-                    className="text-sm font-medium text-gray-900"
-                  >
-                    Mobile
-                  </label>
-
-                  <input
-                    id="mobile"
-                    type="tel"
-                    value={mobile}
-                    onChange={(e) => {
-                      const value = e.target.value
-                        .replace(/\D/g, "")
-                        .slice(0, 10);
-
-                      setMobile(value);
-                    }}
-                    disabled={!!userProfile?.user?.mobile}
-                    required
-                    pattern="[6-9][0-9]{9}"
-                    inputMode="numeric"
-                    placeholder="Enter your 10-digit mobile number"
-                    className="mt-3 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-100"
-                  />
-                </div>
-
                 {/* Virtual Navigator selection */}
-                <div>
+                <div className="hidden">
                   <label
                     htmlFor="vn"
                     className="text-sm font-medium text-gray-900"
@@ -398,7 +370,10 @@ export default function Feedback() {
                 {questions.map((item, index) => (
                   <div key={item.id}>
                     <p className="text-sm font-medium leading-6 text-gray-900">
-                      {index + 1}) {item.question}
+                      {index + 1}) {item.question}{" "}
+                      {item.type !== "textarea" && (
+                        <span className="text-red-500">*</span>
+                      )}
                     </p>
 
                     {item.type === "textarea" ? (
@@ -435,6 +410,56 @@ export default function Feedback() {
                     )}
                   </div>
                 ))}
+
+                {/* Mobile number */}
+                <div>
+                  <label
+                    htmlFor="mobile"
+                    className="text-sm font-medium text-gray-900"
+                  >
+                    Mobile <span className="text-gray-400">(Optional)</span>
+                  </label>
+
+                  <input
+                    id="mobile"
+                    type="tel"
+                    value={mobile}
+                    onChange={(e) => {
+                      const value = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10);
+
+                      setMobile(value);
+                    }}
+                    // disabled={!!userProfile?.user?.mobile}
+                    // required
+                    pattern="[6-9][0-9]{9}"
+                    inputMode="numeric"
+                    placeholder="Enter your 10-digit mobile number"
+                    className="mt-3 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-100"
+                  />
+                </div>
+
+                {/* Privacy & Consent */}
+                <div className="flex items-start gap-3">
+                  <input
+                    id="consent"
+                    type="checkbox"
+                    checked={consent}
+                    onChange={(e) => setConsent(e.target.checked)}
+                    required
+                    className="mt-1 h-4 w-4"
+                  />
+
+                  <label
+                    htmlFor="consent"
+                    className="text-sm leading-6 text-gray-700"
+                  >
+                    We will use the information you provide to review and
+                    respond to your feedback. Providing contact information is
+                    optional unless follow-up is requested.
+                  </label>
+                </div>
 
                 {/* Submit */}
                 <div className="flex justify-end border-t border-gray-100 pt-6">
