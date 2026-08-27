@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { getVns } from "../Api/getVns";
 import { saveFeedbackDetails } from "../Api/saveFeedbackDetails";
+import { createFeedbackVisit, updateFeedbackVisit } from "../Api/feedbackVisit";
 import { useUserProfile } from "../Context/UserProfileContext";
 import { useVn } from "../Context/VnContext";
 
@@ -139,6 +140,30 @@ const getUserLocation = async () => {
   return ipInfo;
 };
 
+// Create timestamp in IST.
+const getISTTimestamp = () => {
+  const now = new Date();
+
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Kolkata",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(now);
+
+  const getPart = (type) => parts.find((part) => part.type === type)?.value;
+
+  return `${getPart("year")}-${getPart("month")}-${getPart(
+    "day",
+  )}T${getPart("hour")}:${getPart("minute")}:${getPart(
+    "second",
+  )}.${String(now.getMilliseconds()).padStart(3, "0")}+05:30`;
+};
+
 export default function Feedback() {
   const { userProfile } = useUserProfile();
   const { vnData } = useVn();
@@ -152,6 +177,9 @@ export default function Feedback() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [consent, setConsent] = useState(false);
+
+  // Stores the create API promise so submit can wait for it if needed.
+  const visitPromiseRef = useRef(null);
 
   useEffect(() => {
     setMobile(userProfile?.user?.mobile || "");
@@ -190,6 +218,30 @@ export default function Feedback() {
     fetchVns();
   }, [vnData]);
 
+  // Create one feedback visit when the page opens.
+  useEffect(() => {
+    visitPromiseRef.current = (async () => {
+      try {
+        const ipInfo = await getUserLocation();
+
+        const payload = {
+          url: window.location.href,
+          ip: ipInfo.ip || "",
+          openedAt: getISTTimestamp(),
+          isSubmitted: false,
+          submittedAt: null,
+        };
+
+        console.log("Create feedback visit payload:", payload);
+
+        return await createFeedbackVisit(payload);
+      } catch (error) {
+        console.error("Failed to create feedback visit:", error);
+        return null;
+      }
+    })();
+  }, []);
+
   const handleChange = (questionId, value) => {
     setAnswers((prev) => ({
       ...prev,
@@ -204,30 +256,11 @@ export default function Feedback() {
 
     try {
       const ipInfo = await getUserLocation();
-
-      const now = new Date();
-
-      // Build the submission timestamp explicitly in IST.
-      const parts = new Intl.DateTimeFormat("en-CA", {
-        timeZone: "Asia/Kolkata",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hourCycle: "h23",
-      }).formatToParts(now);
-
-      const getPart = (type) => parts.find((part) => part.type === type)?.value;
-
-      const submittedAt = `${getPart("year")}-${getPart("month")}-${getPart(
-        "day",
-      )}T${getPart("hour")}:${getPart("minute")}:${getPart(
-        "second",
-      )}.${String(now.getMilliseconds()).padStart(3, "0")}+05:30`;
+      const submittedAt = getISTTimestamp();
 
       const payload = {
+        url: window.location.href,
+
         user: {
           ...(userProfile?.user || {}),
           mobile,
@@ -262,6 +295,24 @@ export default function Feedback() {
 
       // Submit only after the payload has been prepared successfully.
       await saveFeedbackDetails(payload);
+
+      // Wait for the visit creation if it is still in progress.
+      const response = await visitPromiseRef.current;
+
+      const visitId =
+        response?.id || response?.data?.id || response?.data?.data?.id;
+
+      // Mark the same visit as submitted.
+      if (visitId) {
+        const updatePayload = {
+          isSubmitted: true,
+          submittedAt,
+        };
+
+        console.log("Update feedback visit payload:", updatePayload);
+
+        await updateFeedbackVisit(visitId, updatePayload);
+      }
 
       setIsSubmitted(true);
     } catch (error) {
