@@ -18,6 +18,10 @@ export const UrlTokenAuthProvider = ({ children }) => {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState(null);
 
+  const [isUrlAuthenticated, setIsUrlAuthenticated] = useState(
+    localStorage.getItem("isUrlAuthenticated") === "true",
+  );
+
   useEffect(() => {
     const handleUrlLogin = async () => {
       const params = new URLSearchParams(window.location.search);
@@ -109,6 +113,9 @@ export const UrlTokenAuthProvider = ({ children }) => {
 
         login(userData);
 
+        localStorage.setItem("isUrlAuthenticated", "true");
+        setIsUrlAuthenticated(true);
+
         // --------------------------------
         // 6. Save profile separately
         // --------------------------------
@@ -145,6 +152,9 @@ export const UrlTokenAuthProvider = ({ children }) => {
         localStorage.removeItem("user");
         localStorage.removeItem("userProfile");
         localStorage.removeItem("vnData");
+        localStorage.removeItem("isUrlAuthenticated");
+
+        setIsUrlAuthenticated(false);
 
         // --------------------------------
         // Send to normal login
@@ -166,6 +176,7 @@ export const UrlTokenAuthProvider = ({ children }) => {
       value={{
         processing,
         error,
+        isUrlAuthenticated,
       }}
     >
       {children}

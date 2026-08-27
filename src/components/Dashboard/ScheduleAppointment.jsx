@@ -6,6 +6,7 @@ import { useVn } from '../../Context/VnContext'
 import { useUserProfile } from '../../Context/UserProfileContext'
 import { useOutreach } from '../../Context/OutreachContext'
 import { useVNCode } from '../../Context/VNCodeContext'
+import { useUrlTokenAuth } from '../../Context/UrlTokenAuthContext'
 
 import { fetchStates } from '../../Api/getState'
 import { fetchPrepStates } from '../../Api/prepState'
@@ -44,6 +45,7 @@ const ScheduleAppointment = () => {
   const { userProfile } = useUserProfile()
   const { outreachId } = useOutreach()
   const { vnId } = useVNCode()
+  const { isUrlAuthenticated } = useUrlTokenAuth()
 
   const { elementRef, placeholderRef, isSticky, width } = useSticky(20)
 
@@ -286,6 +288,22 @@ const ScheduleAppointment = () => {
     }
   }
 
+  const today = new Date()
+
+  const minAppointmentDate = isUrlAuthenticated
+    ? new Date(
+        today.getFullYear(),
+        today.getMonth() - 1,
+        today.getDate()
+      )
+    : today
+
+  const minDate = [
+    minAppointmentDate.getFullYear(),
+    String(minAppointmentDate.getMonth() + 1).padStart(2, '0'),
+    String(minAppointmentDate.getDate()).padStart(2, '0')
+  ].join('-')
+
   return (
     <div
       className="
@@ -427,7 +445,7 @@ const ScheduleAppointment = () => {
                 className={`w-full bg-[#F4F4F4] border border-[#92C2D7] rounded-full pl-4 pr-3 py-0.5  outline-none text-sm mt-1 ${!appointmentDate && 'text-[#A9A9A9]'}`}
                 id="Appointment Date"
                 style={{ fontFamily: 'Sofia Pro', fontWeight: 300 }}
-                min={new Date().toISOString().split('T')[0]} // prevents past dates
+                min={minDate}
                 max={new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
                 value={appointmentDate}
                 onChange={(e) => setAppointmentDate(e.target.value)}
