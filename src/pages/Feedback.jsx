@@ -1,7 +1,9 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { getVns } from "../Api/getVns";
 import { saveFeedbackDetails } from "../Api/saveFeedbackDetails";
+import { useUserProfile } from "../Context/UserProfileContext";
+import { useVn } from "../Context/VnContext";
 
 const questions = [
   {
@@ -138,16 +140,30 @@ const getUserLocation = async () => {
 };
 
 export default function Feedback() {
-  const [vns, setVns] = React.useState([]);
-  const [loadingVns, setLoadingVns] = React.useState(false);
-  const [selectedVn, setSelectedVn] = React.useState("");
+  const { userProfile } = useUserProfile();
+  const { vnData } = useVn();
 
-  const [answers, setAnswers] = React.useState({});
-  const [isSubmitted, setIsSubmitted] = React.useState(false);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [vns, setVns] = useState([]);
+  const [loadingVns, setLoadingVns] = useState(false);
+  const [selectedVn, setSelectedVn] = useState(null);
+
+  const [mobile, setMobile] = useState("");
+  const [answers, setAnswers] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    setMobile(userProfile?.user?.mobile || "");
+  }, [userProfile]);
 
   // Load Virtual Navigators when the feedback page opens.
-  React.useEffect(() => {
+  useEffect(() => {
+    if (vnData) {
+      setVns([vnData]);
+      setSelectedVn(vnData);
+      return;
+    }
+
     const fetchVns = async () => {
       setLoadingVns(true);
 
@@ -171,7 +187,7 @@ export default function Feedback() {
     };
 
     fetchVns();
-  }, []);
+  }, [vnData]);
 
   const handleChange = (questionId, value) => {
     setAnswers((prev) => ({
@@ -187,10 +203,6 @@ export default function Feedback() {
 
     try {
       const ipInfo = await getUserLocation();
-
-      const selectedVnData = vns.find(
-        (vn) => String(vn.id) === String(selectedVn),
-      );
 
       const now = new Date();
 
@@ -215,11 +227,12 @@ export default function Feedback() {
       )}.${String(now.getMilliseconds()).padStart(3, "0")}+05:30`;
 
       const payload = {
-        vn: {
-          id: selectedVnData?.id || "",
-          code: selectedVnData?.vncode || "",
-          name: selectedVnData?.name || "",
+        user: {
+          ...(userProfile?.user || {}),
+          mobile,
         },
+
+        vn: selectedVn || null,
 
         feedback: {
           q1: answers.q1 || "",
@@ -315,6 +328,35 @@ export default function Feedback() {
               </p>
 
               <form onSubmit={handleSubmit} className="mt-8 space-y-8">
+                {/* Mobile number */}
+                <div>
+                  <label
+                    htmlFor="mobile"
+                    className="text-sm font-medium text-gray-900"
+                  >
+                    Mobile
+                  </label>
+
+                  <input
+                    id="mobile"
+                    type="tel"
+                    value={mobile}
+                    onChange={(e) => {
+                      const value = e.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 10);
+
+                      setMobile(value);
+                    }}
+                    disabled={!!userProfile?.user?.mobile}
+                    required
+                    pattern="[6-9][0-9]{9}"
+                    inputMode="numeric"
+                    placeholder="Enter your 10-digit mobile number"
+                    className="mt-3 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-100"
+                  />
+                </div>
+
                 {/* Virtual Navigator selection */}
                 <div>
                   <label
@@ -326,10 +368,16 @@ export default function Feedback() {
 
                   <select
                     id="vn"
-                    value={selectedVn}
-                    onChange={(e) => setSelectedVn(e.target.value)}
+                    value={selectedVn?.id || ""}
+                    onChange={(e) => {
+                      const vn = vns.find(
+                        (vn) => String(vn.id) === String(e.target.value),
+                      );
+
+                      setSelectedVn(vn || null);
+                    }}
                     required
-                    disabled={loadingVns}
+                    disabled={loadingVns || !!vnData}
                     className="mt-3 w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-1 focus:ring-blue-500 disabled:cursor-not-allowed disabled:bg-gray-100"
                   >
                     <option value="">
