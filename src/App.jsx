@@ -89,6 +89,7 @@ function App() {
 
             <Route path="/search" element={<Search />} />
             <Route path='/feedback' element={<Feedback />} />
+            <Route path='/sra/:vnName/feedback' element={<Feedback />} />
           </Route>
           <Route path="/provider">
             <Route path="login" element={<ProviderLogin />} />
