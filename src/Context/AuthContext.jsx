@@ -31,6 +31,9 @@ export const AuthProvider = ({ children }) => {
         // ❌ Remove token + user
         localStorage.removeItem('userToken');
         localStorage.removeItem('user');
+
+        // ❌ Wipe all key-value pairs stored in localStorage
+        localStorage.clear();
     };
 
     // 🔹 Step 4: Keep state synced across multiple tabs
