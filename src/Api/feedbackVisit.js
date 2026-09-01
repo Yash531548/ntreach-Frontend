@@ -25,7 +25,7 @@ export const createFeedbackVisit = async (data) => {
 };
 
 export const updateFeedbackVisit = async (visitId, data) => {
-  const { data: response } = await axios.put(
+  const { data: response } = await axios.post(
     `${BASE_URL}api/update-feedback-visit/${visitId}`,
     data,
     getAuthConfig(),

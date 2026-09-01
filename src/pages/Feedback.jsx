@@ -220,6 +220,23 @@ export default function Feedback() {
 
   // Create one feedback visit when the page opens.
   useEffect(() => {
+    const existingVisitId = sessionStorage.getItem("feedbackVisitId");
+
+    if (existingVisitId) {
+      console.log("Using existing feedback visit:", existingVisitId);
+
+      visitPromiseRef.current = Promise.resolve({
+        id: existingVisitId,
+      });
+
+      return;
+    }
+
+    // Prevent duplicate API calls while creation is in progress.
+    if (visitPromiseRef.current) {
+      return;
+    }
+
     visitPromiseRef.current = (async () => {
       try {
         const ipInfo = await getUserLocation();
@@ -234,9 +251,22 @@ export default function Feedback() {
 
         console.log("Create feedback visit payload:", payload);
 
-        return await createFeedbackVisit(payload);
+        const response = await createFeedbackVisit(payload);
+
+        const visitId =
+          response?.id || response?.data?.id || response?.data?.data?.id;
+
+        if (visitId) {
+          sessionStorage.setItem("feedbackVisitId", String(visitId));
+        }
+
+        return response;
       } catch (error) {
         console.error("Failed to create feedback visit:", error);
+
+        // Allow retry if creation failed.
+        visitPromiseRef.current = null;
+
         return null;
       }
     })();
