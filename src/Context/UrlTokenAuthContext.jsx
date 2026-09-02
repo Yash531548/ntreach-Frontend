@@ -22,6 +22,13 @@ export const UrlTokenAuthProvider = ({ children }) => {
     localStorage.getItem("isUrlAuthenticated") === "true",
   );
 
+  // Store VN data so VnContext can use it after URL authentication
+  const [vnData, setVnData] = useState(() => {
+    const stored = localStorage.getItem("vnData");
+
+    return stored ? JSON.parse(stored) : null;
+  });
+
   useEffect(() => {
     const handleUrlLogin = async () => {
       const params = new URLSearchParams(window.location.search);
@@ -73,7 +80,12 @@ export const UrlTokenAuthProvider = ({ children }) => {
             vnResponse?.data?.data || vnResponse?.data?.vn || vnResponse?.data;
 
           if (vnData) {
+            console.log("VN found via outreach code:", vnData);
+
             localStorage.setItem("vnData", JSON.stringify(vnData));
+
+            // Update context state so VnContext can immediately use it
+            setVnData(vnData);
           }
         }
 
@@ -154,6 +166,7 @@ export const UrlTokenAuthProvider = ({ children }) => {
         localStorage.removeItem("vnData");
         localStorage.removeItem("isUrlAuthenticated");
 
+        setVnData(null);
         setIsUrlAuthenticated(false);
 
         // --------------------------------
@@ -177,6 +190,7 @@ export const UrlTokenAuthProvider = ({ children }) => {
         processing,
         error,
         isUrlAuthenticated,
+        vnData,
       }}
     >
       {children}

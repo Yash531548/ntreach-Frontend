@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import { getVn } from '../Api/getVn' // your axios helper file
+import { useUrlTokenAuth } from './UrlTokenAuthContext'
 
 // Step 1️⃣ — Create the context
 const VnContext = createContext()
@@ -11,13 +12,25 @@ export const useVn = () => useContext(VnContext)
 // Step 3️⃣ — Create the provider component that wraps your entire app
 export const VnProvider = ({ children }) => {
   const { vnName } = useParams()
-  const [vnData, setVnData] = useState(null) // store VN details
+
+  // Get VN data from URL token authentication
+  const { vnData: urlVnData } = useUrlTokenAuth()
+
+  const [vnData, setVnData] = useState(urlVnData) // store VN details
   const [loading, setLoading] = useState(true) // track fetch state
 
   // Step 4️⃣ — Fetch VN details when the app starts or URL changes
   useEffect(() => {
     const fetchVN = async () => {
       try {
+        // VN was found through outreach code
+        if (urlVnData) {
+          console.log("VN found via outreach authentication:", urlVnData)
+
+          setVnData(urlVnData)
+          return
+        }
+
         if (vnName) {
           // Fetch VN details from your backend
           const response = await getVn({ vn_name: vnName })
@@ -38,7 +51,7 @@ export const VnProvider = ({ children }) => {
     }
 
     fetchVN()
-  }, [vnName])
+  }, [vnName, urlVnData])
 
   // Step 5️⃣ — Share the VN data with the entire app
   return (
