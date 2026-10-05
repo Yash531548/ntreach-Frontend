@@ -16,13 +16,24 @@ export const VnProvider = ({ children }) => {
   // Get VN data from URL token authentication
   const { vnData: urlVnData } = useUrlTokenAuth()
 
-  const [vnData, setVnData] = useState(urlVnData) // store VN details
+  const [vnData, setVnData] = useState(null) // store VN details
   const [loading, setLoading] = useState(true) // track fetch state
 
   // Step 4️⃣ — Fetch VN details when the app starts or URL changes
   useEffect(() => {
     const fetchVN = async () => {
       try {
+        if (vnName) {
+          // Fetch VN details from your backend
+          const response = await getVn({ vn_name: vnName })
+          console.log(response.data)
+          setVnData(response.data?.data)
+          // Store in localStorage to persist after reload
+          localStorage.setItem('vnData', JSON.stringify(response.data?.data))
+
+          return
+        }
+
         // VN was found through outreach code
         if (urlVnData) {
           console.log("VN found via outreach authentication:", urlVnData)
@@ -31,18 +42,9 @@ export const VnProvider = ({ children }) => {
           return
         }
 
-        if (vnName) {
-          // Fetch VN details from your backend
-          const response = await getVn({ vn_name: vnName })
-          console.log(response.data)
-          setVnData(response.data?.data)
-          // Store in localStorage to persist after reload
-          localStorage.setItem('vnData', JSON.stringify(response.data?.data))
-        } else {
-          // No VN in URL → check if it exists in localStorage
-          const stored = localStorage.getItem('vnData')
-          if (stored) setVnData(JSON.parse(stored))
-        }
+        // No VN in URL → check if it exists in localStorage
+        const stored = localStorage.getItem('vnData')
+        if (stored) setVnData(JSON.parse(stored))
       } catch (error) {
         console.error('Failed to fetch VN:', error.response?.data?.message || error.message)
       } finally {
