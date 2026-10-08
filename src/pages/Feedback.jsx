@@ -498,7 +498,7 @@ export default function Feedback() {
                     htmlFor="mobile"
                     className="text-sm font-medium text-gray-900"
                   >
-                    Mobile <span className="text-gray-400">(Optional)</span>
+                    Mobile <span className="text-red-500">*</span>
                   </label>
 
                   <input
@@ -513,7 +513,7 @@ export default function Feedback() {
                       setMobile(value);
                     }}
                     // disabled={!!userProfile?.user?.mobile}
-                    // required
+                    required
                     pattern="[6-9][0-9]{9}"
                     inputMode="numeric"
                     placeholder="Enter your 10-digit mobile number"
