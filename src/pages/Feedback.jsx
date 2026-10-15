@@ -5,6 +5,7 @@ import { saveFeedbackDetails } from "../Api/saveFeedbackDetails";
 import { createFeedbackVisit, updateFeedbackVisit } from "../Api/feedbackVisit";
 import { useUserProfile } from "../Context/UserProfileContext";
 import { useVn } from "../Context/VnContext";
+import { trackFeedbackFormSubmit } from "../analytics/analytics";
 
 const questions = [
   {
@@ -326,6 +327,9 @@ export default function Feedback() {
       // Submit only after the payload has been prepared successfully.
       await saveFeedbackDetails(payload);
 
+      // Track successful submission
+      trackFeedbackFormSubmit("feedback_form", "Feedback Form");
+
       // Wait for the visit creation if it is still in progress.
       const response = await visitPromiseRef.current;
 
@@ -409,7 +413,11 @@ export default function Feedback() {
                 minute to complete.
               </p>
 
-              <form onSubmit={handleSubmit} className="mt-8 space-y-8">
+              <form
+                onSubmit={handleSubmit}
+                className="mt-8 space-y-8"
+                data-analytics-name="Feedback Form"
+              >
                 {/* Virtual Navigator selection */}
                 <div className="hidden">
                   <label

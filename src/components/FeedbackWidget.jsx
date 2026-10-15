@@ -17,7 +17,7 @@ export default function FeedbackWidget() {
         type="button"
         onClick={() => setIsOpen(true)}
         className="fixed bottom-6 left-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition cursor-pointer hover:scale-105 hover:bg-blue-700"
-        aria-label="Give feedback"
+        aria-label="Give Feedback"
       >
         <span className="text-xl">💬</span>
       </button>

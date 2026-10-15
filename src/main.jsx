@@ -11,6 +11,9 @@ import { OutreachProvider } from './Context/OutreachContext.jsx'
 import { VNCodeProvider } from './Context/VNCodeContext.jsx'
 import { BlogProvider } from './Context/BlogContext.jsx'
 import { UrlTokenAuthProvider } from "./Context/UrlTokenAuthContext.jsx";
+import { initAnalytics } from './analytics/analytics.js'
+
+initAnalytics();
 
 createRoot(document.getElementById('root')).render(
   <AuthProvider>

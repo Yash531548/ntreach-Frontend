@@ -15,6 +15,7 @@ import { fetchStates } from '../Api/getState';
 import { fetchDistrictsApi } from '../Api/fetchDistrictsApi';
 import { selfRiskAssessmentMaster } from "../Api/selfRiskAssessmentMaster.js";
 import { selfRiskAssessmentItem } from "../Api/selfRiskAssessmentItem.js";
+import { trackLogin } from '../analytics/analytics.js';
 
 const Login = () => {
     const { user, login } = useAuth();
@@ -163,6 +164,10 @@ const Login = () => {
             const response = await verifyOtp(phoneNumber, otp);
             if (response.status && response.token) {
                 console.log("user detail", response.user);
+
+                // Track successful login
+                trackLogin("login_form", "Login Form", "phone");
+
                 login({ token: response.token, user: response.user });
                 await refetchUserProfile();
                 // Redirect logic based on outreachId

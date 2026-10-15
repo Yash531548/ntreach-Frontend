@@ -31,10 +31,15 @@ import ProviderProfile from './pages/SP/ProviderProfile'
 import ProviderUpcomingAppointments from './components/SP/ProviderUpcomingAppointments'
 import ProviderPastAppointments from './components/SP/ProviderPastAppointments'
 import BlogDetail from './components/Blog/BlogDetail.jsx'
-import { RouteTracker } from './Utility/RouteTracker'
 import GoogleTranslateProvider from "./components/GoogleTranslateProvider";
 import FeedbackWidget from './components/FeedbackWidget'
 import Feedback from './pages/Feedback'
+import NotFound from './pages/NotFound.jsx'
+import PageTitle from './analytics/PageTitle.jsx'
+import PageTracker from "./analytics/PageTracker";
+import ButtonTracker from "./analytics/ButtonTracker";
+import LinkTracker from "./analytics/LinkTracker";
+import FormTracker from "./analytics/FormTracker";
 
 function App() {
   const { pathname } = useLocation();
@@ -46,7 +51,11 @@ function App() {
       <GoogleTranslateProvider />
 
       <ScrollToTop />
-      <RouteTracker />
+      <PageTitle />
+      <PageTracker />
+      <ButtonTracker />
+      <LinkTracker />
+      <FormTracker />
 
       <div className={`bg-white ${isProviderPath ? "" : "h-screen"}  `}>
         <Routes >
@@ -90,6 +99,7 @@ function App() {
             <Route path="/search" element={<Search />} />
             <Route path='/feedback' element={<Feedback />} />
             <Route path='/sra/:vnName/feedback' element={<Feedback />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
           <Route path="/provider">
             <Route path="login" element={<ProviderLogin />} />

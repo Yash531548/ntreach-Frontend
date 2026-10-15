@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 import { useAuth } from '../Context/AuthContext';
 import { useUserProfile } from '../Context/UserProfileContext'
 import { sendOtp, verifyOtp } from '../Api/Authentication/auth';
+import { trackLogin } from '../analytics/analytics';
 
 const LoginWithNumber = () => {
     const { login } = useAuth();
@@ -72,6 +73,10 @@ const LoginWithNumber = () => {
             const response = await verifyOtp(phoneNumber, otp);
             if (response.token && response.status) {
                 console.log("user detail", response.user);
+
+                // Track successful login
+                trackLogin("login_form", "Login Form", "phone");
+
                 login({ token: response.token, user: response.user });
                 await refetchUserProfile();
                 navigate('/questionnaire');

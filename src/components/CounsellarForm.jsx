@@ -6,6 +6,7 @@ import { useVn } from '../Context/VnContext'
 import { getVns } from '../Api/getVns';
 import NavigatorCard from './Teams/NavigatorCard';
 import { submitCounsellorRequest } from '../Api/meetCounsellor';
+import { trackGenerateLead, trackContactCounsellorFormSubmit } from "../analytics/analytics";
 
 const CounsellarForm = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -42,6 +43,10 @@ const CounsellarForm = () => {
         };
         const response = await submitCounsellorRequest(payload);
         if (response.status) {
+            // Track successful submission
+            trackGenerateLead("contact_counsellor_form", "Contact Counsellor Form");
+            trackContactCounsellorFormSubmit("contact_counsellor_form", "Contact Counsellor Form");
+
             setIsSubmitted(true);
             setError('')
         } else {
@@ -99,6 +104,7 @@ const CounsellarForm = () => {
                             onSubmit={handleSubmit}
                             className="container rounded-4xl w-full max-w-md min-h-[55vh] shadow-sm p-6 bg-white flex flex-col gap-4"
                             style={{ fontFamily: fontStack }}
+                            data-analytics-name="Contact Counsellor Form"
                         >
                             <div className="relative">
                                 <label htmlFor="Name" className="text-[#11688F] text-base">Name</label>
