@@ -24,6 +24,8 @@ import { useVn } from '../Context/VnContext'
 import QuestionsSection from "../components/QuestionsSection.jsx";
 import { selfRiskAssessmentMaster } from "../Api/selfRiskAssessmentMaster.js";
 import { selfRiskAssessmentItem } from "../Api/selfRiskAssessmentItem.js";
+import { trackRiskAssessmentAnswers } from "../analytics/riskAssessmentTracking.js";
+import { trackEvent } from "../analytics/analytics.js";
 
 
 
@@ -440,6 +442,43 @@ const handleNextClick = async () => {
       // Step 5: Refetch user profile to sync updates
       await refetchUserProfile();
     }
+
+// Question IDs grouped by assessment step for answer tracking
+const questionIdsByStep = {
+  0: [1, 2, 3, 22, 5],
+  2: [6, 9, 10, 11, 12],
+  3: [13, 14, 15, 16, 17, 18],
+  4: [19, 20],
+};
+
+// Track answers for the current step if question IDs are configured
+const questionIds = questionIdsByStep[currentStep];
+
+if (questionIds) {
+  trackRiskAssessmentAnswers({
+    steps,
+    answers,
+    states,
+    questionIds,
+  });
+}
+
+// Track the selected risk option on step 1
+if (currentStep === 1) {
+  // Map the selected risk to its corresponding analytics event and button name
+  const button = {
+    1: ["i_know_my_risk", "I Know my Risk"],
+    2: ["i_want_to_know_my_risk", "I want to know my risk"],
+  }[selectedRisk];
+
+  // Send the button click event only if a valid risk option is selected
+  if (button) {
+    trackEvent(button[0], {
+      button_id: button[0],
+      button_name: button[1],
+    });
+  }
+}
 
     // If LAST STEP → call handleGetResult()
     const lastStepIndex = 4;
