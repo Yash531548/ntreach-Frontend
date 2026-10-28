@@ -26,6 +26,7 @@ import { selfRiskAssessmentMaster } from "../Api/selfRiskAssessmentMaster.js";
 import { selfRiskAssessmentItem } from "../Api/selfRiskAssessmentItem.js";
 import { trackRiskAssessmentAnswers } from "../analytics/riskAssessmentTracking.js";
 import { trackEvent } from "../analytics/analytics.js";
+import fetchIpInfo from "../utils/fetchIpInfo";
 
 
 
@@ -320,6 +321,10 @@ export default function Questionnaire() {
     // console.log(answers)
 
 useEffect(() => {
+  fetchIpInfo();
+}, []);
+
+useEffect(() => {
   if (userProfile?.items?.length) {
     const newAnswers = {};
 
@@ -340,7 +345,7 @@ useEffect(() => {
 const handleNextClick = async () => {
   try {
     let riskId = userProfile?.risk_assessment?.risk_assessment_id;
-    const ipInfo = JSON.parse(localStorage.getItem("ipInfo") || "{}");
+    const ipInfo = await fetchIpInfo();
 
     // Step 1: On first step, create risk assessment if:
     // - riskId is missing

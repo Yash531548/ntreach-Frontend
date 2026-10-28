@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { ArrowRight } from "lucide-react"; // still used for service button arrow
 import { useNavigate } from "react-router";
 import Arrowvector from "../assets/Vector.svg";
-import axios from 'axios'
 
 
 const ServiceButtons = ({ buttons }) => {
@@ -10,8 +9,6 @@ const ServiceButtons = ({ buttons }) => {
     const [selectedService, setSelectedService] = useState(null);
     const [checked, setChecked] = useState(false);
     const navigate = useNavigate();
-    const [isFetchingLocation, setIsFetchingLocation] = useState(false);
-    const [ipInfo, setIpInfo] = useState(null);
 
 
     // Fallback to default buttons if none provided
@@ -32,85 +29,12 @@ const ServiceButtons = ({ buttons }) => {
     const handleProceed = () => {
         if (checked && selectedService) {
             setShowModal(false);
-            navigate(selectedService.action, {
-                state: { ipInfo }
-            });
+            navigate(selectedService.action);
         }
     };
 
-    const fetchUserLocation = async () => {
-        const cached = localStorage.getItem('ipInfo');
-
-        if (cached) {
-            const parsed = JSON.parse(cached);
-            setIpInfo(parsed);
-            return true;
-        }
-
-        setIsFetchingLocation(true);
-
-        try {
-            const position = await new Promise((resolve, reject) => {
-                navigator.geolocation.getCurrentPosition(resolve, reject);
-            });
-
-            const { latitude, longitude } = position.coords;
-
-            // Get public IP
-            const { data: ipData } = await axios.get(
-                'https://api.ipify.org?format=json'
-            );
-
-            // Reverse geocode coordinates
-            const { data: locationData } = await axios.get(
-                'https://nominatim.openstreetmap.org/reverse',
-                {
-                    params: {
-                        format: 'json',
-                        lat: latitude,
-                        lon: longitude
-                    }
-                }
-            );
-
-            const ipInfo = {
-                ip: ipData.ip,
-                latitude,
-                longitude,
-                country: locationData.address?.country || '',
-                state:
-                    locationData.address?.state ||
-                    locationData.address?.['ISO3166-2-lvl4']?.replace('IN-', '') ||
-                    '',
-                city:
-                    locationData.address?.city ||
-                    locationData.address?.town ||
-                    locationData.address?.village ||
-                    '',
-                district:
-                    locationData.address?.city_district ||
-                    locationData.address?.county ||
-                    '',
-                pincode: locationData.address?.postcode || ''
-            };
-
-            console.log('User Info:', ipInfo);
-
-            localStorage.setItem('ipInfo', JSON.stringify(ipInfo));
-            setIpInfo(ipInfo);
-
-            return true;
-        } catch (error) {
-            console.error('Failed to fetch user location', error);
-            return false;
-        } finally {
-            setIsFetchingLocation(false);
-        }
-    };
-
-    const handleCheckboxClick = async () => {
-        if (checked) return setChecked(false);
-        await fetchUserLocation() && setChecked(true);
+    const handleCheckboxClick = () => {
+        setChecked((prev) => !prev);
     };
 
     return (
@@ -173,7 +97,7 @@ const ServiceButtons = ({ buttons }) => {
 
                         {/* Proceed Button */}
                         <button
-                            disabled={!checked || isFetchingLocation}
+                            disabled={!checked}
                             onClick={handleProceed}
                             className={`mt-6 w-full py-2 rounded-full text-white font-medium
               ${checked ? "bg-blue-500 hover:bg-blue-600" : "bg-gray-400 cursor-not-allowed"}`}
